@@ -1,0 +1,15 @@
+[build-system]
+requires = {"hatchling>=1.17.1", "hatch-vcs"}
+build-backend = "hatchling.build"
+
+[project]
+name = "tctlab"
+description = "Package for TCT system at Syracuse University"
+readme = "README.md"
+author = "Bridget Mack"
+author_email = "bjmack@syr.edu"
+
+requires-python = ">=3.9"
+
+dependencies = ["numpy", "matplotlib"]
+version = "1.0"
