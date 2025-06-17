@@ -11,5 +11,5 @@ author_email = "bjmack@syr.edu"
 
 requires-python = ">=3.9"
 
-dependencies = ["numpy", "matplotlib"]
+dependencies = ["numpy", "matplotlib", "pyvisa", "datetime", "progress", "libximc"]
 version = "1.0"
