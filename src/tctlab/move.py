@@ -25,9 +25,12 @@ def test_enum_handles():
 
 '''If this is your first time with the motors plugged into this machine, you need to check and make sure that the axes are defined correctly with this scheme.'''
 
-motor_x = ximc.Axis(dev_enum[1]["uri"])
-motor_y = ximc.Axis(dev_enum[4]["uri"])
-motor_z = ximc.Axis(dev_enum[3]["uri"])
+try:
+    motor_x = ximc.Axis(dev_enum[1]["uri"])
+    motor_y = ximc.Axis(dev_enum[4]["uri"])
+    motor_z = ximc.Axis(dev_enum[3]["uri"])
+except: 
+    print("Make sure motors are plugged in properly")
 
 motor_x.open_device()
 motor_y.open_device()
