@@ -19,26 +19,22 @@ dev_enum= ximc.enumerate_devices(probe_flags, enum_hits)
 
 def test_enum_handles():
     '''prints device enumeration handles'''
-    print("Device Enumeration Handle: ", repr(dev_enum))
-    print("Device Enumeration Handle Type: ", repr(type(dev_enum)))
-
-print(len(dev_enum))
-print(dev_enum[0]["uri"])
-
-for i in range(1, len(dev_enum)):
-    print(dev_enum[i]["uri"])
+    print("Device Enumeration Handles: ")
+    for i in range(1, len(dev_enum)):
+        print(dev_enum[i]["uri"])
 
 '''If this is your first time with the motors plugged into this machine, you need to check and make sure that the axes are defined correctly with this scheme.'''
 
 motor_x = ximc.Axis(dev_enum[1]["uri"])
+motor_y = ximc.Axis(dev_enum[4]["uri"])
+motor_z = ximc.Axis(dev_enum[3]["uri"])
+
 motor_x.open_device()
+motor_y.open_device()
+motor_z.open_device()
+
+
 
 motor_x.command_move(0, 0)
-
-motor_y = ximc.Axis(dev_enum[4]["uri"])
-motor_y.open_device()
 motor_y.command_move(0, 0)
-
-motor_z = ximc.Axis(dev_enum[3]["uri"])
-motor_z.open_device()
 motor_z.command_move(17000, 0)
