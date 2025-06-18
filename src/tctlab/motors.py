@@ -22,27 +22,23 @@ def test_enum_handles():
     print("Device Enumeration Handle: ", repr(dev_enum))
     print("Device Enumeration Handle Type: ", repr(type(dev_enum)))
 
-# dev_count = ximc.get_device_count(dev_enum)
+print(len(dev_enum))
+print(dev_enum[0]["uri"])
 
-# def test_dev_count():
-#     '''prints number of devices library finds'''
-#     print('Device Count: ' + repr(dev_count))
+for i in range(1, len(dev_enum)):
+    print(dev_enum[i]["uri"])
 
-controller_name= ximc.controller_name_t()
-x= ximc.get_device_name(dev_enum, 1) ## COM 3
-y= ximc.get_device_name(dev_enum, 2) ## COM 4
-z= ximc.get_device_name(dev_enum, 3) ## COM 5
+'''If this is your first time with the motors plugged into this machine, you need to check and make sure that the axes are defined correctly with this scheme.'''
 
-def test_controller_names():
-    '''prints the com devices the library finds and enumerates'''
-    print("Enumerated Devices: " + str(x), str(y), str(z))
+motor_x = ximc.Axis(dev_enum[1]["uri"])
+motor_x.open_device()
 
-def encode_controller_name(motor):
-    '''encodes the motor name into a form that open_device can read'''
-    if type(motor) is str:
-        motor = motor.encode()
-    return motor
+motor_x.command_move(0, 0)
 
-motor_x= ximc.open_device(encode_controller_name(x))
-motor_y= ximc.open_device(encode_controller_name(y))
-motor_z= ximc.open_device(encode_controller_name(z))
+motor_y = ximc.Axis(dev_enum[4]["uri"])
+motor_y.open_device()
+motor_y.command_move(0, 0)
+
+motor_z = ximc.Axis(dev_enum[3]["uri"])
+motor_z.open_device()
+motor_z.command_move(17000, 0)
