@@ -2,12 +2,45 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import functs
 
 plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb")
 
-import sys
-datalocation = sys.argv[1]
-sys.path.insert(0, datalocation)
+def no_pos_matrices(datalocation, xmin, xmax, ymin, ymax, channel_tags):
+    xrang= np.linspace(xmin, xmax+1, int(xmax-xmin), dtype=int)
+    yrang= np.linspace(ymin, ymax+1, int(ymax-ymin), dtype=int)
+
+    wfms= []
+    coords= []
+
+    for k in range(len(channel_tags)):
+        for i in range(len(xrang)):
+            for j in range(len(yrang)):
+                try:
+                    coords.append([int(functs.import_waveform(channel_tags[k], xrang[i], yrang[j])[1]), int(import_waveform(channel_tags[k], xrang[i], yrang[j])[2])])
+                    wfms.append([functs.import_waveform(channel_tags[k], xrang[i], yrang[j])[3], avg_waveform(channel_tags[k], xrang[i], yrang[j])[0], avg_waveform(channel_tags[k], xrang[i], yrang[j])[1]])
+                    # print(len(wfms))
+                except:
+                    continue
+
+    np.savetxt("{0}/scan_coords{1}.txt".format(datalocation, k), coords)
+    np.save("{0}/scan_wfms{1}.npy".format(datalocation, k), wfms)
+
+def matrices(datalocation, date, channel):
+    ww, pp = [], []
+    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date), float)
+    print(len(coords))
+    xx= coords[:,0]
+    yy= coords[:,1]
+    for i in range(len(coords)):
+        pp.append([int(xx[i]), int(yy[i])])
+        ww.append([functs.import_waveform(channel, int(xx[i]), int(yy[i]))[3], functs.avg_waveform(channel, int(xx[i]), int(yy[i]))[0], functs.avg_waveform(channel, int(xx[i]), int(yy[i]))[1]])
+        #progress_bar.next()
+        print(i)
+
+    ww= np.array(ww)
+    np.save("{0}/scan_wfms{1}.npy".format(datalocation, channel), ww)
+
 

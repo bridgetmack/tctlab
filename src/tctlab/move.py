@@ -38,7 +38,8 @@ motor_x.open_device()
 motor_y.open_device()
 motor_z.open_device()
 
-
+def current_position(dev_id):
+    pos= dev_id.get_position_t()
 
 motor_x.command_move(0, 0)
 motor_y.command_move(0, 0)
