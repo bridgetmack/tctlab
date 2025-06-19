@@ -1,15 +1,17 @@
 [build-system]
-requires = {"hatchling >= 1.26"}
-build-backend = "hatchling.build"
+requires = {"setuptools>=61.0"}
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "tctlab"
 description = "Package for TCT system at Syracuse University"
 readme = "README.md"
-author = "Bridget Mack"
-author_email = "bjmack@syr.edu"
+authors = [ { name = "Bridget Mack", email = "bjmack@syr.edu" }, ]
 
 requires-python = ">=3.7"
 
 dependencies = ["numpy", "matplotlib", "pyvisa", "datetime", "progress", "libximc", "mplhep"]
 version = "1.0"
+
+[project.urls]
+Homepage = "https://github.com/bridgetmack/tctlab"
