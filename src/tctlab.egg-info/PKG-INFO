@@ -1,0 +1,28 @@
+Metadata-Version: 2.4
+Name: tctlab
+Version: 1.0
+Summary: Package for TCT system at Syracuse University
+Author-email: Bridget Mack <bjmack@syr.edu>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/bridgetmack/tctlab
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: pyvisa
+Requires-Dist: datetime
+Requires-Dist: progress
+Requires-Dist: libximc
+Requires-Dist: mplhep
+Dynamic: license-file
+
+# tctlab
+
+Welcome to TCTLab, a python module for controlling the TCT setup at Syracuse University. 
+
+## installation
+
+To install the package, run
+
+```pip install -e PATH/TO/PACKAGE```
