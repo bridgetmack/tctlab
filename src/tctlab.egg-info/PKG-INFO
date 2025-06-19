@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: tctlab
-Version: 1.0
+Version: 1.1
 Summary: Package for TCT system at Syracuse University
 Author-email: Bridget Mack <bjmack@syr.edu>
 License-Expression: MIT
@@ -25,4 +25,4 @@ Welcome to TCTLab, a python module for controlling the TCT setup at Syracuse Uni
 
 To install the package, run
 
-```pip install -e PATH/TO/PACKAGE```
+```python -m pip install --index-url https://test.pypi.org/simple --no-deps tctlab```
