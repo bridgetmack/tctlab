@@ -41,3 +41,5 @@ motor_z.open_device()
 motor_x.command_move(0, 0)
 motor_y.command_move(0, 0)
 motor_z.command_move(17000, 0)
+
+## add make header to this, so that the header gets made as soon as the scans start?
