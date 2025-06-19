@@ -1,3 +1,5 @@
+"""These functions and imports control the movement of the motors in the TCT"""
+
 from ctypes import *
 import os, sys, pyvisa, datetime
 if sys.version_info >= (3, 0):
