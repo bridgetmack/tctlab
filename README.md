@@ -6,4 +6,4 @@ Welcome to TCTLab, a python module for controlling the TCT setup at Syracuse Uni
 
 To install the package, run
 
-```pip install -e PATH/TO/PACKAGE```
+```python -m pip install --index-url https://test.pypi.org/simple --no-deps tctlab```
