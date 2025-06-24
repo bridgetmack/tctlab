@@ -73,3 +73,13 @@ def amplitude(datalocation, date, channel, p):
 
     return avg, stdev
 
+def channel_number(channel, channel_tags, ch):
+    if len(channel_tags) == 1:
+        return ch[0]
+    else:
+        if channel == 2:
+            return ch[0]
+        elif channel == 3:
+            return ch[1]
+        elif channel == 4:
+            return ch[2]

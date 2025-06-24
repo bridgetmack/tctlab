@@ -8,25 +8,27 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb")
 
-def no_pos_matrices(datalocation, xmin, xmax, ymin, ymax, channel_tags):
+## normal run: do either no-pos or regular depending on if the scan saved the position information
+
+def no_pos_matrices(datalocation, xmin, xmax, ymin, ymax, channel, date):
     xrang= np.linspace(xmin, xmax+1, int(xmax-xmin), dtype=int)
     yrang= np.linspace(ymin, ymax+1, int(ymax-ymin), dtype=int)
 
     wfms= []
     coords= []
 
-    for k in range(len(channel_tags)):
-        for i in range(len(xrang)):
-            for j in range(len(yrang)):
-                try:
-                    coords.append([int(functs.import_waveform(channel_tags[k], xrang[i], yrang[j])[1]), int(import_waveform(channel_tags[k], xrang[i], yrang[j])[2])])
-                    wfms.append([functs.import_waveform(channel_tags[k], xrang[i], yrang[j])[3], avg_waveform(channel_tags[k], xrang[i], yrang[j])[0], avg_waveform(channel_tags[k], xrang[i], yrang[j])[1]])
-                    # print(len(wfms))
-                except:
-                    continue
 
-    np.savetxt("{0}/scan_coords{1}.txt".format(datalocation, k), coords)
-    np.save("{0}/scan_wfms{1}.npy".format(datalocation, k), wfms)
+    for i in range(len(xrang)):
+        for j in range(len(yrang)):
+            try:
+                coords.append([int(functs.import_waveform(channel, xrang[i], yrang[j])[1]), int(functs.import_waveform(channel, xrang[i], yrang[j])[2])])
+                wfms.append([functs.import_waveform(channel, xrang[i], yrang[j])[3], functs.avg_waveform(channel, xrang[i], yrang[j])[0], functs.avg_waveform(channel, xrang[i], yrang[j])[1]])
+                    # print(len(wfms))
+            except:
+                continue
+
+    np.savetxt("{0}/scposition{1}.txt".format(datalocation, date), coords)
+    np.save("{0}/scan_wfms{1}.npy".format(datalocation, channel), wfms)
 
 def matrices(datalocation, date, channel):
     ww, pp = [], []
