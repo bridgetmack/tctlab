@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools, os
 
+from scipy.special import erf
+
 plt.rcParams['figure.dpi']= 150
 import mplhep as hep
 hep.style.use("LHCb2")
@@ -83,3 +85,21 @@ def channel_number(channel, channel_tags, ch):
             return ch[1]
         elif channel == 4:
             return ch[2]
+        
+def poly(x, a, b, c, d, f, g):
+    return (a + b*x + c*x**2 + d*x**3 + f*x**4 + g*x**5)
+
+def line(x, a, b):
+    return a + b*x
+
+def quad(x, a, b, c):
+    return a + b*x + c*x**2
+
+def tri(x, a, b, c, d):
+    return (a + b*x + c*x**2 + d*x**3)
+
+def quart(x, a, b, c, d, f):
+    return (a + b*x + c*x**2 + d*x**3 + f*x**4)
+
+def erf_func(x, a, b, c, d):
+    return a*erf(b*(x+c))+d

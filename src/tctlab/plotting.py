@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-import functs, move, process
+import functs, move, process, spatres
 
 plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
@@ -41,3 +41,41 @@ def map_amplitude_2d(channel, xx, yy, datalocation):
     plt.colorbar(label="mV")
     plt.savefig("{0}/plots/map_amp_ch{1}.pdf".format(datalocation, channel))
     plt.clf()
+
+def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin):
+    yparams, ycov, converted_y, cut_y, cut_frac, cut_dev, dify = spatres.y_fit(c1, c2, order, correction, datalocation, date, ymin)
+
+    yfrac = np.linspace(min(cut_frac), max(cut_frac), 1000)
+
+    if order == 1:
+        plt.plot(functs.line(yfrac, *yparams), yfrac, '-', label="polynomial order: {}".format(order))
+    elif order == 2:
+        plt.plot(functs.quad(yfrac, *yparams), yfrac, '-', label="polynomial order: {}".format(order))
+    elif order == 3:
+        plt.plot(functs.tri(yfrac, *yparams), yfrac, '-', label="polynomial order: {}".format(order))
+    elif order == 4:
+        plt.plot(functs.quart(yfrac, *yparams), yfrac, '-', label="polynomial order: {}".format(order))
+    elif order == 5:
+        plt.plot(functs.poly(yfrac, *yparams), yfrac, '-', label="polynomial order: {}".format(order))
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
+    plt.xlabel("Y position (microns)")
+    plt.ylabel("Ampliude Fraction")
+    plt.ylim(bottom=0)
+    plt.xlim(left=0)
+    plt.legend()
+    plt.title("Amplitude Fraction vs Y; Ch {0} against Ch {1}".format(functs.channel_number(c1), functs.channel_number(c2)))
+    plt.savefig("{0}/plots/ampl-frac-y2-ch{1}-ch{2}-order{3}".format(datalocation, c1, c2, order))
+    plt.show()
+    plt.clf()
+
+    plt.plot(cut_y, dify, '.')
+    plt.xlabel("$Reco - Truth$")
+    plt.ylabel("Truth")
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.show()
+    plt.clf()
+
+    binsize=0.1
+    plt.hist(dify, color='purple', edgecolor='black', bins=range(min(dify), max(dify)+binsize, binsize))
+    plt.show()
