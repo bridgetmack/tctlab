@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 
-import functs, move, process, spatres
+import functs, process, spatres
 
 plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
@@ -78,5 +78,5 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin):
 
     bb = np.linspace(-5, 5, 100) ##100 nm bins
     plt.hist(dify, color='purple', edgecolor='black', bins=bb)
-    
+
     plt.show()
