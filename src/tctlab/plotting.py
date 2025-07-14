@@ -6,7 +6,7 @@ import functs, process, spatres
 
 plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
-hep.style("LHCb2")
+hep.style.use("LHCb2")
 
 def map_amplitude_2d(channel, xx, yy, datalocation):
     x1 = np.unique(xx, axis=0)
