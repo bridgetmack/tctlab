@@ -76,6 +76,7 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin):
     plt.show()
     plt.clf()
 
-    binsize=0.1
-    plt.hist(dify, color='purple', edgecolor='black', bins=range(min(dify), max(dify)+binsize, binsize))
+    bb = np.linspace(-5, 5, 100) ##100 nm bins
+    plt.hist(dify, color='purple', edgecolor='black', bins=bb)
+    
     plt.show()
