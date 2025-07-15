@@ -42,11 +42,12 @@ def map_amplitude_2d(channel, xx, yy, datalocation):
     plt.savefig("{0}/plots/map_amp_ch{1}.pdf".format(datalocation, channel))
     plt.clf()
 
-def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin):
+def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags, ch):
     yparams, ycov, converted_y, cut_y, cut_frac, cut_dev, dify = spatres.y_fit(c1, c2, order, correction, datalocation, date, ymin)
 
     yfrac = np.linspace(min(cut_frac), max(cut_frac), 1000)
-
+    
+    plt.errorbar(converted_y, sig_frac, yerr=sig_dev, linestyle='none', marker='.', ecolor='plum', color='purple')
     if order == 1:
         plt.plot(functs.line(yfrac, *yparams), yfrac, '-', label="polynomial order: {}".format(order))
     elif order == 2:
@@ -64,7 +65,7 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin):
     plt.ylim(bottom=0)
     plt.xlim(left=0)
     plt.legend()
-    plt.title("Amplitude Fraction vs Y; Ch {0} against Ch {1}".format(functs.channel_number(c1), functs.channel_number(c2)))
+    plt.title("Amplitude Fraction vs Y; Ch {0} against Ch {1}".format(functs.channel_number(c1, channel_tags, ch), functs.channel_number(c2, channel_tags, ch)))
     plt.savefig("{0}/plots/ampl-frac-y2-ch{1}-ch{2}-order{3}".format(datalocation, c1, c2, order))
     plt.show()
     plt.clf()
