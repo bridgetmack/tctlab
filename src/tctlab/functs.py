@@ -70,6 +70,7 @@ def amplitude(datalocation, date, channel, p):
             avg.append(np.mean(ampl))
             stdev.append(np.std(ampl))
 
+    np.save("{0}/amplitudes_ch{1}.npy".format(datalocation, channel), ampl)
     np.savetxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel), avg)
     np.savetxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, channel), stdev)
 
