@@ -6,7 +6,7 @@ import functs
 
 plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
-hep.style.use("LHCb")
+hep.style.use("LHCb2")
 
 ## normal run: do either no-pos or regular depending on if the scan saved the position information
 
