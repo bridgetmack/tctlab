@@ -55,7 +55,7 @@ def amplitude(datalocation, date, channel, p):
     stdev= []
 
     for i in range(len(coords)):
-        wfms= import_waveform(channel, int(xx[i]), int(yy[i]))[4]
+        wfms= import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
         wfms= np.array(wfms)
 
         if p == -1 and channel != 1:
@@ -75,6 +75,21 @@ def amplitude(datalocation, date, channel, p):
     np.savetxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, channel), stdev)
 
     return avg, stdev
+
+def amplitude2(datalocation, date, channel):
+    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    #wfms1 = np.load("{0}/scan_wfms{1}.npy".format(datalocation, c1))
+
+    ampl1 = []
+
+    for i in range(len(coords)):
+        wfms1 = import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+        ampl1.append(np.min(wfms1, axis=0))
+
+    np.save("{0}/scan_amplitudes_{1}.npy".format(datalocation, channel), ampl1)
 
 def channel_number(channel, channel_tags, ch):
     if len(channel_tags) == 1:

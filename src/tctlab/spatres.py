@@ -85,4 +85,9 @@ def y_fit(c1, c2, order, correction, datalocation, date, ymin):
 
     return yparams, ycov, converted_y, cut_y, cut_frac, cut_dev, dify
 
+def n_fit_y(c1, c2, order, correction, datalocation, date, ymin):
+    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
 
+    ampl1 = np.load("{0}/scan_amplitude_{1}.npy".format(datalocation, channel)
