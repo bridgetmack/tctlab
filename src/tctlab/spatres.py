@@ -90,4 +90,23 @@ def n_fit_y(c1, c2, order, correction, datalocation, date, ymin):
     xx = coords[:,0]
     yy = coords[:,1]
 
-    ampl1 = np.load("{0}/scan_amplitude_{1}.npy".format(datalocation, channel)
+    ampl1 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c1))
+    ampl2 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c2))
+
+    print(len(ampl1))
+    
+    aa1 = np.zeros([len(ampl1), len(ampl1[0])], float)
+    aa2 = np.zeros([len(ampl2), len(ampl2[0])], float)
+
+    for i in range(len(ampl1)):
+        for j in range(len(ampl1[0])):
+            aa1[i,j] = ampl1[i][j]
+            aa2[i,j] = ampl2[i][j]
+    
+
+    rat = aa1 / (aa1 + aa2)
+
+    plt.plot(yy, rat, '.')
+    plt.show()
+    ## aa1[x,:] is the amplitude values for one position point. 
+    ## this does exactly what I need it to do; now need to figure out how to do the fitting and everything, compare to other method
