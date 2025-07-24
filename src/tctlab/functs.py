@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import itertools, os
 
 from scipy.special import erf
+from scipy.stats import landau
 
 plt.rcParams['figure.dpi']= 150
 import mplhep as hep
@@ -45,6 +46,14 @@ def import_waveform(datalocation, date, channel, x, y):
     wf_vs= np.loadtxt("{0}/chan{1}v{2}-x{3}-y{4}.txt".format(datalocation, channel, date, x, y), float)
 
     return channel, x, y, wf_t, wf_vs
+
+def avg_waveform(datalocation, date, channel, x, y):
+    channel, x, y, wf_t, wf_vs = import_waveform(datalocation, date, channel, x, y)
+
+    wf_v = np.mean(wf_vs, axis=1)
+    wf_stdev = np.std(wf_vs, axis=1)
+
+    return channel, x, y, wf_t, wf_v, wf_stdev
 
 def amplitude(datalocation, date, channel, p):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
@@ -119,3 +128,6 @@ def quart(x, a, b, c, d, f):
 
 def erf_func(x, a, b, c, d):
     return a*erf(b*(x+c))+d
+
+def land_func(x, a, mpv, wid):
+    return a * landau.pdf(x, loc=mpv, scale=wid)
