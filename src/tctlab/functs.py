@@ -131,3 +131,9 @@ def erf_func(x, a, b, c, d):
 
 def land_func(x, a, mpv, wid):
     return a * landau.pdf(x, loc=mpv, scale=wid)
+
+def find_land(x, ampl, a, mpv, wid):
+    return a * landau.pdf(x, loc=mpv, scale=wid) + ampl
+
+def gaus_func(x, a, b, c):
+    return a * np.exp(-1*(x-b)*2 / c**2)

@@ -81,3 +81,15 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags
     plt.hist(dify, color='purple', edgecolor='black', bins=bb)
 
     plt.show()
+
+def plot_cfd(datalocation, channel):
+    t = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, channel), float)
+
+    if channel == 1:
+        bb = np.linspace(18, 22, 400)
+    else:
+        bb = np.linspace(16, 20, 40)
+    plt.hist(t, color='lightblue', edgecolor='steelblue', bins=bb)
+    plt.xlabel('ns')
+    plt.show()
+
