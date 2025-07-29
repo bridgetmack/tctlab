@@ -21,23 +21,15 @@ def cfd(datalocation, date, channel):
         wf_v = wf_v - np.mean(wf_v[1000:])
         wf_v = list(wf_v)
 
-        if channel == 1: 
-            ampl = np.max(wf_v)
-            mindex = wf_v.index(ampl)
-        else:
-            ampl = np.min(wf_v)
-            mindex = wf_v.index(ampl)
+        ampl = np.min(wf_v)
+        mindex = wf_v.index(ampl)
         #print(ampl, mindex)
             
         t_ampl = wf_t[mindex]
         ampl_dev = wf_dev[mindex]
         
-        if channel == 1: 
-            icmin = mindex - 100
-            icmax = mindex + 100
-        else:
-            icmin = mindex - 15
-            icmax = mindex + 15
+        icmin = mindex - 15
+        icmax = mindex + 15
  
         cut_t = wf_t[icmin:icmax]
         cut_v = wf_v[icmin:icmax]
@@ -72,4 +64,39 @@ def cfd(datalocation, date, channel):
     plt.show()
 
 def laser(datalocation, date):
-    return 0
+    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    t = []
+
+    for i in range(len(coords)):
+        channel, x, y, wf_t, wf_v, wf_dev = functs.avg_waveform(datalocation, date, 1, int(xx[i]), int(yy[i]))
+        wf_v = wf_v - np.mean(wf_v[1000:])
+        wf_v = list(wf_v)
+
+        ampl = np.max(wf_v)
+        mindex = wf_v.index(ampl)
+
+        t_ampl = wf_t[mindex]
+        ampl_dev = wf_dev[mindex]
+
+        #icmin = mindex - 60
+        #icmax = mindex + 40
+
+        icmin= 0
+        icmax=-1
+
+        cut_t = wf_t[icmin:icmax]
+        cut_v = wf_v[icmin:icmax]
+        cut_dev = wf_dev[icmin:icmax]
+
+        guess = [1600, 15, 1]
+        params, cov = curve_fit(functs.land_func, cut_t, cut_v, sigma=cut_dev, maxfev=8000)
+
+        tvals = np.linspace(16, wf_t[icmax], 1000)
+ 
+        if i == 1: 
+            plt.errorbar(wf_t, wf_v, yerr=wf_dev, color='purple', ecolor='plum', capsize=0, marker=',')
+            plt.plot(tvals, functs.land_func(tvals, *params), 'b')
+            plt.show()
