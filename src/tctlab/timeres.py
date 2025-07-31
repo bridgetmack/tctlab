@@ -63,6 +63,19 @@ def cfd(datalocation, date, channel):
     plt.ylabel('ns')
     plt.show()
 
+def t_reco(c1, c2, datalocation):
+    t1 = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, c1)
+    t2 = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, c2)
+    ampl = 0
+    ampl_dev = 0
+    t_dev = 0
+
+    treco = []
+    for i in range(len(t1)): 
+        ## CREATE function for this
+
+
+
 def laser(datalocation, date):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]

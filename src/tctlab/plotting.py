@@ -43,7 +43,7 @@ def map_amplitude_2d(channel, xx, yy, datalocation):
     plt.clf()
 
 def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags, ch):
-    yparams, ycov, converted_y, cut_y, cut_frac, cut_dev, dify = spatres.y_fit(c1, c2, order, correction, datalocation, date, ymin)
+    yparams, ycov, sig_frac, sig_dev, converted_y, cut_y, cut_frac, cut_dev, dify = spatres.y_fit(c1, c2, order, correction, datalocation, date, ymin)
 
     yfrac = np.linspace(min(cut_frac), max(cut_frac), 1000)
     
@@ -71,9 +71,10 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags
     plt.clf()
 
     plt.plot(cut_y, dify, '.')
-    plt.xlabel("$Reco - Truth$")
-    plt.ylabel("Truth")
+    plt.ylabel("$Reco - Truth$")
+    plt.xlabel("Truth")
     plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
     plt.show()
     plt.clf()
 

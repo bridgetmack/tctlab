@@ -83,7 +83,7 @@ def y_fit(c1, c2, order, correction, datalocation, date, ymin):
         dify.append((recon[i]-cut_y[i]))
     dify = np.array(dify)
 
-    return yparams, ycov, converted_y, cut_y, cut_frac, cut_dev, dify
+    return yparams, ycov, sig_frac, sig_dev, converted_y, cut_y, cut_frac, cut_dev, dify
 
 def n_fit_y(c1, c2, order, correction, datalocation, date, ymin):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
