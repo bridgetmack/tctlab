@@ -63,18 +63,45 @@ def cfd(datalocation, date, channel):
     plt.ylabel('ns')
     plt.show()
 
-def t_reco(c1, c2, datalocation):
-    t1 = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, c1)
-    t2 = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, c2)
-    ampl = 0
-    ampl_dev = 0
-    t_dev = 0
+def t_reco(c1, c2, datalocation, date, xmin, ymin):
+    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    converted_x, converted_y = [], []
+    for i in range(len(xx)):
+        converted_x.append((xx[i] - xmin)*2.5)
+        converted_y.append((yy[i] - ymin)*2.5)
+
+    t1 = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, c1))
+    t2 = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, c2))
+    t1_dev = 0
+    t2_dev = 0 ## actually figure out what to do for this
+
+    ampl1 = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, c1))
+    ampl2 = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, c2))
+    ampl1_dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, c1))
+    ampl2_dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, c2))
 
     treco = []
     for i in range(len(t1)): 
-        ## CREATE function for this
+        treco.append( (ampl1[i]**2 * t1[i] + ampl2[i]**2 * t2[i]) / (ampl1[i]**2 + ampl2[i]**2) )
 
+    plt.plot(converted_y, treco, '.')
+    plt.ylim(bottom=0, top=40)
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
+    plt.show()
+    plt.clf()
 
+    plt.plot(converted_x, treco, '.')
+    plt.ylim(bottom=0, top=40)
+    plt.show()
+    plt.clf()
+
+    bb = np.linspace(0, 20, 400)
+    plt.hist(treco, bins=bb)
+    plt.show()
 
 def laser(datalocation, date):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))

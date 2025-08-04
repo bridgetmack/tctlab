@@ -70,18 +70,28 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags
     plt.show()
     plt.clf()
 
-    plt.plot(cut_y, dify, '.')
-    plt.ylabel("$Reco - Truth$")
-    plt.xlabel("Truth")
+    plt.plot(cut_y, dify, '.', label='polynomial order {}'.format(order))
+    plt.ylabel("Spatial Resolution (microns)")
+    plt.xlabel("True Y (microns)")
+    plt.ylim(bottom=-5, top=5)
     plt.axvspan(0, 105, color='grey', alpha=0.3)
     plt.axvspan(395, 500, color='grey', alpha=0.3)
+    #plt.legend()
+    plt.show()
+    plt.clf()
+
+    plt.plot(cut_frac, dify, '.', label='polynomial order {}'.format(order))
+    plt.ylabel("Spatial Resolution (microns)")
+    plt.xlabel("Signal Fraction")
+    plt.ylim(bottom=-5, top=5)
+    #plt.legend()
     plt.show()
     plt.clf()
 
     bb = np.linspace(-5, 5, 100) ##100 nm bins
     plt.hist(dify, color='purple', edgecolor='black', bins=bb)
-
     plt.show()
+    plt.clf()
 
 def plot_cfd(datalocation, channel):
     t = np.loadtxt("{0}/times-ch{1}.txt".format(datalocation, channel), float)
@@ -94,3 +104,5 @@ def plot_cfd(datalocation, channel):
     plt.xlabel('ns')
     plt.show()
 
+def plot_treco():
+    return 0

@@ -44,7 +44,7 @@ def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     ## cut to only include where we are not metalized; numbers assume we currect to start at the center of one pad and end at the center of the other
     cut_y, cut_frac, cut_dev = [], [], []
     for i in range(len(converted_y)):
-        if converted_y[i] >= 135 and converted_y[i] <= 395:
+        if converted_y[i] >= 135 and converted_y[i] <= 365:
             cut_y.append(converted_y[i])
             cut_frac.append(sig_frac[i])
             cut_dev.append(sig_dev[i])
