@@ -84,24 +84,38 @@ def t_reco(c1, c2, datalocation, date, xmin, ymin):
     ampl2_dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, c2))
 
     treco = []
+    cx, cy = [], []
     for i in range(len(t1)): 
-        treco.append( (ampl1[i]**2 * t1[i] + ampl2[i]**2 * t2[i]) / (ampl1[i]**2 + ampl2[i]**2) )
+        tt = (ampl1[i]**2 * t1[i] + ampl2[i]**2 * t2[i]) / (ampl1[i]**2 + ampl2[i]**2)
+        if tt < 100: 
+            treco.append(tt)
+            cy.append(converted_y[i])
+            cx.append(converted_x[i])
 
-    plt.plot(converted_y, treco, '.')
+    #return converted_x, converted_y, treco
+
+    plt.plot(cy, treco, '.')
     plt.ylim(bottom=0, top=40)
+    plt.ylabel("Reconstructed time (ns)")
+    plt.xlabel("Position Y (microns)")
     plt.axvspan(0, 105, color='grey', alpha=0.3)
     plt.axvspan(395, 500, color='grey', alpha=0.3)
     plt.show()
     plt.clf()
 
-    plt.plot(converted_x, treco, '.')
+    plt.plot(cx, treco, '.')
     plt.ylim(bottom=0, top=40)
     plt.show()
     plt.clf()
 
-    bb = np.linspace(0, 20, 400)
+    bb = np.linspace(15, 20, 50)
     plt.hist(treco, bins=bb)
     plt.show()
+    
+    print(np.mean(treco))
+    print(np.std(treco))
+
+    return cx, cy, treco
 
 def laser(datalocation, date):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
@@ -121,22 +135,43 @@ def laser(datalocation, date):
         t_ampl = wf_t[mindex]
         ampl_dev = wf_dev[mindex]
 
-        #icmin = mindex - 60
-        #icmax = mindex + 40
+        icmin = mindex - 50
+        icmax = mindex
 
-        icmin= 0
-        icmax=-1
+        #icmin= 0
+        #icmax=-1
 
         cut_t = wf_t[icmin:icmax]
         cut_v = wf_v[icmin:icmax]
         cut_dev = wf_dev[icmin:icmax]
 
         guess = [1600, 15, 1]
-        params, cov = curve_fit(functs.land_func, cut_t, cut_v, sigma=cut_dev, maxfev=8000)
+        params, cov = curve_fit(functs.poly, cut_t, cut_v, sigma=cut_dev, maxfev=8000)
 
         tvals = np.linspace(16, wf_t[icmax], 1000)
  
         if i == 1: 
             plt.errorbar(wf_t, wf_v, yerr=wf_dev, color='purple', ecolor='plum', capsize=0, marker=',')
-            plt.plot(tvals, functs.land_func(tvals, *params), 'b')
+            plt.plot(tvals, functs.poly(tvals, *params), 'b')
             plt.show()
+
+        threshold = 0.5*ampl
+
+        def function(x):
+            return functs.poly(x, *params) - ampl
+
+        init_guess = 15
+        t.append(float(fsolve(function, init_guess)))
+    t = list(t)
+
+    bb = np.linspace(14, 16, 100)
+    plt.hist(t, bins=bb)
+    plt.show()
+
+    print(np.mean(t))
+
+    return x, y, t
+
+def difference():
+    x, y, t = laser(datalocation, date)
+

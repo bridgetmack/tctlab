@@ -68,16 +68,19 @@ def amplitude(datalocation, date, channel, p):
         wfms= np.array(wfms)
 
         if p == -1 and channel != 1:
-            ampl= np.min(wfms, axis=0)
+            ampl= np.min(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
 
             avg.append(np.mean(ampl))
             stdev.append(np.std(ampl))
 
         elif p == 1 or channel == 1:
-            ampl= np.max(wfms, axis=0)
+            ampl= np.max(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
 
             avg.append(np.mean(ampl))
             stdev.append(np.std(ampl))
+
+    #plt.plot(yy, avg, '.')
+    #plt.show()
 
     np.save("{0}/amplitudes_ch{1}.npy".format(datalocation, channel), ampl)
     np.savetxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel), avg)
