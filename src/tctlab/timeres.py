@@ -85,12 +85,16 @@ def t_reco(c1, c2, datalocation, date, xmin, ymin):
 
     treco = []
     cx, cy = [], []
+    cuts = []
+
     for i in range(len(t1)): 
         tt = (ampl1[i]**2 * t1[i] + ampl2[i]**2 * t2[i]) / (ampl1[i]**2 + ampl2[i]**2)
         if tt < 100: 
             treco.append(tt)
             cy.append(converted_y[i])
             cx.append(converted_x[i])
+        else: 
+            cuts.append(i)
 
     #return converted_x, converted_y, treco
 
@@ -115,7 +119,7 @@ def t_reco(c1, c2, datalocation, date, xmin, ymin):
     print(np.mean(treco))
     print(np.std(treco))
 
-    return cx, cy, treco
+    return cx, cy, treco, cuts
 
 def laser(datalocation, date):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
@@ -170,8 +174,38 @@ def laser(datalocation, date):
 
     print(np.mean(t))
 
-    return x, y, t
+    return t
 
-def difference():
-    x, y, t = laser(datalocation, date)
+def difference(c1, c2, datalocation, date, xmin, ymin):
+    t = laser(datalocation, date)
+    cx, cy, treco, cuts = t_reco(c1, c2, datalocation, date, xmin, ymin)
 
+    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    cut_x, cut_y = [], []
+    cut_t = [] 
+    
+    for i in range(len(treco)):
+        if i != cuts:
+            cut_t.append(t[i])
+    
+    plt.plot(cut_t, treco, '.')
+    plt.show()
+    plt.clf()
+
+    cut_t = np.array(cut_t)
+    treco = np.array(treco)
+
+    bb = np.linspace(0, 4, 40)
+    dff = treco - cut_t
+    plt.hist(dff, bins=bb)
+    plt.show()
+    plt.clf()
+
+    plt.plot(cy, dff, 'm.')
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
+    plt.show()
+    plt.clf() 
