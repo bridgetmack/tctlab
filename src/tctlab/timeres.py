@@ -140,7 +140,7 @@ def laser(datalocation, date):
         ampl_dev = wf_dev[mindex]
 
         icmin = mindex - 50
-        icmax = mindex
+        icmax = mindex - 10
 
         #icmin= 0
         #icmax=-1
