@@ -89,7 +89,8 @@ def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags
     plt.clf()
 
     bb = np.linspace(-5, 5, 100) ##100 nm bins
-    plt.hist(dify, color='purple', edgecolor='black', bins=bb)
+    plt.hist(dify, color='purple', edgecolor='black', bins=bb, label='mean = {}\n$\sigma$ = {}'.format(round(np.mean(dify), 3), round(np.std(dify),3)))
+    plt.legend()
     plt.show()
     plt.clf()
 
