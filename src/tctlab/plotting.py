@@ -8,6 +8,47 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb2")
 
+def plot_all_wfms(channel, datalocation, date):
+    wfms= np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
+    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+
+    for i in range(len(coords)):
+        plt.plot(wfms[i][0], wfms[i][1], label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+    plt.legend(loc='right', fontsize='xx-small')
+    plt.xlabel('Time (ns)')
+    plt.ylabel('Voltage (mV)')
+    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel)))
+    plt.savefig("{0}/plots/all_wfm_c{1}".format(datalocation, channel))
+    #plt.show()
+
+    for i in range(len(coords)):
+        plt.plot(wfms[i][0][:500], wfms[i][1][:500], label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+    plt.legend(loc='right', fontsize='xx-small')
+    plt.xlabel('Time (ns)')
+    plt.ylabel('Voltage (mV)')
+    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel)))
+    plt.savefig("{0}/plots/all_wfm_c{1}_zoom".format(datalocation, channel))
+    #plt.show()
+
+def plot_sep_wfms(channel, datalocation, date):
+    wfms= np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
+    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+
+    for i in range(len(coords)):
+        if channel == 2:
+            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="purple",  ecolor='plum', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+        elif channel == 3:
+            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="teal",  ecolor='paleturquoise', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+        elif channel == 4:
+            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="green",  ecolor='palegreen', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+        plt.legend()
+        plt.title("Average Waveform; Channel {}".format(functs.channel_number(channel)))
+        plt.xlabel('Time (ns)')
+        plt.ylabel('Voltage (mV)')
+        plt.savefig("{0}/plots/avg_wfm_ch{1}-x{2}-y{3}.pdf".format(datalocation, channel, int(coords[:,0][i]), int(coords[:,1][i])))
+
+        plt.clf()
+
 def map_amplitude_2d(channel, xx, yy, datalocation):
     x1 = np.unique(xx, axis=0)
     x2 = np.unique(yy, axis=0)
@@ -41,6 +82,8 @@ def map_amplitude_2d(channel, xx, yy, datalocation):
     plt.colorbar(label="mV")
     plt.savefig("{0}/plots/map_amp_ch{1}.pdf".format(datalocation, channel))
     plt.clf()
+
+
 
 def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags, ch):
     yparams, ycov, sig_frac, sig_dev, converted_y, cut_y, cut_frac, cut_dev, dify = spatres.y_fit(c1, c2, order, correction, datalocation, date, ymin)

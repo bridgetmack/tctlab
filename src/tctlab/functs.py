@@ -14,13 +14,6 @@ def make_float(list):
         list[i]= float(list[i])
     return np.array(list)
 
-def find_fwhm(x_data, y_data, polarity):
-    v_trunkated, t_trunkated= [], []
-    y_data= y_data - np.mean(y_data[-100:])
-
-    ## you are going to need to fit this instead; this method will not work
-    return 0
-
 def integrate_waveform(t, v):
     R= 50
     units= 1e-12
@@ -47,15 +40,19 @@ def import_waveform(datalocation, date, channel, x, y):
 
     return channel, x, y, wf_t, wf_vs
 
-def avg_waveform(datalocation, date, channel, x, y):
+def avg_waveform(datalocation, date, channel, x, y, nn):
     channel, x, y, wf_t, wf_vs = import_waveform(datalocation, date, channel, x, y)
 
     wf_v = np.mean(wf_vs, axis=1)
-    wf_stdev = np.std(wf_vs, axis=1)
+
+    wf_v = wf_v - np.mean(wf_v[1000:])
+    wf_v = list(wf_v)
+
+    wf_stdev = np.std(wf_vs, axis=1) / np.sqrt(nn)
 
     return channel, x, y, wf_t, wf_v, wf_stdev
 
-def amplitude(datalocation, date, channel, p):
+def amplitude(datalocation, date, channel, p, nn):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
     yy= coords[:,1]
@@ -71,13 +68,13 @@ def amplitude(datalocation, date, channel, p):
             ampl= np.min(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
 
             avg.append(np.mean(ampl))
-            stdev.append(np.std(ampl))
+            stdev.append(np.std(ampl) / np.sqrt(nn))
 
         elif p == 1 or channel == 1:
             ampl= np.max(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
 
             avg.append(np.mean(ampl))
-            stdev.append(np.std(ampl))
+            stdev.append(np.std(ampl) / np.sqrt(nn))
 
     #plt.plot(yy, avg, '.')
     #plt.show()
@@ -88,20 +85,27 @@ def amplitude(datalocation, date, channel, p):
 
     return avg, stdev
 
-def amplitude2(datalocation, date, channel):
-    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
-    xx = coords[:,0]
-    yy = coords[:,1]
+def find_fwhm(x_data, y_data, polarity):
+    v_trunkated, t_trunkated= [], []
+    y_data= y_data - np.mean(y_data[-100:])
 
-    #wfms1 = np.load("{0}/scan_wfms{1}.npy".format(datalocation, c1))
+    ## you are going to need to fit this instead; this method will not work
+    return 0
 
-    ampl1 = []
+# def amplitude2(datalocation, date, channel):
+#     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+#     xx = coords[:,0]
+#     yy = coords[:,1]
 
-    for i in range(len(coords)):
-        wfms1 = import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
-        ampl1.append(np.min(wfms1, axis=0))
+#     #wfms1 = np.load("{0}/scan_wfms{1}.npy".format(datalocation, c1))
 
-    np.save("{0}/scan_amplitudes_{1}.npy".format(datalocation, channel), ampl1)
+#     ampl1 = []
+
+#     for i in range(len(coords)):
+#         wfms1 = import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+#         ampl1.append(np.min(wfms1, axis=0))
+
+#     np.save("{0}/scan_amplitudes_{1}.npy".format(datalocation, channel), ampl1)
 
 def channel_number(channel, channel_tags, ch):
     if len(channel_tags) == 1:
