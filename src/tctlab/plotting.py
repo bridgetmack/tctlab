@@ -8,7 +8,7 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb2")
 
-def plot_all_wfms(channel, datalocation, date):
+def plot_all_wfms(channel, datalocation, date, channel_tags, ch):
     wfms= np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
 
@@ -17,7 +17,7 @@ def plot_all_wfms(channel, datalocation, date):
     plt.legend(loc='right', fontsize='xx-small')
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
-    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel)))
+    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel, channel_tags, ch)))
     plt.savefig("{0}/plots/all_wfm_c{1}".format(datalocation, channel))
     #plt.show()
 
@@ -26,11 +26,11 @@ def plot_all_wfms(channel, datalocation, date):
     plt.legend(loc='right', fontsize='xx-small')
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
-    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel)))
+    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel), channel_tags, ch))
     plt.savefig("{0}/plots/all_wfm_c{1}_zoom".format(datalocation, channel))
     #plt.show()
 
-def plot_sep_wfms(channel, datalocation, date):
+def plot_sep_wfms(channel, datalocation, date, channel_tags, ch):
     wfms= np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
 
@@ -42,7 +42,7 @@ def plot_sep_wfms(channel, datalocation, date):
         elif channel == 4:
             plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="green",  ecolor='palegreen', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
         plt.legend()
-        plt.title("Average Waveform; Channel {}".format(functs.channel_number(channel)))
+        plt.title("Average Waveform; Channel {}".format(functs.channel_number(channel, channel_tags, ch)))
         plt.xlabel('Time (ns)')
         plt.ylabel('Voltage (mV)')
         plt.savefig("{0}/plots/avg_wfm_ch{1}-x{2}-y{3}.pdf".format(datalocation, channel, int(coords[:,0][i]), int(coords[:,1][i])))
