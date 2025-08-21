@@ -30,7 +30,7 @@ def no_pos_matrices(datalocation, xmin, xmax, ymin, ymax, channel, date):
     np.savetxt("{0}/scposition{1}.txt".format(datalocation, date), coords)
     np.save("{0}/scan_wfms{1}.npy".format(datalocation, channel), wfms)
 
-def matrices(datalocation, date, channel):
+def matrices(datalocation, date, channel, nn):
     ww, pp = [], []
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date), float)
     print(len(coords))
@@ -38,7 +38,7 @@ def matrices(datalocation, date, channel):
     yy= coords[:,1]
     for i in range(len(coords)):
         pp.append([int(xx[i]), int(yy[i])])
-        ww.append([functs.import_waveform(channel, int(xx[i]), int(yy[i]))[3], functs.avg_waveform(channel, int(xx[i]), int(yy[i]))[0], functs.avg_waveform(channel, int(xx[i]), int(yy[i]))[1]])
+        ww.append([functs.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[3], functs.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[4], functs.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[5]])
         #progress_bar.next()
         print(i)
 
