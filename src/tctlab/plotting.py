@@ -26,7 +26,7 @@ def plot_all_wfms(channel, datalocation, date, channel_tags, ch):
     plt.legend(loc='right', fontsize='xx-small')
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
-    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel), channel_tags, ch))
+    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel, channel_tags, ch)))
     plt.savefig("{0}/plots/all_wfm_c{1}_zoom".format(datalocation, channel))
     #plt.show()
 
