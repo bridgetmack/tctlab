@@ -14,20 +14,22 @@ def plot_all_wfms(channel, datalocation, date, channel_tags, ch):
 
     for i in range(len(coords)):
         plt.plot(wfms[i][0], wfms[i][1], label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
-    plt.legend(loc='right', fontsize='xx-small')
+    #plt.legend(loc='right', fontsize='xx-small')
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
     plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel, channel_tags, ch)))
     plt.savefig("{0}/plots/all_wfm_c{1}".format(datalocation, channel))
+    plt.clf()
     #plt.show()
 
     for i in range(len(coords)):
         plt.plot(wfms[i][0][:500], wfms[i][1][:500], label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
-    plt.legend(loc='right', fontsize='xx-small')
+    #plt.legend(loc='right', fontsize='xx-small')
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
     plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel, channel_tags, ch)))
     plt.savefig("{0}/plots/all_wfm_c{1}_zoom".format(datalocation, channel))
+    plt.clf()
     #plt.show()
 
 def plot_sep_wfms(channel, datalocation, date, channel_tags, ch):

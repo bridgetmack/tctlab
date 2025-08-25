@@ -57,6 +57,8 @@ def amplitude(datalocation, date, channel, p, nn):
     xx= coords[:,0]
     yy= coords[:,1]
 
+    noise = -4
+
     avg= []
     stdev= []
 
@@ -67,8 +69,12 @@ def amplitude(datalocation, date, channel, p, nn):
         if p == -1 and channel != 1:
             ampl= np.min(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
 
-            avg.append(np.mean(ampl))
-            stdev.append(np.std(ampl) / np.sqrt(nn))
+            if np.mean(ampl) <= noise:
+            	avg.append(np.mean(ampl))
+            	stdev.append(np.std(ampl) / np.sqrt(nn))
+            else: 
+                avg.append(0)
+                stdev.append(np.std(ampl) / np.sqrt(nn))
 
         elif p == 1 or channel == 1:
             ampl= np.max(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
