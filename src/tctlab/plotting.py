@@ -119,7 +119,18 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
     plt.clf()
 
     ## do from center of pad:
-    
+    xcen, ycen = functs.channel_center(channel, channel_tags, ch)
+    R = []
+    for i in range(len(cx)):
+        R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
+
+    plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
+    plt.legend()
+    plt.title('Amplitude vs R')
+    plt.xlabel('R from Center of Pad (microns)')
+    plt.ylabel('Amplitude (mV)')
+    plt.show()
+    plt.clf()
 
 def plot_y_fit(c1, c2, order, correction, datalocation, date, ymin, channel_tags, ch):
     yparams, ycov, sig_frac, sig_dev, converted_y, cut_y, cut_frac, cut_dev, dify = spatres.y_fit(c1, c2, order, correction, datalocation, date, ymin)

@@ -71,7 +71,7 @@ def amplitude(datalocation, date, channel, p, nn):
 
             if np.mean(ampl) <= noise:
             	avg.append(np.mean(ampl))
-            	stdev.append(np.std(ampl) / np.sqrt(nn))
+                stdev.append(np.std(ampl) / np.sqrt(nn))
             else: 
                 avg.append(0)
                 stdev.append(np.std(ampl) / np.sqrt(nn))
@@ -124,6 +124,16 @@ def channel_number(channel, channel_tags, ch):
         elif channel == 4:
             return ch[2]
         
+def channel_center(channel, channel_tags, ch):
+    cc = channel_number(channel, channel_tags, ch)
+
+    if cc == 4:
+        return [1648, 28962]
+    elif cc == 3: 
+        return [1648, 29162]
+    elif cc == 12: 
+        return [1848, 29162]
+
 def poly(x, a, b, c, d, f, g):
     return (a + b*x + c*x**2 + d*x**3 + f*x**4 + g*x**5)
 
