@@ -122,13 +122,62 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
     xcen, ycen = functs.channel_center(channel, channel_tags, ch)
     R = []
     for i in range(len(xx)):
-        R.append(np.sqrt( (xx[i] - xcen)**2 + (yy[i] - ycen)**2 ))
+        R.append(np.sqrt( (xx[i] - xcen)**2 + (yy[i] - ycen)**2 ) * 2.5)
 
     plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
     plt.legend()
     plt.title('Amplitude vs R')
     plt.xlabel('R from Center of Pad (microns)')
     plt.ylabel('Amplitude (mV)')
+    plt.show()
+    plt.clf()
+
+def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
+    for i in range(len(ch)):
+        channel = ch[i]
+        ampl = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel))
+        dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, channel))
+    
+        coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+        xx = coords[:,0]
+        yy = coords[:,1]
+
+        cx, cy = [], []
+        for i in range(len(xx)):
+            cx.append( (xx[i] - xmin)*2.5 - xcorr )
+            cy.append( (yy[i] - ymin)*2.5 - ycorr )
+        
+        # plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch)))
+        # plt.legend()
+        # plt.title('Amplitude vs X')
+        # plt.xlabel('X Position (microns)')
+        # plt.ylabel('Amplitude (mV)')
+        # plt.axvspan(0, 105, color='grey', alpha=0.3)
+        # plt.axvspan(395, 500, color='grey', alpha=0.3)
+        # plt.show()
+        # plt.clf()
+
+        # plt.errorbar(cy, ampl, yerr=dev, label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch)), linestyle='none', marker='.', color='purple', ecolor='plum')
+        # plt.legend()
+        # plt.title('Amplitude vs Y')
+        # plt.xlabel('Y Position (microns)')
+        # plt.ylabel('Amplitude (mV)')
+        # plt.axvspan(0, 105, color='grey', alpha=0.3)
+        # plt.axvspan(395, 500, color='grey', alpha=0.3)
+        # plt.show()
+        # plt.clf()
+
+        ## do from center of pad:
+        xcen, ycen = functs.channel_center(channel, channel_tags, ch)
+        R = []
+        for i in range(len(xx)):
+            R.append(np.sqrt( (xx[i] - xcen)**2 + (yy[i] - ycen)**2 ) * 2.5)
+
+        plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
+        plt.legend()
+        plt.title('Amplitude vs R')
+        plt.xlabel('R from Center of Pad (microns)')
+        plt.ylabel('Amplitude (mV)')
     plt.show()
     plt.clf()
 
