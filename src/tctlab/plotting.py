@@ -121,8 +121,8 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
     ## do from center of pad:
     xcen, ycen = functs.channel_center(channel, channel_tags, ch)
     R = []
-    for i in range(len(cx)):
-        R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
+    for i in range(len(xx)):
+        R.append(np.sqrt( (xx[i] - xcen)**2 + (yy[i] - ycen)**2 ))
 
     plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
     plt.legend()
