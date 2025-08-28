@@ -70,7 +70,7 @@ def amplitude(datalocation, date, channel, p, nn):
             ampl= np.min(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
 
             if np.mean(ampl) <= noise:
-            	avg.append(np.mean(ampl))
+                avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
             else: 
                 avg.append(0)
