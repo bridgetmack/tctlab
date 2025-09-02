@@ -50,6 +50,13 @@ def single_event(c1, c2, datalocation, date, ymin):
     rat1 = np.array(rat1).transpose()
     cut_rat1 = np.array(cut_rat1).transpose()
 
+    np.savetxt("{0}/test_pos.txt".format(datalocation), cut_yy)
+    np.save("{0}/test_ratio.npy".format(datalocation), cut_rat1)
+
+    flat_yy, flat_rat1 = [], []
+
+    #for i in range(len(cut_rat1)):
+        
     print(len(cut_rat1))
     print(len(cut_rat1[0]))
 
