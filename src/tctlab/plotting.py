@@ -134,7 +134,7 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
 
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
     for i in range(len(ch)):
-        channel = ch[i]
+        channel = channel_tags[i]
         ampl = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel))
         dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, channel))
     
@@ -173,7 +173,7 @@ def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch
         for i in range(len(xx)):
             R.append(np.sqrt( (xx[i] - xcen)**2 + (yy[i] - ycen)**2 ) * 2.5)
 
-        plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
+        plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
         plt.legend()
         plt.title('Amplitude vs R')
         plt.xlabel('R from Center of Pad (microns)')

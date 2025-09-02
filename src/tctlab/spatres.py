@@ -17,6 +17,34 @@ def dev_frac(a1, a2, d1, d2):
 
     return np.sqrt(df1**2 + df2**2)
 
+def single_event(c1, c2, datalocation, date, ymin):
+    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    yy = np.array(yy) - ymin
+    yy = yy * 2.5 - 20
+
+    ampl1 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c1))
+    ampl2 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c2))
+
+    plt.plot(yy, ampl1, 'm.')
+    plt.plot(yy, ampl2, 'b.')
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
+    plt.xlim(left=0, right=500)
+    plt.show()
+
+    rat1 = ampl1 / (ampl1 + ampl2)
+    params, cov = curve_fit(functs.poly, yy, rat1)
+    
+    plt.plot(yy, functs.poly(yy, *params))
+    plt.plot(yy, ampl1/(ampl1+ampl2), 'm.')
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
+    plt.xlim(left=0, right=500)
+    plt.show()
+
 def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
