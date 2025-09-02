@@ -36,6 +36,10 @@ def single_event(c1, c2, datalocation, date, ymin):
     plt.show()
 
     rat1 = ampl1 / (ampl1 + ampl2)
+ 
+    print(len(rat1))
+    print(len(rat1[0]))
+
     params, cov = curve_fit(functs.poly, yy, rat1)
     
     plt.plot(yy, functs.poly(yy, *params))
@@ -44,7 +48,8 @@ def single_event(c1, c2, datalocation, date, ymin):
     plt.axvspan(395, 500, color='grey', alpha=0.3)
     plt.xlim(left=0, right=500)
     plt.show()
-
+    
+    
 def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
