@@ -36,19 +36,35 @@ def single_event(c1, c2, datalocation, date, ymin):
     plt.show()
 
     rat1 = ampl1 / (ampl1 + ampl2)
- 
-    print(len(rat1))
-    print(len(rat1[0]))
 
-    params, cov = curve_fit(functs.poly, yy, rat1)
+    cut_yy, cut_rat1 = [], []
+    for i in range(len(yy)):
+        if yy[i] > 105 and yy[i] < 395:
+            cut_yy.append(yy[i])
+            cut_rat1.append(rat1[i])
+ 
+    print(len(cut_yy))
+    #print(len(cut_rat1))
+    #print(len(cut_rat1[0]))
     
-    plt.plot(yy, functs.poly(yy, *params))
-    plt.plot(yy, ampl1/(ampl1+ampl2), 'm.')
-    plt.axvspan(0, 105, color='grey', alpha=0.3)
-    plt.axvspan(395, 500, color='grey', alpha=0.3)
-    plt.xlim(left=0, right=500)
+    rat1 = np.array(rat1).transpose()
+    cut_rat1 = np.array(cut_rat1).transpose()
+
+    print(len(cut_rat1))
+    print(len(cut_rat1[0]))
+
+    for i in range(len(rat1[0])):
+        plt.plot(yy, rat1[i], '.')
+    
+        #params, cov = curve_fit(functs.poly, cut_yy, cut_rat1[i])
+        #plt.plot(cut_yy, functs.poly(cut_yy, *params))
+    #plt.plot(yy, rat1, 'm.')
+    #plt.axvspan(0, 105, color='grey', alpha=0.3)
+    #plt.axvspan(395, 500, color='grey', alpha=0.3)
+    #plt.xlim(left=0, right=500)
     plt.show()
     
+    #need to figure out how to concatenate so I can actually fit all of this at once. 
     
 def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
