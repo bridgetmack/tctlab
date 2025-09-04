@@ -42,36 +42,39 @@ def single_event(c1, c2, datalocation, date, ymin):
         if yy[i] > 105 and yy[i] < 395:
             cut_yy.append(yy[i])
             cut_rat1.append(rat1[i])
- 
-    print(len(cut_yy))
-    #print(len(cut_rat1))
-    #print(len(cut_rat1[0]))
-    
+     
     rat1 = np.array(rat1).transpose()
     cut_rat1 = np.array(cut_rat1).transpose()
 
-    np.savetxt("{0}/test_pos.txt".format(datalocation), cut_yy)
-    np.save("{0}/test_ratio.npy".format(datalocation), cut_rat1)
+    #np.savetxt("{0}/test_pos.txt".format(datalocation), cut_yy)
+    #np.save("{0}/test_ratio.npy".format(datalocation), cut_rat1)
 
-    flat_yy, flat_rat1 = [], []
+    ypos = []
+    for i in range(len(rat1)):
+        ypos.append(cut_yy)
 
-    #for i in range(len(cut_rat1)):
-        
-    print(len(cut_rat1))
-    print(len(cut_rat1[0]))
+    flat_yy = np.concatenate(ypos, axis=None)
+    flat_rat1 = np.concatenate(cut_rat1, axis=None)
 
-    for i in range(len(rat1[0])):
-        plt.plot(yy, rat1[i], '.')
-    
-        #params, cov = curve_fit(functs.poly, cut_yy, cut_rat1[i])
-        #plt.plot(cut_yy, functs.poly(cut_yy, *params))
-    #plt.plot(yy, rat1, 'm.')
-    #plt.axvspan(0, 105, color='grey', alpha=0.3)
-    #plt.axvspan(395, 500, color='grey', alpha=0.3)
-    #plt.xlim(left=0, right=500)
+    params, popt = curve_fit(functs.poly, flat_rat1, flat_yy)
+
+    plt.plot(flat_yy, flat_rat1, 'm.')
+    plt.plot(functs.poly(cut_rat1, *params), cut_rat1, 'b-')
     plt.show()
-    
-    #need to figure out how to concatenate so I can actually fit all of this at once. 
+
+    dify = []
+    for i in range(len(flat_rat1)):
+        dify.append((functs.poly(flat_rat1, *params) - flat_yy))
+    dify = np.array(dify)
+    dify = np.concatenate(dify, axis=None)
+
+    print(np.mean(dify))
+    print(np.std(dify))
+
+    bb = np.linspace(-40, 40, 100)
+
+    plt.hist(dify, color='purple', edgecolor='black', bins=bb)
+    plt.show()
     
 def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
