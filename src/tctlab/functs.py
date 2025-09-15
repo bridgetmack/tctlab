@@ -58,7 +58,9 @@ def convert_coords(datalocation, date):
     yy = coords[:,1]
 
     xx = ( np.array(xx) - 1348 ) * 2.5
-    yy = ( np.array(yy) - 28654)
+    yy = ( np.array(yy) - 28670) * 2.5
+
+    return xx, yy
 
 def amplitude(datalocation, date, channel, p, nn):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))

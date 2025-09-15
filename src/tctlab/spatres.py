@@ -22,11 +22,15 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     xx = coords[:,0]
     yy = coords[:,1]
 
+    ux, uy = functs.convert_coords(datalocation, date)
+
     ampl1 = np.load(f"{datalocation}/scan_amplitudes_{c1}.npy")
     ampl2 = np.load(f"{datalocation}/scan_amplitudes_{c2}.npy")
 
-    plt.plot(yy, ampl1, 'm.')
-    plt.plot(yy, ampl2, 'b.')
+    plt.plot(uy, ampl1, 'm,')
+    plt.plot(uy, ampl2, 'b,')
+    plt.axvspan(0, 105, color='grey', alpha=0.3)
+    plt.axvspan(395, 500, color='grey', alpha=0.3)
     plt.savefig(f"{datalocation}/plots/amplitudes-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
