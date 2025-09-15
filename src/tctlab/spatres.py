@@ -17,6 +17,59 @@ def dev_frac(a1, a2, d1, d2):
 
     return np.sqrt(df1**2 + df2**2)
 
+def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
+    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    ampl1 = np.load(f"{datalocation}/scan_amplitudes_{c1}.npy")
+    ampl2 = np.load(f"{datalocation}/scan_amplitudes_{c2}.npy")
+
+    plt.plot(yy, ampl1, 'm.')
+    plt.plot(yy, ampl2, 'b.')
+    plt.savefig(f"{datalocation}/plots/amplitudes-ch{c1}-ch{c2}.pdf")
+    plt.clf()
+
+    cy1 = functs.channel_center(c1, channel_tags, ch)[1]    
+    cy2 = functs.channel_center(c2, channel_tags, ch)[1]
+
+    reco = ( ampl1*cy1 + ampl2*cy2 ) / (ampl1 + ampl2)
+
+    print(len(reco))
+
+    reco = np.array(reco).transpose()
+    ypos = []
+    for i in range(len(reco)):
+        ypos.append(yy)
+
+    ypos = (np.array(ypos) - ymin) *2.5 - 20
+    ypos = np.concatenate(ypos, axis=None)
+
+    reco = (np.array(reco) - ymin) *2.5 - 20
+    reco = np.concatenate(reco, axis=None)
+
+    plt.plot(ypos, reco, 'm.')
+    plt.xlabel("Laser Position (microns)")
+    plt.ylabel("Reconstructed Position (microns)")
+    plt.savefig(f"{datalocation}/plots/reco-ch{c1}-ch{c2}.pdf")
+    plt.clf()
+
+    dif = reco - ypos
+    
+    bb = np.linspace(-300, 300, 60)    
+
+    plt.hist(reco, bins=100, color='purple')
+    plt.xlabel("Reconstructed Position (microns)")
+    plt.savefig(f"{datalocation}/plots/reco-hist-ch{c1}-ch{c2}.pdf")
+    plt.xlabel("Reconstructed Position")
+    plt.clf()
+
+    plt.hist(dif, bins=bb, color='purple')
+    plt.xlabel("Reco - Laser Position (microns)")
+    plt.savefig(f"{datalocation}/plots/res-hist-ch{c1}-ch{c2}.pdf")
+    plt.xlabel("Reco - Laser Position (microns)")
+    plt.clf()
+
 def single_event(c1, c2, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
@@ -28,12 +81,12 @@ def single_event(c1, c2, datalocation, date, ymin):
     ampl1 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c1))
     ampl2 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c2))
 
-    plt.plot(yy, ampl1, 'm.')
-    plt.plot(yy, ampl2, 'b.')
-    plt.axvspan(0, 105, color='grey', alpha=0.3)
-    plt.axvspan(395, 500, color='grey', alpha=0.3)
-    plt.xlim(left=0, right=500)
-    plt.show()
+    #plt.plot(yy, ampl1, 'm.')
+    #plt.plot(yy, ampl2, 'b.')
+    #plt.axvspan(0, 105, color='grey', alpha=0.3)
+    #plt.axvspan(395, 500, color='grey', alpha=0.3)
+    #plt.xlim(left=0, right=500)
+    #plt.show()
 
     rat1 = ampl1 / (ampl1 + ampl2)
 
@@ -42,36 +95,54 @@ def single_event(c1, c2, datalocation, date, ymin):
         if yy[i] > 105 and yy[i] < 395:
             cut_yy.append(yy[i])
             cut_rat1.append(rat1[i])
- 
-    print(len(cut_yy))
-    #print(len(cut_rat1))
-    #print(len(cut_rat1[0]))
-    
+     
     rat1 = np.array(rat1).transpose()
     cut_rat1 = np.array(cut_rat1).transpose()
 
-    np.savetxt("{0}/test_pos.txt".format(datalocation), cut_yy)
-    np.save("{0}/test_ratio.npy".format(datalocation), cut_rat1)
+    #np.savetxt("{0}/test_pos.txt".format(datalocation), cut_yy)
+    #np.save("{0}/test_ratio.npy".format(datalocation), cut_rat1)
 
-    flat_yy, flat_rat1 = [], []
+    ypos = []
+    for i in range(len(rat1)):
+        ypos.append(cut_yy)
 
-    #for i in range(len(cut_rat1)):
-        
-    print(len(cut_rat1))
-    print(len(cut_rat1[0]))
+    flat_yy = np.concatenate(ypos, axis=None)
+    flat_rat1 = np.concatenate(cut_rat1, axis=None)
 
-    for i in range(len(rat1[0])):
-        plt.plot(yy, rat1[i], '.')
-    
-        #params, cov = curve_fit(functs.poly, cut_yy, cut_rat1[i])
-        #plt.plot(cut_yy, functs.poly(cut_yy, *params))
-    #plt.plot(yy, rat1, 'm.')
-    #plt.axvspan(0, 105, color='grey', alpha=0.3)
-    #plt.axvspan(395, 500, color='grey', alpha=0.3)
-    #plt.xlim(left=0, right=500)
-    plt.show()
-    
-    #need to figure out how to concatenate so I can actually fit all of this at once. 
+    params, popt = curve_fit(functs.poly, flat_rat1, flat_yy)
+
+    #plt.plot(flat_yy, flat_rat1, 'm.')
+    #plt.plot(functs.poly(cut_rat1, *params), cut_rat1, 'b-')
+    #plt.show()
+
+    reco = []
+    dify = []
+    for i in range(len(flat_rat1)):
+        reco.append(functs.poly(flat_rat1, *params))
+        #dify.append((reco - flat_yy))
+    #dify = np.array(dify)
+    #dify = np.concatenate(dify, axis=None)
+
+    plt.plot(flat_yy, reco, '.')
+    plt.savefig("{0}/plots/y-vs-reco-ch{1}-ch{2}.pdf".format(datalocation, c1, c2))
+    plt.clf()
+    #plt.show()
+
+    #md = round(np.mean(dify), 3)
+    #sd = round(np.std(dify), 3)
+
+    #bb = np.linspace(-40, 40, 100)
+
+    #plt.hist(dify, color='purple', edgecolor='black', bins=bb, label=f"mean = {md} \n $\sigma$ = {sd}")
+    #plt.legend()
+    #plt.xlabel("Reco - Truth (microns)")
+    #plt.savefig("{0}/plots/spat-hist-ch{1}-ch{2}.pdf".format(datalocation, c1, c2))
+    #plt.clf()
+
+    #plt.plot(flat_yy, dify, '.')
+    #plt.xlabel("Y Position (microns)")
+    #plt.ylabel("Reco - Truth (microns)")
+    #plt.savefig("{0}/dif-vs-pos-ch{1}-ch{2}.pdf".format(datalocation, c1, c2))
     
 def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
