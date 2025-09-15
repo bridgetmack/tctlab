@@ -52,6 +52,14 @@ def avg_waveform(datalocation, date, channel, x, y, nn):
 
     return channel, x, y, wf_t, wf_v, wf_stdev
 
+def convert_coords(datalocation, date):
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    xx = ( np.array(xx) - 1348 ) * 2.5
+    yy = ( np.array(yy) - 28654)
+
 def amplitude(datalocation, date, channel, p, nn):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
