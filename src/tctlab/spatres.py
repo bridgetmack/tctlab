@@ -75,11 +75,6 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.savefig(f"{datalocation}/plots/res-hist-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
-    plt.hist(np.abs(dif), bins=bb, edgecolor='purple', color='plum')
-    plt.xlabel("Absolute Val")
-    plt.savefig(f"{datalocation}/plots/abs-res-hist-ch{c1}-ch{c2}.pdf")
-    plt.show()
-
     #cut where the metal is
     c_ypos, c_reco = [], []
 
@@ -97,7 +92,9 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     print(len(c_dif))
     print(c_dif)
 
-    plt.hist(c_dif, bins=bb, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(c_dif), 3)} \n$\sigma$ = {round(np.std(c_dif), 3)}")
+    bb1 = np.linspace(min(c_dif), max(c_dif), 100)
+
+    plt.hist(c_dif, bins=bb1, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(c_dif), 3)} \n$\sigma$ = {round(np.std(c_dif), 3)}")
     plt.xlabel("Reco - Laser Pos (microns) (cut metal)")
     plt.legend()
     plt.savefig(f"{datalocation}/plots/res-cut-hist-ch{c1}-ch{c2}.pdf")
