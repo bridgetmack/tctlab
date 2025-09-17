@@ -67,13 +67,12 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.hist(reco, bins=100, color='purple')
     plt.xlabel("Reconstructed Position (microns)")
     plt.savefig(f"{datalocation}/plots/reco-hist-ch{c1}-ch{c2}.pdf")
-    plt.xlabel("Reconstructed Position")
     plt.clf()
 
-    plt.hist(dif, bins=bb, edgecolor='purple', color='plum')
+    plt.hist(dif, bins=bb, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(dif), 3)} \n$\sigma$ = {round(np.std(dif), 3)}")
     plt.xlabel("Reco - Laser Position (microns)")
+    plt.legend()
     plt.savefig(f"{datalocation}/plots/res-hist-ch{c1}-ch{c2}.pdf")
-    plt.xlabel("Reco - Laser Position (microns)")
     plt.clf()
 
     plt.hist(np.abs(dif), bins=bb, edgecolor='purple', color='plum')
@@ -95,8 +94,9 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     c_dif = c_reco - c_ypos
     c_dif = np.concatenate(c_dif, axis=None)
 
-    plt.hist(c_dif, bins=bb, edgecolor='purple', color='plum')
+    plt.hist(c_dif, bins=bb, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(c_dif), 3)} \n$\sigma$ = {round(np.std(c_dif), 3)}")
     plt.xlabel("Reco - Laser Pos (microns) (cut metal)")
+    plt.legend()
     plt.savefig(f"{datalocation}/plots/res-cut-hist-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
