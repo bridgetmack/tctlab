@@ -92,7 +92,10 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     c_ypos = np.array(c_ypos)
 
     c_dif = c_reco - c_ypos
-    c_dif = np.concatenate(c_dif, axis=None)
+    
+    print(len(c_reco))
+    print(len(c_dif))
+    print(c_dif)
 
     plt.hist(c_dif, bins=bb, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(c_dif), 3)} \n$\sigma$ = {round(np.std(c_dif), 3)}")
     plt.xlabel("Reco - Laser Pos (microns) (cut metal)")
