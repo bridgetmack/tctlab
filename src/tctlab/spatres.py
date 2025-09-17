@@ -100,6 +100,12 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.savefig(f"{datalocation}/plots/res-cut-hist-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
+    plt.hist(np.abs(c_dif), bins=bb1, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(c_dif), 3)} \n$\sigma$ = {round(np.std(c_dif), 3)}")
+    plt.xlabel("Reco - Laser Pos (microns) (cut metal) (abs val)")
+    plt.legend()
+    plt.savefig(f"{datalocation}/plots/abs-res-cut-hist-ch{c1}-ch{c2}.pdf")
+    plt.clf()
+
 def single_event(c1, c2, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
