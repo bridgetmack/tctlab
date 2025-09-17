@@ -84,7 +84,7 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     c_ypos, c_reco = [], []
 
     for i in range(len(ypos)):
-        if ypos[i] < 855 or ypos[i] > 1145:
+        if ypos[i] < 855 and ypos[i] > 1145:
             c_ypos.append(ypos[i])
             c_reco.append(reco[i])
 
