@@ -136,7 +136,9 @@ def channel_number(channel, channel_tags, ch):
 def channel_center(channel, channel_tags, ch):
     cc = channel_number(channel, channel_tags, ch)
 
-    if cc == 4:
+    if cc == 1:
+        return [750, 1750]
+    elif cc == 4:
         return [750, 750]
     elif cc == 3: 
         return [750, 1250]

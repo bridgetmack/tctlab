@@ -89,7 +89,11 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
             c_ypos.append(ypos[i])
             c_reco.append(reco[i])
 
-    c_dif = np.array(c_reco) - np.array(c_ypos)
+    c_reco = np.array(c_reco)
+    c_ypos = np.array(c_ypos)
+
+    c_dif = c_reco - c_ypos
+    c_dif = np.concatenate(c_dif, axis=None)
 
     plt.hist(c_dif, bins=bb, edgecolor='purple', color='plum')
     plt.xlabel("Reco - Laser Pos (microns) (cut metal)")
