@@ -81,6 +81,21 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.savefig(f"{datalocation}/plots/abs-res-hist-ch{c1}-ch{c2}.pdf")
     plt.show()
 
+    #cut where the metal is
+    c_ypos, c_reco = []
+
+    for i in range(len(ypos)):
+        if ypos[i] < 855 or ypos[i] > 1145:
+            c_ypos.append(ypos[i])
+            c_reco.append(reco[i])
+
+    c_dif = np.array(c_reco) - np.array(c_ypos)
+
+    plt.hist(c_dif, bins=bb, edgecolor='purple', color='plum')
+    plt.xlabel("Reco - Laser Pos (microns) (cut metal)")
+    plt.savefig(f"{datalocation}/plots/res-cut-hist-ch{c1}-ch{c2}.pdf")
+    plt.clf()
+
 def single_event(c1, c2, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
