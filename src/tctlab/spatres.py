@@ -55,6 +55,8 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.plot(ypos, reco, 'm.')
     plt.xlabel("Laser Position (microns)")
     plt.ylabel("Reconstructed Position (microns)")
+    plt.axvspan(750, 855, color='grey', alpha=0.3)
+    plt.axvspan(1145, 1250, color='grey', alpha=0.3)
     plt.savefig(f"{datalocation}/plots/reco-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
