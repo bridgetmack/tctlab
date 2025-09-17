@@ -27,8 +27,8 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     ampl1 = np.load(f"{datalocation}/scan_amplitudes_{c1}.npy")
     ampl2 = np.load(f"{datalocation}/scan_amplitudes_{c2}.npy")
 
-    plt.plot(uy, ampl1, 'm,')
-    plt.plot(uy, ampl2, 'b,')
+    plt.plot(uy, ampl1, 'm.')
+    plt.plot(uy, ampl2, 'b.')
     plt.axvspan(750, 855, color='grey', alpha=0.3)
     plt.axvspan(1145, 1250, color='grey', alpha=0.3)
     plt.savefig(f"{datalocation}/plots/amplitudes-ch{c1}-ch{c2}.pdf")
@@ -44,12 +44,12 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     reco = np.array(reco).transpose()
     ypos = []
     for i in range(len(reco)):
-        ypos.append(yy)
+        ypos.append(uy)
 
-    ypos = (np.array(ypos) - ymin) *2.5 - 20
+    ypos = np.array(ypos)
     ypos = np.concatenate(ypos, axis=None)
 
-    reco = (np.array(reco) - ymin) *2.5 - 20
+    reco = np.array(reco)
     reco = np.concatenate(reco, axis=None)
 
     plt.plot(ypos, reco, 'm.')
@@ -68,11 +68,16 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.xlabel("Reconstructed Position")
     plt.clf()
 
-    plt.hist(dif, bins=bb, color='purple')
+    plt.hist(dif, bins=bb, edgecolor='purple', color='plum')
     plt.xlabel("Reco - Laser Position (microns)")
     plt.savefig(f"{datalocation}/plots/res-hist-ch{c1}-ch{c2}.pdf")
     plt.xlabel("Reco - Laser Position (microns)")
     plt.clf()
+
+    plt.hist(np.abs(dif), bins=bb, edgecolor='purple', color='plum')
+    plt.xlabel("Absolute Val")
+    plt.savefig(f"{datalocation}/plots/abs-res-hist-ch{c1}-ch{c2}.pdf")
+    plt.show()
 
 def single_event(c1, c2, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
