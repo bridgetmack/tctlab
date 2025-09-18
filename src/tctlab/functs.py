@@ -160,7 +160,14 @@ def channel_center(channel, channel_tags, ch):
         return [1750, 750]
     elif cc == 12: 
         return [1250, 1250]
-    
+    elif cc == 13:
+        return [1750, 1250]
+    elif cc == 14: 
+        return [1250, 1750]
+    elif cc == 15: 
+        return [1750, 1750]
+    elif cc == 16: 
+        return [0, 0]
 
 def poly(x, a, b, c, d, f, g):
     return (a + b*x + c*x**2 + d*x**3 + f*x**4 + g*x**5)
