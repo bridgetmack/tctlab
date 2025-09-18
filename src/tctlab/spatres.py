@@ -92,7 +92,7 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     print(len(c_dif))
     print(c_dif)
 
-    bb1 = np.linspace(min(c_dif), max(c_dif), 100)
+    bb1 = np.linspace(min(c_dif), max(c_dif), 50)
 
     plt.hist(c_dif, bins=bb1, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(c_dif), 3)} \n$\sigma$ = {round(np.std(c_dif), 3)}")
     plt.xlabel("Reco - Laser Pos (microns) (cut metal)")
@@ -101,7 +101,7 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.clf()
 
     absc = np.abs(c_dif)
-    bb2 = np.linspace(0, max(absc), 100)
+    bb2 = np.linspace(0, max(absc), 50)
     plt.hist(absc, bins=bb2, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(absc), 3)} \n$\sigma$ = {round(np.std(absc), 3)}")
     plt.xlabel("Reco - Laser Pos (microns) (cut metal) (abs val)")
     plt.legend()
