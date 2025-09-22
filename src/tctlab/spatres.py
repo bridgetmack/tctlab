@@ -100,6 +100,9 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.savefig(f"{datalocation}/plots/res-cut-hist-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
+    plt.plot(c_ypos, c_dif, 'm.')
+    plt.savefig(f"{datalocation}/plots/res-cut-plot-ch{c1}-ch{c2}.pdf")
+
     absc = np.abs(c_dif)
     bb2 = np.linspace(0, max(absc), 50)
     plt.hist(absc, bins=bb2, edgecolor='purple', color='plum', label=f"$\mu$ = {round(np.mean(absc), 3)} \n$\sigma$ = {round(np.std(absc), 3)}")
