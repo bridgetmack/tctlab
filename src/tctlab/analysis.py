@@ -9,9 +9,15 @@ hep.style.use("LHCb2")
 
 ## for a brand new data set:
 def full_run(datalocation, date, p, nn, channel_tags, ch):
-    process.matrices(datalocation, date, 2, nn)
-    process.matrices(datalocation, date, 3, nn)
-    process.matrices(datalocation, date, 4, nn)
+
+    try: 
+        process.matrices(datalocation, date, 2, nn)
+        process.matrices(datalocation, date, 3, nn)
+        process.matrices(datalocation, date, 4, nn)
+    except: 
+        process.no_pos_matrices(datalocation(date, 2, nn))
+        process.no_pos_matrices(datalocation(date, 3, nn))
+        process.no_pos_matrices(datalocation(date, 4, nn))
 
     functs.amplitude(datalocation, date, 2, p, nn)
     functs.amplitude(datalocation, date, 3, p, nn)
