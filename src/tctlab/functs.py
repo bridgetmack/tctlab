@@ -51,7 +51,7 @@ def avg_waveform(datalocation, date, channel, x, y, nn):
 
     wf_v = wf_v - np.mean(wf_v[1000:])
 
-    wf_v = wf_v - vnoise
+    #wf_v = wf_v - vnoise
 
     wf_v = list(wf_v)
 
