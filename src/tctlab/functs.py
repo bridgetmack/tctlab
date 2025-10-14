@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import itertools, os
 
 from scipy.special import erf
-from scipy.stats import landau
+#from scipy.stats import landau
 
 plt.rcParams['figure.dpi']= 150
 import mplhep as hep
@@ -33,6 +33,16 @@ def integrate(t, v):
     for k in range(1, N):
         s += v[k]
     return h*s
+
+def geometry_matrix():
+    mmm = np.zeros([4,4], int)
+
+    mmm[0, :] = [15, 14, 1, 16]
+    mmm[1, :] = [13, 12, 3, 2]
+    mmm[2, :] = [11, 10, 4, 5]
+    mmm[3, :] = [9, 8, 7, 6]
+
+    return mmm
 
 def import_waveform(datalocation, date, channel, x, y):
     wf_t= np.loadtxt("{0}/chan{1}t{2}-x{3}-y{4}.txt".format(datalocation, channel, date, x, y), float)
@@ -89,7 +99,7 @@ def amplitude(datalocation, date, channel, p, nn):
             if np.mean(ampl) <= noise:
                 avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
-            else: 
+            else:
                 avg.append(0)
                 stdev.append(np.std(ampl) / np.sqrt(nn))
 
@@ -139,21 +149,21 @@ def channel_number(channel, channel_tags, ch):
             return ch[1]
         elif channel == 4:
             return ch[2]
-        
+
 def channel_center(channel, channel_tags, ch):
     cc = channel_number(channel, channel_tags, ch)
 
     if cc == 1:
         return [750, 1750]
-    elif cc == 2: 
+    elif cc == 2:
         return [250, 1250]
-    elif cc == 3: 
+    elif cc == 3:
         return [750, 1250]
     elif cc == 4:
         return [750, 750]
     elif cc == 5:
         return [250, 750]
-    elif cc == 6: 
+    elif cc == 6:
         return [250, 250]
     elif cc == 7:
         return [750, 250]
@@ -165,15 +175,15 @@ def channel_center(channel, channel_tags, ch):
         return [1250, 750]
     elif cc == 11:
         return [1750, 750]
-    elif cc == 12: 
+    elif cc == 12:
         return [1250, 1250]
     elif cc == 13:
         return [1750, 1250]
-    elif cc == 14: 
+    elif cc == 14:
         return [1250, 1750]
-    elif cc == 15: 
+    elif cc == 15:
         return [1750, 1750]
-    elif cc == 16: 
+    elif cc == 16:
         return [0, 0]
 
 def poly(x, a, b, c, d, f, g):

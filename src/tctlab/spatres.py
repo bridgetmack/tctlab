@@ -17,6 +17,30 @@ def dev_frac(a1, a2, d1, d2):
 
     return np.sqrt(df1**2 + df2**2)
 
+def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
+    coords= np.loadtxt(f"{datalocation}/scposition{date}")
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    ux, uy = functs.convert_coords(datalocation, date)
+
+    mm = np.array([4,4], float)
+    ampl_mat = []
+
+    for i in range(len(ux)):
+        ampl_mat.append(mm)
+
+    for i in range(channel_tags):
+        ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
+
+        indices = np.where( functs.geometry_matrix() == channel_tags[i] ) ## where the channel tags match the geometry matrix is where the amplitude goes for all of the matrices
+        for j in range(len(xx)):
+            ampl_mat[j][int(indices[0]), int(indices[1])] = ampl[j]
+
+    print(ampl[0])
+
+        ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
+
 def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
@@ -34,7 +58,7 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.savefig(f"{datalocation}/plots/amplitudes-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
-    cy1 = functs.channel_center(c1, channel_tags, ch)[1]    
+    cy1 = functs.channel_center(c1, channel_tags, ch)[1]
     cy2 = functs.channel_center(c2, channel_tags, ch)[1]
 
     reco = ( ampl1*cy1 + ampl2*cy2 ) / (ampl1 + ampl2)
@@ -61,8 +85,8 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.clf()
 
     dif = reco - ypos
-    
-    bb = np.linspace(-300, 300, 60)    
+
+    bb = np.linspace(-300, 300, 60)
 
     plt.hist(reco, bins=100, color='purple')
     plt.xlabel("Reconstructed Position (microns)")
@@ -87,7 +111,7 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     c_ypos = np.array(c_ypos)
 
     c_dif = c_reco - c_ypos
-    
+
     print(len(c_reco))
     print(len(c_dif))
     print(c_dif)
@@ -136,7 +160,7 @@ def single_event(c1, c2, datalocation, date, ymin):
         if yy[i] > 105 and yy[i] < 395:
             cut_yy.append(yy[i])
             cut_rat1.append(rat1[i])
-     
+
     rat1 = np.array(rat1).transpose()
     cut_rat1 = np.array(cut_rat1).transpose()
 
@@ -184,7 +208,7 @@ def single_event(c1, c2, datalocation, date, ymin):
     #plt.xlabel("Y Position (microns)")
     #plt.ylabel("Reco - Truth (microns)")
     #plt.savefig("{0}/dif-vs-pos-ch{1}-ch{2}.pdf".format(datalocation, c1, c2))
-    
+
 def y_fit(c1, c2, order, correction, datalocation, date, ymin):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
@@ -245,7 +269,7 @@ def y_fit(c1, c2, order, correction, datalocation, date, ymin):
             recon.append(functs.quart(cut_frac[i], *yparams))
         elif order == 5:
             recon.append(functs.poly(cut_frac[i], *yparams))
-    
+
     dify = []
     for i in range(len(cut_y)):
         dify.append((recon[i]-cut_y[i]))
@@ -262,7 +286,7 @@ def n_fit_y(c1, c2, order, correction, datalocation, date, ymin):
     ampl2 = np.load("{0}/scan_amplitudes_{1}.npy".format(datalocation, c2))
 
     print(len(ampl1))
-    
+
     aa1 = np.zeros([len(ampl1), len(ampl1[0])], float)
     aa2 = np.zeros([len(ampl2), len(ampl2[0])], float)
 
@@ -270,11 +294,11 @@ def n_fit_y(c1, c2, order, correction, datalocation, date, ymin):
         for j in range(len(ampl1[0])):
             aa1[i,j] = ampl1[i][j]
             aa2[i,j] = ampl2[i][j]
-    
+
 
     rat = aa1 / (aa1 + aa2)
 
     plt.plot(yy, rat, '.')
     plt.show()
-    ## aa1[x,:] is the amplitude values for one position point. 
+    ## aa1[x,:] is the amplitude values for one position point.
     ## this does exactly what I need it to do; now need to figure out how to do the fitting and everything, compare to other method
