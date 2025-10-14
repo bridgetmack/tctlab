@@ -53,7 +53,7 @@ def import_waveform(datalocation, date, channel, x, y):
 def avg_waveform(datalocation, date, channel, x, y, nn):
     channel, x, y, wf_t, wf_vs = import_waveform(datalocation, date, channel, x, y)
 
-    vnoise= np.loadtxt("tct_analysis/bnl_data/scan-amp-0327/chan2v2025-03-27-x1400-y28700.txt", float)
+    vnoise= np.loadtxt("tct_analysis/bnl_data/scan-noise-0929/chan2v2025-09-29-x1648-y28900.txt", float)
     vnoise= np.mean(vnoise, axis=1)
     vnoise= vnoise - np.mean(vnoise[1000:])
 
@@ -61,7 +61,7 @@ def avg_waveform(datalocation, date, channel, x, y, nn):
 
     wf_v = wf_v - np.mean(wf_v[1000:])
 
-    #wf_v = wf_v - vnoise
+    wf_v = wf_v - vnoise
 
     wf_v = list(wf_v)
 
