@@ -18,7 +18,7 @@ def dev_frac(a1, a2, d1, d2):
     return np.sqrt(df1**2 + df2**2)
 
 def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
-    coords= np.loadtxt(f"{datalocation}/scposition{date}")
+    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx = coords[:,0]
     yy = coords[:,1]
 
@@ -30,7 +30,7 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
     for i in range(len(ux)):
         ampl_mat.append(mm)
 
-    for i in range(channel_tags):
+    for i in range(len(channel_tags)):
         ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
 
         indices = np.where( functs.geometry_matrix() == channel_tags[i] ) ## where the channel tags match the geometry matrix is where the amplitude goes for all of the matrices
