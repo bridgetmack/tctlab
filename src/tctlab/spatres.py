@@ -26,22 +26,31 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
     mm = np.zeros([4,4], float)
     ampl_mat = []
+    ampl_tot = []
 
-    for i in range(len(ux)):
-        ampl_mat.append(mm)
-
-    print(mm)
-    print(len(mm))
-    print(mm[0])
+    for i in range(len(xx)):
+        ampl_tot.append(mm)
 
     for i in range(len(channel_tags)):
+        indices = np.where( functs.geometry_matrix() == channel_tags[i])
+        ii = int(indices[0])
+        jj = int(indices[1])
+
         ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
+        aa = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt", float)
 
-        indices = np.where( functs.geometry_matrix() == channel_tags[i] ) ## where the channel tags match the geometry matrix is where the amplitude goes for all of the matrices
-        for j in range(len(xx)):
-            ampl_mat[j][int(indices[0]), int(indices[1])] = ampl[j]
+        mm = np.zeros([4,4], float)
+        ampl_mat = []
 
-    print(ampl[0])
+        for j in range(len(aa)):
+            mm[ii,jj] = aa[j]
+            ampl_mat.append(mm)
+
+            mm = np.zeros([4,4], float)
+
+        ampl_tot += ampl_mat
+        ## this is not working; try to download one of the amplitude arrays on here to test with just one.
+    print(ampl_tot)
 
         ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
 
