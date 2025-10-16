@@ -24,11 +24,15 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
     ux, uy = functs.convert_coords(datalocation, date)
 
-    mm = np.array([4,4], float)
+    mm = np.zeros([4,4], float)
     ampl_mat = []
 
     for i in range(len(ux)):
         ampl_mat.append(mm)
+
+    print(mm)
+    print(len(mm))
+    print(mm[0])
 
     for i in range(len(channel_tags)):
         ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
