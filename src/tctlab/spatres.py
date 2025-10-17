@@ -19,38 +19,78 @@ def dev_frac(a1, a2, d1, d2):
 
 def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
-    xx = coords[:,0]
-    yy = coords[:,1]
-
+    xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.convert_coords(datalocation, date)
 
     mm = np.zeros([4,4], float)
-    ampl_mat = []
+    vv = np.zeros([4,4], float)
+
     ampl_tot = []
+    ampl_dev = []
 
     for i in range(len(xx)):
-        ampl_tot.append(mm)
+        ampl_tot.append(np.zeros([4,4], float))
+        ampl_dev.append(np.zeros([4,4], float))
+    ampl_tot, ampl_dev = np.array(ampl_tot), np.array(ampl_dev)
 
     for i in range(len(channel_tags)):
-        indices = np.where( functs.geometry_matrix() == channel_tags[i])
-        ii = int(indices[0])
-        jj = int(indices[1])
+        indices = np.where( geometry_matrix() == channel_tags[i] )
+        ii, jj = int(indices[0]), int(indices[1])
 
-        ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
         aa = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt", float)
+        dd = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt", float)
 
         mm = np.zeros([4,4], float)
-        ampl_mat = []
+        ampl_mat, dev_mat = [], []
 
         for j in range(len(aa)):
             mm[ii,jj] = aa[j]
+            vv[ii,jj] = dd[j]
+
             ampl_mat.append(mm)
+            dev_mat.append(vv)
 
             mm = np.zeros([4,4], float)
+            vv = np.zeros([4,4], float)
 
         ampl_tot += ampl_mat
-        ## this is not working; try to download one of the amplitude arrays on here to test with just one.
+        ampl_dev += dev_mat
+
     print(ampl_tot)
+    print(ampl_dev)
+
+
+
+
+
+
+    # mm = np.zeros([4,4], float)
+    # ampl_mat = []
+    # ampl_tot = []
+    #
+    # for i in range(len(xx)):
+    #     ampl_tot.append(mm)
+    #
+    # for i in range(len(channel_tags)):
+    #     indices = np.where( functs.geometry_matrix() == channel_tags[i])
+    #     ii = int(indices[0])
+    #     jj = int(indices[1])
+    #
+    #     ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
+    #     aa = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt", float)
+    #
+    #     mm = np.zeros([4,4], float)
+    #     ampl_mat = []
+    #
+    #     for j in range(len(aa)):
+    #         mm[ii,jj] = aa[j]
+    #         ampl_mat.append(mm)
+    #
+    #         mm = np.zeros([4,4], float)
+    #
+    #     ampl_tot += ampl_mat
+    #     ## this is not working; try to download one of the amplitude arrays on here to test with just one.
+    # print(ampl_tot)
 
         ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
 
