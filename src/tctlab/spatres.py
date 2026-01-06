@@ -12,12 +12,14 @@ from cycler import cycler
 from scipy.special import erf
 
 def dev_frac(a1, a2, d1, d2):
+    '''Returns error propogation for two amplitudes taken in ratio'''
     df1= (a2 / (a1 + a2)**2) * d1
     df2= (-1 * a1 / (a1 + a2)**2) * d2
 
     return np.sqrt(df1**2 + df2**2)
 
 def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
+    '''Returns matrix and inverted matrix for scan set; can be used for spatial resolutions in 2d'''
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.convert_coords(datalocation, date)
@@ -27,21 +29,23 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
     ampl_tot = []
     ampl_dev = []
+    ampl_inv = []
 
     for i in range(len(xx)):
         ampl_tot.append(np.zeros([4,4], float))
         ampl_dev.append(np.zeros([4,4], float))
-    ampl_tot, ampl_dev = np.array(ampl_tot), np.array(ampl_dev)
+        ampl_inv.append(np.zeros([4,4], float))
+    ampl_tot, ampl_dev, ampl_inv = np.array(ampl_tot), np.array(ampl_dev), np.array(ampl_inv)
 
     for i in range(len(channel_tags)):
-        indices = np.where( geometry_matrix() == channel_tags[i] )
+        indices = np.where( functs.geometry_matrix() == channel_tags[i] )
         ii, jj = int(indices[0]), int(indices[1])
 
         aa = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt", float)
         dd = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt", float)
 
         mm = np.zeros([4,4], float)
-        ampl_mat, dev_mat = [], []
+        ampl_mat, dev_mat, mat_inv = [], [], []
 
         for j in range(len(aa)):
             mm[ii,jj] = aa[j]
@@ -49,50 +53,23 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
             ampl_mat.append(mm)
             dev_mat.append(vv)
-
+            try:
+            	mat_inv.append(np.linalg.inv(mm))
+            except:
+                print("Matrix in uninvertable")
+                mat_inv.append(np.zeros[4,4], float)
+                
             mm = np.zeros([4,4], float)
             vv = np.zeros([4,4], float)
 
         ampl_tot += ampl_mat
         ampl_dev += dev_mat
+        ampl_inv += mat_inv
 
     print(ampl_tot)
-    print(ampl_dev)
+    print(ampl_inv)
 
-
-
-
-
-
-    # mm = np.zeros([4,4], float)
-    # ampl_mat = []
-    # ampl_tot = []
-    #
-    # for i in range(len(xx)):
-    #     ampl_tot.append(mm)
-    #
-    # for i in range(len(channel_tags)):
-    #     indices = np.where( functs.geometry_matrix() == channel_tags[i])
-    #     ii = int(indices[0])
-    #     jj = int(indices[1])
-    #
-    #     ampl = np.load(f"{datalocation}/scan_amplitudes_{channel_tags[i]}.npy")
-    #     aa = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt", float)
-    #
-    #     mm = np.zeros([4,4], float)
-    #     ampl_mat = []
-    #
-    #     for j in range(len(aa)):
-    #         mm[ii,jj] = aa[j]
-    #         ampl_mat.append(mm)
-    #
-    #         mm = np.zeros([4,4], float)
-    #
-    #     ampl_tot += ampl_mat
-    #     ## this is not working; try to download one of the amplitude arrays on here to test with just one.
-    # print(ampl_tot)
-
-        ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
+    ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
 
 def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
