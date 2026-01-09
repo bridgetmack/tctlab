@@ -51,23 +51,37 @@ def import_waveform(datalocation, date, channel, x, y):
     return channel, x, y, wf_t, wf_vs
 
 def avg_waveform(datalocation, date, channel, x, y, nn):
+    '''For input pointer, returns the average waveform and its features'''
     channel, x, y, wf_t, wf_vs = import_waveform(datalocation, date, channel, x, y)
 
-    vnoise= np.loadtxt("tct_analysis/bnl_data/scan-noise-0929/chan2v2025-09-29-x1648-y28900.txt", float)
-    vnoise= np.mean(vnoise, axis=1)
-    vnoise= vnoise - np.mean(vnoise[1000:])
+    # will need to update this for the noise data we have. 
+    #vnoise= np.loadtxt("tct_analysis/bnl_data/scan-noise-0929/chan2v2025-09-29-x1648-y28900.txt", float)
+    #vnoise= np.mean(vnoise, axis=1)
+    #vnoise= vnoise - np.mean(vnoise[1000:])
 
     wf_v = np.mean(wf_vs, axis=1)
-
     wf_v = wf_v - np.mean(wf_v[1000:])
 
-    wf_v = wf_v - vnoise
+    #wf_v = wf_v - vnoise
 
     wf_v = list(wf_v)
-
+   
     wf_stdev = np.std(wf_vs, axis=1) / np.sqrt(nn)
 
     return channel, x, y, wf_t, wf_v, wf_stdev
+
+def noise_reduce(datalocation, date, channel, x, y, nn):
+    '''Trying to reduce the noise'''
+    channel, x, y, wf_t, wf_v, wf_stdev = avg_waveform(datalocation, date, channel, x, y)
+    try:
+        nchan, nx, ny, nt, nv, nstev = avg_waveform(datalocation, date, channel, 0, 0)
+    except:
+        nchan, nx, ny, nt, nv, nstev = avg_waveform("tct_analysis/bnl_data/scan-noise-0930", "2025-09-29", channel, 1648, 29158, 1000)
+
+    vv = wf_v - nv
+    vv = list(vv)
+
+    return channel, x, y, wf_t, vv, wf_stdev
 
 def convert_coords(datalocation, date):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
