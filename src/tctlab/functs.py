@@ -72,9 +72,9 @@ def avg_waveform(datalocation, date, channel, x, y, nn):
 
 def noise_reduce(datalocation, date, channel, x, y, nn):
     '''Trying to reduce the noise'''
-    channel, x, y, wf_t, wf_v, wf_stdev = avg_waveform(datalocation, date, channel, x, y)
+    channel, x, y, wf_t, wf_v, wf_stdev = avg_waveform(datalocation, date, channel, x, y, nn)
     try:
-        nchan, nx, ny, nt, nv, nstev = avg_waveform(datalocation, date, channel, 0, 0)
+        nchan, nx, ny, nt, nv, nstev = avg_waveform(datalocation, date, channel, 0, 0, nn)
     except:
         nchan, nx, ny, nt, nv, nstev = avg_waveform("tct_analysis/bnl_data/scan-noise-0930", "2025-09-29", channel, 1648, 29158, 1000)
 

@@ -83,6 +83,20 @@ def  wa_2d(c1, c2, datalocation, date, ymin, channel_tags, ch):
     cx1, cy1 = functs.channel_center(c1, channel_tags, ch)
     cx2, cy2 = functs.channel_center(c2, channel_tags, ch)
 
+    plt.plot(ux, ampl1, "m.")
+    plt.plot(ux, ampl2, "b.")
+    plt.axhspan((cx1-105), (cx1+105), color='grey', alpha=0.3)
+    plt.axhspan((cx2-105), (cx2+105), color='grey', alpha=0.3)
+    plt.savefig(f"{datalocation}/plots/amplitudes-x-{c1}-{c2}.pdf")
+    plt.clf()
+
+    plt.plot(uy, ampl1, "m.")
+    plt.plot(uy, ampl2, "b.")
+    plt.axvspan((cy1-105), (cy1+105), color='grey', alpha=0.3)
+    plt.axvspan((cy2-105), (cy2+105), color='grey', alpha=0.3)
+    plt.savefig(f"{datalocation}/plots/amplitudes-y-{c1}-{c2}.pdf")
+    plt.clf()
+
     aa1, da1 = np.mean(ampl1, axis=0), np.std(ampl1, axis=0)
 
 
