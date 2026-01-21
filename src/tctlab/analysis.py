@@ -23,9 +23,9 @@ def full_run(datalocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax
         process.matrices(datalocation, date, 3, nn)
         process.matrices(datalocation, date, 4, nn)
 
-    functs.amplitude(datalocation, date, 2, p, nn)
-    functs.amplitude(datalocation, date, 3, p, nn)
-    functs.amplitude(datalocation, date, 4, p, nn)
+    functs.amplitude2(datalocation, date, 2, p, nn)
+    functs.amplitude2(datalocation, date, 3, p, nn)
+    functs.amplitude2(datalocation, date, 4, p, nn)
     print("amplitudes updated")
 
     plotting.plot_all_wfms(2, datalocation, date, channel_tags, ch)

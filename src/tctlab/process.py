@@ -38,7 +38,7 @@ def matrices(datalocation, date, channel, nn):
     yy= coords[:,1]
     for i in range(len(coords)):
         pp.append([int(xx[i]), int(yy[i])])
-        ww.append([functs.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[3], functs.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[4], functs.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[5]])
+        ww.append([functs.noise_reduce(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[3], functs.noise_reduce(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[4], functs.noise_reduce(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[5]])
         #progress_bar.next()
         print(i)
 

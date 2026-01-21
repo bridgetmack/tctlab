@@ -71,6 +71,22 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
 
+def  wa_2d(c1, c2, datalocation, date, ymin, channel_tags, ch):
+    '''Hopefully this code will run with the noise reduced data and make it easier for us to do the weighted averages to find spatial res; will need to make sure that we can expand to make it for more channels in the future -- for now starting with two'''
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx, yy = coords[:,0], coords[:,1]
+    ux, uy = functs.convert_coords(datalocation, date)
+
+    ampl1 = np.load(f"{datalocation}/scan_amplitudes_{c1}.npy")
+    ampl2 = np.load(f"{datalocation}/scan_amplitudes_{c2}.npy")
+
+    cx1, cy1 = functs.channel_center(c1, channel_tags, ch)
+    cx2, cy2 = functs.channel_center(c2, channel_tags, ch)
+
+    aa1, da1 = np.mean(ampl1, axis=0), np.std(ampl1, axis=0)
+
+
+    
 def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]

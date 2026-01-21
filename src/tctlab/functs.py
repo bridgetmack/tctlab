@@ -93,6 +93,12 @@ def convert_coords(datalocation, date):
 
     return xx, yy
 
+def noise_channel(datalocation, date, channel, nn):
+    try: 
+        noise= avg_waveform(datalocation, date, channel, 0, 0, nn)[4]
+    except: 
+        noise= avg_waveform("tct_analysis/bnl_data/scan-noise-0930", "2025-09-29", channel, 1648, 29158, 1000) 
+
 def amplitude(datalocation, date, channel, p, nn):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
@@ -105,24 +111,28 @@ def amplitude(datalocation, date, channel, p, nn):
 
     for i in range(len(coords)):
         wfms= import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
-        wfms= np.array(wfms)
+        wfms= np.array(wfms) - np.mean(wfms[1000:], axis=0)
+
+        wfms= wfms - noise_channel(datalocation, date, channel, nn)
 
         if p == -1 and channel != 1:
-            ampl= np.min(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
-
+            '''
             if np.mean(ampl) <= noise:
                 avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
             else:
                 avg.append(0)
                 stdev.append(np.std(ampl) / np.sqrt(nn))
-
-        elif p == 1 or channel == 1:
-            ampl= np.max(wfms, axis=0) - np.mean(wfms[1000:], axis=0)
-
+            '''
+            ampl= np.min(wfms, axis=0)
             avg.append(np.mean(ampl))
             stdev.append(np.std(ampl) / np.sqrt(nn))
 
+        elif p == 1 or channel == 1:
+            ampl= np.max(wfms, axis=0)
+            avg.append(np.mean(ampl))
+            stdev.append(np.std(ampl) / np.sqrt(nn))
+        
     #plt.plot(yy, avg, '.')
     #plt.show()
 
