@@ -78,7 +78,7 @@ def noise_reduce(datalocation, date, channel, x, y, nn):
     except:
         nchan, nx, ny, nt, nv, nstev = avg_waveform("tct_analysis/bnl_data/scan-noise-0930", "2025-09-29", channel, 1648, 29158, 1000)
 
-    vv = wf_v - nv
+    vv = np.array(wf_v) - np.array(nv)
     vv = list(vv)
 
     return channel, x, y, wf_t, vv, wf_stdev
