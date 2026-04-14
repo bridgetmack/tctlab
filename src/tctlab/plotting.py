@@ -82,7 +82,7 @@ def map_amplitude_2d(channel, xx, yy, datalocation, plotlocation):
     plt.imshow(mamp, origin='lower')
     plt.title("Amplitude Map; Channel {}".format(channel))
     plt.colorbar(label="mV")
-    plt.savefig("{0}/plots/map_amp_ch{1}.pdf".format(datalocation, channel))
+    plt.savefig("{0}/map_amp_ch{1}.pdf".format(plotlocation, channel))
     plt.clf()
 
 def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
