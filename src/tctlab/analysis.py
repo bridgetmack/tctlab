@@ -27,7 +27,9 @@ def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xm
     plotting.plot_sep_wfms(3, datalocation, plotlocation, date, channel_tags, ch)
     plotting.plot_sep_wfms(4, datalocation, plotlocation, date, channel_tags, ch)
 
-    plotting.plot_
+    plotting.map_amplitude_2d(2, datalocation, plotlocation)
+    plotting.map_amplitude_2d(3, datalocation, plotlocation)
+    plotting.map_amplitude_2d(4, datalocation, plotlocation)
     print("all waveforms plotted")
 
     
