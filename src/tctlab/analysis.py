@@ -8,7 +8,7 @@ import mplhep as hep
 hep.style.use("LHCb2")
 
 ## for a brand new data set:
-def full_run(datalocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
+def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
 
     process.matrices(datalocation, date, 2, nn)
     process.matrices(datalocation, date, 3, nn)
@@ -19,13 +19,13 @@ def full_run(datalocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax
     functs.amplitude2(datalocation, date, 4)
     print("amplitudes updated")
 
-    plotting.plot_all_wfms(2, datalocation, date, channel_tags, ch)
-    plotting.plot_all_wfms(3, datalocation, date, channel_tags, ch)
-    plotting.plot_all_wfms(4, datalocation, date, channel_tags, ch)
+    plotting.plot_all_wfms(2, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.plot_all_wfms(3, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.plot_all_wfms(4, datalocation, plotlocation, date, channel_tags, ch)
 
-    plotting.plot_sep_wfms(2, datalocation, date, channel_tags, ch)
-    plotting.plot_sep_wfms(3, datalocation, date, channel_tags, ch)
-    plotting.plot_sep_wfms(4, datalocation, date, channel_tags, ch)
+    plotting.plot_sep_wfms(2, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.plot_sep_wfms(3, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.plot_sep_wfms(4, datalocation, plotlocation, date, channel_tags, ch)
     print("all waveforms plotted")
 
     ## add spatial, time resolution stuff.
