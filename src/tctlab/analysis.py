@@ -26,6 +26,9 @@ def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xm
     plotting.plot_sep_wfms(2, datalocation, plotlocation, date, channel_tags, ch)
     plotting.plot_sep_wfms(3, datalocation, plotlocation, date, channel_tags, ch)
     plotting.plot_sep_wfms(4, datalocation, plotlocation, date, channel_tags, ch)
+
+    plotting.plot_
     print("all waveforms plotted")
 
+    
     ## add spatial, time resolution stuff.

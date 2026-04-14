@@ -51,7 +51,11 @@ def plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
 
         plt.clf()
 
-def map_amplitude_2d(channel, xx, yy, datalocation, plotlocation):
+def map_amplitude_2d(channel, datalocation, plotlocation):
+    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    xx = coords[:,0]
+    yy = coords[:,1]
+
     x1 = np.unique(xx, axis=0)
     x2 = np.unique(yy, axis=0)
 
