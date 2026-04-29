@@ -51,7 +51,7 @@ def plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
 
         plt.clf()
 
-def map_amplitude_2d(channel, datalocation, plotlocation):
+def map_amplitude_2d(channel, datalocation, plotlocation, date):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
     yy = coords[:,1]
@@ -89,7 +89,7 @@ def map_amplitude_2d(channel, datalocation, plotlocation):
     plt.savefig("{0}/map_amp_ch{1}.pdf".format(plotlocation, channel))
     plt.clf()
 
-def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
+def plot_ampl(channel, datalocation, plotlocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
     ampl = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel))
     dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, channel))
   
@@ -109,7 +109,7 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
     plt.ylabel('Amplitude (mV)')
     plt.axvspan(0, 105, color='grey', alpha=0.3)
     plt.axvspan(395, 500, color='grey', alpha=0.3)
-    plt.show()
+    plt.savefig(f"{plotlocation}/ampl-x-{channel}.pdf")
     plt.clf()
 
     plt.errorbar(cy, ampl, yerr=dev, label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch)), linestyle='none', marker='.', color='purple', ecolor='plum')
@@ -119,7 +119,7 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
     plt.ylabel('Amplitude (mV)')
     plt.axvspan(0, 105, color='grey', alpha=0.3)
     plt.axvspan(395, 500, color='grey', alpha=0.3)
-    plt.show()
+    plt.savefig(f"{plotlocation}/ampl-y-{channel}.pdf")
     plt.clf()
 
     ## do from center of pad:
@@ -133,7 +133,7 @@ def plot_ampl(channel, datalocation, date, xcorr, ycorr, xmin, ymin, channel_tag
     plt.title('Amplitude vs R')
     plt.xlabel('R from Center of Pad (microns)')
     plt.ylabel('Amplitude (mV)')
-    plt.show()
+    plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
     plt.clf()
 
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):

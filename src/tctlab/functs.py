@@ -113,7 +113,7 @@ def amplitude(datalocation, date, channel, p, nn):
         wfms= import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
         wfms= np.array(wfms) - np.mean(wfms[1000:], axis=0)
 
-        wfms= wfms - noise_channel(datalocation, date, channel, nn)
+        #wfms= wfms - noise_channel(datalocation, date, channel, nn)
 
         if p == -1 and channel != 1:
             '''
@@ -128,6 +128,11 @@ def amplitude(datalocation, date, channel, p, nn):
             avg.append(np.mean(ampl))
             stdev.append(np.std(ampl) / np.sqrt(nn))
 
+            # need to add histograms for each point: will definitelty need to do something about the bins
+            plt.hist(ampl)
+            # need to save to folder, but need to fix folders first
+            plt.clf()
+            
         elif p == 1 or channel == 1:
             ampl= np.max(wfms, axis=0)
             avg.append(np.mean(ampl))
@@ -149,19 +154,27 @@ def find_fwhm(x_data, y_data, polarity):
     ## you are going to need to fit this instead; this method will not work
     return 0
 
-def amplitude2(datalocation, date, channel):
+def amplitude2(datalocation, date, channel, nn):
     coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
     yy = coords[:,1]
 
     wfms1 = np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
-
-    ampl1 = []
-    for i in range(len(coords)):
-        wfms1 = import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
-        ampl1.append(np.min(wfms1, axis=0))
-
+    
+    ampl1 = np.min(wfms1, axis=0)
+    avg, stdev = [], []
+    
+    #for i in range(len(coords)):
+        #wfms1 = import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+        #wfms1 = np.array(wfms1) - np.mean(wfms1[1000:], axis=0)
+        
+        #ampl1.append(np.min(wfms1, axis=0))
+        #avg.append(np.mean(ampl1))
+        #stdev.append(np.std(ampl1) / np.sqrt(nn))
+    print(ampl1, len(ampl1[0]))
     np.save("{0}/scan_amplitudes_{1}.npy".format(datalocation, channel), ampl1)
+    #np.savetxt(f"{datalocation}/amplitude_ch{channel}.txt", avg)
+    #np.savetxt(f"{datalocation}/amplitude_dev_ch{channel}.txt", stdev)
 
 def channel_number(channel, channel_tags, ch):
     if len(channel_tags) == 1:
