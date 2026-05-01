@@ -71,7 +71,7 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
 
-def  wa_2d(c1, c2, datalocation, date, ymin, channel_tags, ch):
+def  wa_2d(c1, c2, datalocation, plotlocation, date, ymin, channel_tags, ch):
     '''Hopefully this code will run with the noise reduced data and make it easier for us to do the weighted averages to find spatial res; will need to make sure that we can expand to make it for more channels in the future -- for now starting with two'''
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
@@ -87,21 +87,19 @@ def  wa_2d(c1, c2, datalocation, date, ymin, channel_tags, ch):
     plt.plot(ux, ampl2, "b.")
     plt.axhspan((cx1-105), (cx1+105), color='grey', alpha=0.3)
     plt.axhspan((cx2-105), (cx2+105), color='grey', alpha=0.3)
-    plt.savefig(f"{datalocation}/plots/amplitudes-x-{c1}-{c2}.pdf")
+    plt.savefig(f"{plotlocation}/amplitudes-x-{c1}-{c2}.pdf")
     plt.clf()
 
     plt.plot(uy, ampl1, "m.")
     plt.plot(uy, ampl2, "b.")
     plt.axvspan((cy1-105), (cy1+105), color='grey', alpha=0.3)
     plt.axvspan((cy2-105), (cy2+105), color='grey', alpha=0.3)
-    plt.savefig(f"{datalocation}/plots/amplitudes-y-{c1}-{c2}.pdf")
+    plt.savefig(f"{plotlocation}/amplitudes-y-{c1}-{c2}.pdf")
     plt.clf()
 
     aa1, da1 = np.mean(ampl1, axis=0), np.std(ampl1, axis=0)
-
-
     
-def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
+def single_event1(c1, c2,datalocation, plotlocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
     yy = coords[:,1]
@@ -115,7 +113,7 @@ def single_event1(c1, c2,datalocation, date, ymin, channel_tags, ch):
     plt.plot(uy, ampl2, 'b.')
     plt.axvspan(750, 855, color='grey', alpha=0.3)
     plt.axvspan(1145, 1250, color='grey', alpha=0.3)
-    plt.savefig(f"{datalocation}/plots/amplitudes-ch{c1}-ch{c2}.pdf")
+    plt.savefig(f"{plotlocation}/amplitudes-ch{c1}-ch{c2}.pdf")
     plt.clf()
 
     cy1 = functs.channel_center(c1, channel_tags, ch)[1]

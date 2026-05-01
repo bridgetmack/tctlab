@@ -99,7 +99,7 @@ def noise_channel(datalocation, date, channel, nn):
     except: 
         noise= avg_waveform("tct_analysis/bnl_data/scan-noise-0930", "2025-09-29", channel, 1648, 29158, 1000) 
 
-def amplitude(datalocation, date, channel, p, nn):
+def amplitude(datalocation, plotlocation, date, channel, p, nn):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx= coords[:,0]
     yy= coords[:,1]
@@ -130,6 +130,9 @@ def amplitude(datalocation, date, channel, p, nn):
 
             # need to add histograms for each point: will definitelty need to do something about the bins
             plt.hist(ampl)
+            plt.title(f"Amplitude Spread; x={xx[i]} y={yy[i]} steps")
+            plt.xlabel("mV")
+            plt.savefig(f"{plotlocation}/hist-ampl-{xx[i]}-{yy[1]}.pdf")
             # need to save to folder, but need to fix folders first
             plt.clf()
             
