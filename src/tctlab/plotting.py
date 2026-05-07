@@ -159,7 +159,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
             plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(3, channel_tags, ch)}")
         elif channel_tags[i] == 4:
             plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(4, channel_tags, ch)}")
-    plt.plot(totx, 'm.', label="Total Amplitude")
+    plt.plot(cx, totx, 'm.', label="Total Amplitude")
     plt.legend()
     plt.title('Amplitude vs X')
     plt.xlabel('X Position (microns)')
@@ -183,7 +183,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
             plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(3, channel_tags, ch)}")
         elif channel_tags[i] == 4:
             plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(4, channel_tags, ch)}")
-    plt.plot(toty, 'm.', label='Total Amplitude')
+    plt.plot(cy, toty, 'm.', label='Total Amplitude')
     plt.legend()
     plt.title('Amplitude vs Y')
     plt.xlabel('Y Position (microns)')
