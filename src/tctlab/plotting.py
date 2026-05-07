@@ -220,11 +220,13 @@ def ampl_hist(channel, datalocation, plotlocation, date):
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     
-    ampl = np.load(f"{datalocation}/amplitudes_ch{channel}.npy")
+    for i in range(len(coords)):
+        ampl = np.load(f"{datalocation}/amplitudes_ch{channel}-x{int(xx[i])}-y{int(yy[i])}.npy")
     
-    print(ampl)
-    print(len(ampl))
-    
+        bb = np.linspace(min(ampl), max(ampl), 10)
+        plt.hist(ampl, color='purple', edgecolor='black', bins=bb, label='mean = {}\n$\sigma$ = {}'.format(round(np.mean(ampl), 3), round(np.std(ampl),3)))
+        plt.legend()
+        plt.savefig(f"{plotlocation}/hist-ampl-ch{channel}-x{int(xx[i])}-y{int(yy[i])}.pdf")
 
 #########
      
