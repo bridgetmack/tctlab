@@ -189,12 +189,14 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.clf()
 
     ## do from center of pad:
-    xcen, ycen = functs.bnl.channel_center(channel, channel_tags, ch)
-    R = []
-    for i in range(len(xx)):
-        R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
+    
 
     for i in range(len(channel_tags)):
+        xcen, ycen = functs.bnl.channel_center(channel_tags[i], channel_tags, ch)
+        R = []
+        for i in range(len(xx)):
+            R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
+        
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
         
