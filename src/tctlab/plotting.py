@@ -216,7 +216,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.savefig(f"{plotlocation}/ampl-all-r.pdf")
     plt.clf()
 
-def ampl_hist(channel, datalocation, plotlocation, date):
+def ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch):
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     

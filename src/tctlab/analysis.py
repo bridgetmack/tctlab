@@ -9,11 +9,13 @@ hep.style.use("LHCb2")
 
 ## for a brand new data set:
 def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
-
+    
+    process.matrices(datalocation, date, 1, nn)
     process.matrices(datalocation, date, 2, nn)
     process.matrices(datalocation, date, 3, nn)
     process.matrices(datalocation, date, 4, nn)
 
+    functs.waveforms.amplitude(datalocation, date, 1, 1, nn)
     functs.waveforms.amplitude(datalocation, date, 2, -1, nn)
     functs.waveforms.amplitude(datalocation, date, 3, -1, nn)
     functs.waveforms.amplitude(datalocation, date, 4, -1, nn)
@@ -38,5 +40,5 @@ def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xm
     plotting.plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch)
     print("all waveforms plotted")
 
-    
+    ## need to look at laser spot size
     ## add spatial, time resolution stuff.
