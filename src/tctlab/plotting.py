@@ -164,7 +164,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.axvspan(645, 855, color='grey', alpha=0.3)
     plt.axvspan(1145, 1355, color='grey', alpha=0.3)
     plt.axvspan(1645, 1845, color='grey', alpha=0.3)
-    plt.savefig(f"{plotlocation}/ampl-x-{channel}.pdf")
+    plt.savefig(f"{plotlocation}/ampl-all-x-{channel}.pdf")
     plt.clf()
 
     for i in range(len(channel_tags)):
@@ -185,7 +185,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.axvspan(645, 855, color='grey', alpha=0.3)
     plt.axvspan(1145, 1355, color='grey', alpha=0.3)
     plt.axvspan(1645, 1855, color='grey', alpha=0.3)
-    plt.savefig(f"{plotlocation}/ampl-y-{channel}.pdf")
+    plt.savefig(f"{plotlocation}/ampl-all-y-{channel}.pdf")
     plt.clf()
 
     ## do from center of pad:
@@ -208,7 +208,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.title('Amplitude vs R')
     plt.xlabel('R from Center of Pad (microns)')
     plt.ylabel('Amplitude (mV)')
-    plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
+    plt.savefig(f"{plotlocation}/ampl-all-r-{channel}.pdf")
     plt.clf()
 
 
