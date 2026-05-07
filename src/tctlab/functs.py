@@ -117,7 +117,7 @@ class bnl:
                 return ch[2]
 
     def channel_center(channel, channel_tags, ch):
-        cc = channel_number(channel, channel_tags, ch)
+        cc = bnl.channel_number(channel, channel_tags, ch)
 
         if cc == 1:
             return [750, 1750]
