@@ -8,8 +8,6 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb2")
 
-## need to plot all y channels on same axis as well.
-
 def plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
     '''Plots all waveforms for a specific channel on the same graph'''
     wfms= np.load(f"{datalocation}/scan_wfms{channel}.npy")
@@ -218,10 +216,18 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.savefig(f"{plotlocation}/ampl-all-r.pdf")
     plt.clf()
 
-
+def ampl_hist(channel, datalocation, plotlocation, date):
+    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx, yy = coords[:,0], coords[:,1]
+    
+    ampl = np.load(f"{datalocation}/amplitudes_ch{channel}.npy")
+    
+    print(ampl)
+    print(len(ampl))
+    print(len(ampl[0]))
 
 #########
-         
+     
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
     for i in range(len(ch)):
         channel = channel_tags[i]
