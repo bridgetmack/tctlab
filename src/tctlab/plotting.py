@@ -172,11 +172,11 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
         
         if channel_tags[i] == 2:
-            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(2, channel_tags, ch)}")
         elif channel_tags[i] == 3:
-            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(3, channel_tags, ch)}")
         elif channel_tags[i] == 4:
-            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(4, channel_tags, ch)}")
     plt.legend()
     plt.title('Amplitude vs Y')
     plt.xlabel('Y Position (microns)')
@@ -199,11 +199,11 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
         
         if channel_tags[i] == 2:
-            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(2, channel_tags, ch)}")
         elif channel_tags[i] == 3:
-            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(3, channel_tags, ch)}")
         elif channel_tags[i] == 4:
-            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(4, channel_tags, ch)}")
     plt.legend()
     plt.title('Amplitude vs R')
     plt.xlabel('R from Center of Pad (microns)')
