@@ -25,7 +25,7 @@ def integrate(t, v):
 class waveforms:
     def import_waveform(datalocation, date, channel, x, y):
         '''For input pointer returns the waveform and its matrix'''
-        wf_t= np.loadtxt(f"{datalocation}/chan{channel}t{date}-x{x}-y{y}.txt"), float)
+        wf_t= np.loadtxt(f"{datalocation}/chan{channel}t{date}-x{x}-y{y}.txt", float)
         wf_vs= np.loadtxt(f"{datalocation}/chan{channel}v{date}-x{x}-y{y}.txt", float)
 
         return channel, x, y, wf_t, wf_vs
