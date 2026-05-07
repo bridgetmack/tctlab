@@ -226,6 +226,7 @@ def ampl_hist(channel, datalocation, plotlocation, date):
         bb = np.linspace(min(ampl), max(ampl), 10)
         plt.hist(ampl, color='purple', edgecolor='black', bins=bb, label='mean = {} mV\n$\sigma$ = {} mV'.format(round(np.mean(ampl), 3), round(np.std(ampl),3)))
         plt.legend()
+        plt.title(f"Amplitude; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}; Position ({int(coords[:,0][i])}, {int(coords[:,1][i])})")
         plt.xlabel("Amplitude (mV)")
         plt.savefig(f"{plotlocation}/hist-ampl-ch{channel}-x{int(xx[i])}-y{int(yy[i])}.pdf")
         plt.clf()
