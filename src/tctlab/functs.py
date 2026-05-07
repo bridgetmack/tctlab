@@ -78,7 +78,7 @@ class waveforms:
                 avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
            
-        np.save(f"{datalocation}/amplitudes_ch{channel}.npy", ampl)
+            np.save(f"{datalocation}/amplitudes_ch{channel}-x{int(xx[i])}-y{int(yy[i])}.npy", ampl)
         np.savetxt(f"{datalocation}/amplitude_ch{channel}.txt", avg)
         np.savetxt(f"{datalocation}/amplitude_dev_ch{channel}.txt", stdev)
 
