@@ -149,6 +149,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
         
+        channel = channel_tags[i]
         if channel_tags[i] == 2:
             plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
         elif channel_tags[i] == 3:
