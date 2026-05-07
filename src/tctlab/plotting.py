@@ -145,6 +145,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
 
     cx, cy = functs.bnl.convert_coords(datalocation, date)
     
+    channel = channel_tags[i]
     for i in range(len(channel_tags)):
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
