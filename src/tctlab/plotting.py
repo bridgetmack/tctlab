@@ -8,51 +8,52 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb2")
 
+## need to plot all y channels on same axis as well.
+
 def plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
-    wfms= np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
-    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    '''Plots all waveforms for a specific channel on the same graph'''
+    wfms= np.load(f"{datalocation}/scan_wfms{channel}.npy")
+    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
 
     for i in range(len(coords)):
-        plt.plot(wfms[i][0], wfms[i][1], label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
-    #plt.legend(loc='right', fontsize='xx-small')
+        plt.plot(wfms[i][0], wfms[i][1], label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
-    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel, channel_tags, ch)))
-    plt.savefig("{0}/all_wfm_c{1}.pdf".format(plotlocation, channel))
+    plt.title(f'Scan Waveforms; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}')
+    plt.savefig(f"{plotlocation}/all_wfm_c{channel}.pdf")
     plt.clf()
-    #plt.show()
 
+    ## zoomed in version:
     for i in range(len(coords)):
-        plt.plot(wfms[i][0][:500], wfms[i][1][:500], label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
-    #plt.legend(loc='right', fontsize='xx-small')
+        plt.plot(wfms[i][0][:500], wfms[i][1][:500], label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
     plt.xlabel('Time (ns)')
     plt.ylabel('Voltage (mV)')
-    plt.title('Scan Waveforms; Channel {}'.format(functs.channel_number(channel, channel_tags, ch)))
+    plt.title(f'Scan Waveforms; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}')
     plt.savefig(f"{plotlocation}/all_wfm_c{channel}_zoom.pdf")
     plt.clf()
-    #plt.show()
 
 def plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
-    wfms= np.load("{0}/scan_wfms{1}.npy".format(datalocation, channel))
-    coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    '''Plots all waveforms on separate axes'''
+    wfms= np.load(f"{datalocation}/scan_wfms{channel}.npy")
+    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
 
     for i in range(len(coords)):
         if channel == 2:
-            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="purple",  ecolor='plum', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="purple",  ecolor='plum', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
         elif channel == 3:
-            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="teal",  ecolor='paleturquoise', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="teal",  ecolor='paleturquoise', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
         elif channel == 4:
-            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="green",  ecolor='palegreen', capsize=0, label="({0}, {1})".format(int(coords[:,0][i]), int(coords[:,1][i])))
+            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="green",  ecolor='palegreen', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
         plt.legend()
-        plt.title("Average Waveform; Channel {}".format(functs.channel_number(channel, channel_tags, ch)))
+        plt.title(f"Average Waveform; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
         plt.xlabel('Time (ns)')
         plt.ylabel('Voltage (mV)')
-        plt.savefig("{0}/avg_wfm_ch{1}-x{2}-y{3}.pdf".format(plotlocation, channel, int(coords[:,0][i]), int(coords[:,1][i])))
-
+        plt.savefig(f"{plotlocation}/avg_wfm_ch{channel}-x{int(coords[:,0][i])}-y{int(coords[:,1][i])}.pdf")
         plt.clf()
 
 def map_amplitude_2d(channel, datalocation, plotlocation, date):
-    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    '''Plots in 2d the map of average amplitudes -- need to check geometry'''
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx = coords[:,0]
     yy = coords[:,1]
 
@@ -74,7 +75,7 @@ def map_amplitude_2d(channel, datalocation, plotlocation, date):
 
                     ar[y,x] = k
 
-    ampl = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel))
+    ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel}.txt")
     mamp = np.zeros([len(x2), len(x1)])
 
     for i in range(len(x2)):
@@ -84,37 +85,34 @@ def map_amplitude_2d(channel, datalocation, plotlocation, date):
             mamp[i,j] = ampl[n]
 
     plt.imshow(mamp, origin='lower')
-    plt.title("Amplitude Map; Channel {}".format(channel))
+    plt.title(f"Amplitude Map; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
     plt.colorbar(label="mV")
-    plt.savefig("{0}/map_amp_ch{1}.pdf".format(plotlocation, channel))
+    plt.savefig(f"{plotlocation}/map_amp_ch{channel}.pdf")
     plt.clf()
 
-def plot_ampl(channel, datalocation, plotlocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
-    ampl = np.loadtxt("{0}/amplitude_ch{1}.txt".format(datalocation, channel))
-    dev = np.loadtxt("{0}/amplitude_dev_ch{1}.txt".format(datalocation, channel))
+def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
+    ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel}.txt")
+    dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel}.txt")
   
-    coords = np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx = coords[:,0]
     yy = coords[:,1]
 
-    cx, cy = [], []
-    for i in range(len(xx)):
-        cx.append( (xx[i] - xmin)*2.5 - xcorr )
-        cy.append( (yy[i] - ymin)*2.5 - ycorr )
+    cx, cy = functs.bnl.convert_coords(datalocation, date)
     
-    plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch)))
+    plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
     plt.legend()
     plt.title('Amplitude vs X')
     plt.xlabel('X Position (microns)')
     plt.ylabel('Amplitude (mV)')
-    plt.axhspan(145, 355, color='grey', alpha=0.3)
-    plt.axhspan(645, 855, color='grey', alpha=0.3)
-    plt.axhspan(1145, 1355, color='grey', alpha=0.3)
-    plt.axhspan(1645, 1845, color='grey', alpha=0.3)
+    plt.axvspan(145, 355, color='grey', alpha=0.3)
+    plt.axvspan(645, 855, color='grey', alpha=0.3)
+    plt.axvspan(1145, 1355, color='grey', alpha=0.3)
+    plt.axvspan(1645, 1845, color='grey', alpha=0.3)
     plt.savefig(f"{plotlocation}/ampl-x-{channel}.pdf")
     plt.clf()
 
-    plt.errorbar(cy, ampl, yerr=dev, label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch)), linestyle='none', marker='.', color='purple', ecolor='plum')
+    plt.errorbar(cy, ampl, yerr=dev, label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}", linestyle='none', marker='.', color='purple', ecolor='plum')
     plt.legend()
     plt.title('Amplitude vs Y')
     plt.xlabel('Y Position (microns)')
@@ -127,10 +125,10 @@ def plot_ampl(channel, datalocation, plotlocation, date, xcorr, ycorr, xmin, ymi
     plt.clf()
 
     ## do from center of pad:
-    xcen, ycen = functs.channel_center(channel, channel_tags, ch)
+    xcen, ycen = functs.bnl.channel_center(channel, channel_tags, ch)
     R = []
     for i in range(len(xx)):
-        R.append(np.sqrt( (xx[i] - xcen)**2 + (yy[i] - ycen)**2 ) * 2.5)
+        R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
 
     plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
     plt.legend()
@@ -140,6 +138,78 @@ def plot_ampl(channel, datalocation, plotlocation, date, xcorr, ycorr, xmin, ymi
     plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
     plt.clf()
 
+def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx = coords[:,0]
+    yy = coords[:,1]
+
+    cx, cy = functs.bnl.convert_coords(datalocation, date)
+    
+    for i in range(len(channel_tags)):
+        ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
+        dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
+        
+        if channel_tags[i] == 2:
+            plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+        elif channel_tags[i] == 3:
+            plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+        elif channel_tags[i] == 4:
+            plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+    plt.legend()
+    plt.title('Amplitude vs X')
+    plt.xlabel('X Position (microns)')
+    plt.ylabel('Amplitude (mV)')
+    plt.axvspan(145, 355, color='grey', alpha=0.3)
+    plt.axvspan(645, 855, color='grey', alpha=0.3)
+    plt.axvspan(1145, 1355, color='grey', alpha=0.3)
+    plt.axvspan(1645, 1845, color='grey', alpha=0.3)
+    plt.savefig(f"{plotlocation}/ampl-x-{channel}.pdf")
+    plt.clf()
+
+    for i in range(len(channel_tags)):
+        ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
+        dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
+        
+        if channel_tags[i] == 2:
+            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+        elif channel_tags[i] == 3:
+            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+        elif channel_tags[i] == 4:
+            plt.errorbar(cy, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+    plt.legend()
+    plt.title('Amplitude vs Y')
+    plt.xlabel('Y Position (microns)')
+    plt.ylabel('Amplitude (mV)')
+    plt.axvspan(145, 355, color='grey', alpha=0.3)
+    plt.axvspan(645, 855, color='grey', alpha=0.3)
+    plt.axvspan(1145, 1355, color='grey', alpha=0.3)
+    plt.axvspan(1645, 1855, color='grey', alpha=0.3)
+    plt.savefig(f"{plotlocation}/ampl-y-{channel}.pdf")
+    plt.clf()
+
+    ## do from center of pad:
+    xcen, ycen = functs.bnl.channel_center(channel, channel_tags, ch)
+    R = []
+    for i in range(len(xx)):
+        R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
+
+    for i in range(len(channel_tags)):
+        ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
+        dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
+        
+        if channel_tags[i] == 2:
+            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+        elif channel_tags[i] == 3:
+            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+        elif channel_tags[i] == 4:
+            plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
+    plt.legend()
+    plt.title('Amplitude vs R')
+    plt.xlabel('R from Center of Pad (microns)')
+    plt.ylabel('Amplitude (mV)')
+    plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
+    plt.clf()
+        
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
     for i in range(len(ch)):
         channel = channel_tags[i]
