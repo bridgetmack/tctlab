@@ -130,7 +130,7 @@ def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
     for i in range(len(xx)):
         R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
 
-    plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.channel_number(channel, channel_tags, ch) ))
+    plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.bnl.channel_number(channel, channel_tags, ch) ))
     plt.legend()
     plt.title('Amplitude vs R')
     plt.xlabel('R from Center of Pad (microns)')
@@ -209,7 +209,11 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     plt.ylabel('Amplitude (mV)')
     plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
     plt.clf()
-        
+
+
+
+#########
+         
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
     for i in range(len(ch)):
         channel = channel_tags[i]
