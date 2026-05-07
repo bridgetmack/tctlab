@@ -224,7 +224,7 @@ def ampl_hist(channel, datalocation, plotlocation, date):
     
     print(ampl)
     print(len(ampl))
-    print(len(ampl[0]))
+    
 
 #########
      

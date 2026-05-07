@@ -63,7 +63,7 @@ class waveforms:
         stdev= []
 
         for i in range(len(coords)):
-            wfms= import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+            wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
             wfms= np.array(wfms) - np.mean(wfms[1000:], axis=0)
 
             if p == -1 and channel != 1:
