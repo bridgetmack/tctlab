@@ -100,8 +100,8 @@ class bnl:
         xx = coords[:,0]
         yy = coords[:,1]
 
-        xx = ( np.array(xx) - 1348 ) * 2.5
-        yy = ( np.array(yy) - 28670-4) * 2.5
+        xx = ( np.array(xx) - 1370 ) * 2.5
+        yy = ( np.array(yy) - 28730-4) * 2.5
 
         return xx, yy
 
