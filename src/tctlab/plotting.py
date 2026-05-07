@@ -145,10 +145,13 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
 
     cx, cy = functs.bnl.convert_coords(datalocation, date)
     
+    tot = np.zeros(len(xx))
     
     for i in range(len(channel_tags)):
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel_tags[i]}.txt")
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel_tags[i]}.txt")
+        
+        tot += ampl
         
         if channel_tags[i] == 2:
             plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label=f"Channel {functs.bnl.channel_number(2, channel_tags, ch)}")
@@ -156,6 +159,7 @@ def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
             plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='teal', ecolor='paleturquoise', label=f"Channel {functs.bnl.channel_number(3, channel_tags, ch)}")
         elif channel_tags[i] == 4:
             plt.errorbar(cx, ampl, yerr=dev, linestyle='none', marker='.', color='green', ecolor='palegreen', label=f"Channel {functs.bnl.channel_number(4, channel_tags, ch)}")
+    plt.plot(tot, 'm.', label="Total Amplitude")
     plt.legend()
     plt.title('Amplitude vs X')
     plt.xlabel('X Position (microns)')
