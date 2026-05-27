@@ -11,6 +11,7 @@ hep.style.use("LHCb2")
 def plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
     '''Plots all waveforms for a specific channel on the same graph'''
     wfms= np.load(f"{datalocation}/scan_wfms{channel}.npy")
+    print(wfms)
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
 
     for i in range(len(coords)):

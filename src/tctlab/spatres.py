@@ -98,7 +98,9 @@ def  wa_2d(c1, c2, datalocation, plotlocation, date, ymin, channel_tags, ch):
     plt.clf()
 
     aa1, da1 = np.mean(ampl1, axis=0), np.std(ampl1, axis=0)
-    
+ 
+
+
 def single_event1(c1, c2,datalocation, plotlocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
     xx = coords[:,0]
