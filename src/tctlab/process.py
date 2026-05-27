@@ -51,7 +51,7 @@ def matrices(datalocation, date, channel, nn):
         pp.append([int(xx[i]), int(yy[i])])
         ww.append([functs.waveforms.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[3], functs.waveforms.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[4], functs.waveforms.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[5]])
         print(i)
-    print(ww[0])
+    print(len(ww))
     ww= np.array(ww)
     
     np.save(f"{datalocation}/scan_wfms{channel}.npy", ww)
