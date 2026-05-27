@@ -35,12 +35,14 @@ class waveforms:
         channel, x, y, wf_t, wf_vs = waveforms.import_waveform(datalocation, date, channel, x, y)
         print(wf_vs)
 
-        wf_v = np.mean(wf_vs, axis=1)
-        wf_v = wf_v - np.mean(wf_v[1000:])
-        wf_v = list(wf_v)
+        try:
+            wf_v = np.mean(wf_vs, axis=1)
+            wf_v = wf_v - np.mean(wf_v[1000:])
+            wf_v = list(wf_v)
        
-        wf_stdev = np.std(wf_vs, axis=1) / np.sqrt(nn)
-
+            wf_stdev = np.std(wf_vs, axis=1) / np.sqrt(nn)
+        except RuntimeWarning:
+            print("warning")
         return channel, x, y, wf_t, wf_v, wf_stdev
         
     def integrate_waveform(t, v):
