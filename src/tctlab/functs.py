@@ -36,9 +36,10 @@ class waveforms:
         print(len(wf_vs))
         print(len(wf_vs[1]))
 
-        wf_v = np.mean(wf_vs, axis=1)
+        wf_v = np.mean(wf_vs, axis=0)
         wf_v = wf_v - np.mean(wf_v[1000:])
         wf_v = list(wf_v)
+        print(wf_v)
        
         wf_stdev = np.std(wf_vs, axis=1) / np.sqrt(nn)
 
