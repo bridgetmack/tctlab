@@ -37,7 +37,7 @@ class waveforms:
         print(len(wf_vs[1]))
 
         wf_v = np.mean(wf_vs, axis=1)
-        #wf_v = wf_v - np.mean(wf_v[1000:])
+        wf_v = wf_v - np.mean(wf_v[:100])
         wf_v = list(wf_v)
         #print(wf_v)
        
@@ -67,7 +67,7 @@ class waveforms:
 
         for i in range(len(coords)):
             wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
-            wfms= np.array(wfms) #- np.mean(wfms[1000:], axis=0)
+            wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
 
             if p == -1:
                 ampl= np.abs(np.min(wfms, axis=0))
