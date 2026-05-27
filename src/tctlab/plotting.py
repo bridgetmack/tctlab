@@ -50,7 +50,7 @@ def plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
         plt.savefig(f"{plotlocation}/avg_wfm_ch{channel}-x{int(coords[:,0][i])}-y{int(coords[:,1][i])}.pdf")
         plt.clf()
 
-def map_amplitude_2d(channel, datalocation, plotlocation, date):
+def map_amplitude_2d(channel, datalocation, plotlocation, date, channel_tags, ch):
     '''Plots in 2d the map of average amplitudes -- need to check geometry'''
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx = coords[:,0]
