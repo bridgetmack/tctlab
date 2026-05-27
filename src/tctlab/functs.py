@@ -67,7 +67,7 @@ class waveforms:
 
         for i in range(len(coords)):
             wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
-            wfms= np.array(wfms) - np.mean(wfms[1000:], axis=0)
+            wfms= np.array(wfms) #- np.mean(wfms[1000:], axis=0)
 
             if p == -1:
                 ampl= np.abs(np.min(wfms, axis=0))
