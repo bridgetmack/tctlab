@@ -33,6 +33,7 @@ class waveforms:
     def avg_waveform(datalocation, date, channel, x, y, nn):
         '''For input pointer, returns the average waveform and its features'''
         channel, x, y, wf_t, wf_vs = waveforms.import_waveform(datalocation, date, channel, x, y)
+        print(wf_vs)
 
         wf_v = np.mean(wf_vs, axis=1)
         wf_v = wf_v - np.mean(wf_v[1000:])
