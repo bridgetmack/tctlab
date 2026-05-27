@@ -37,12 +37,12 @@ def plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
 
     for i in range(len(coords)):
-        if channel == 2:
-            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="purple",  ecolor='plum', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
-        elif channel == 3:
-            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="teal",  ecolor='paleturquoise', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
-        elif channel == 4:
-            plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="green",  ecolor='palegreen', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
+        #if channel == 2:
+        plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="purple",  ecolor='plum', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
+        #elif channel == 3:
+            #plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="teal",  ecolor='paleturquoise', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
+        #elif channel == 4:
+            #plt.errorbar(wfms[i][0], wfms[i][1], yerr=wfms[i][2], color="green",  ecolor='palegreen', capsize=0, label=f"({int(coords[:,0][i])}, {int(coords[:,1][i])})")
         plt.legend()
         plt.title(f"Average Waveform; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}")
         plt.xlabel('Time (ns)')
