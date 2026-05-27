@@ -53,6 +53,7 @@ def matrices(datalocation, date, channel, nn):
         print(i)
 
     ww= np.array(ww)
+    print(ww)
     np.save(f"{datalocation}/scan_wfms{channel}.npy", ww)
 
 def single_pt(datalocation, date, channel, nn):
