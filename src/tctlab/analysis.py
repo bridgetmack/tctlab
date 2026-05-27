@@ -8,7 +8,7 @@ import mplhep as hep
 hep.style.use("LHCb2")
 
 ## for a brand new data set:
-def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
+def full_run(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
 
     for i in range(8):
         process.matrices(datalocation, date, i, nn)
@@ -63,3 +63,14 @@ def full_run(datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xm
 
     ## need to look at laser spot size
     ## add spatial, time resolution stuff.
+
+def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
+    process.matrices(datalocation, date, channel, nn)
+    functs.waveforms.amplitude(datalocation, date, i, channel, nn)
+    print("amplitudes updated")
+    
+    plotting.plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.map_amplitude_2d(channel, datalocation, plotlocation, date)
+    plotting.plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch)

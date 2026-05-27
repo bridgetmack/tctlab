@@ -69,14 +69,14 @@ class waveforms:
             wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
             wfms= np.array(wfms) - np.mean(wfms[1000:], axis=0)
 
-            if p == -1 and channel != 1:
+            if p == -1:
                 ampl= np.abs(np.min(wfms, axis=0))
                 avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
 
                 # need to add histograms for each point: will definitelty need to do something about the bins
                 
-            elif p == 1 or channel == 1:
+            elif p == 1:
                 ampl= np.abs(np.max(wfms, axis=0))
                 avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
