@@ -8,6 +8,12 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb2")
 
+def plot_individual(channel, datalocation, plotlocation, date, x, y):
+    '''want to be able to plot all waveforms for a single point; I think something weird is going on with the averaging'''
+    channel, x, y, t, vs = functs.waveforms.import_waveform(datalocation, date, channel, x, y)
+    
+    print(len(vs))
+
 def plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
     '''Plots all waveforms for a specific channel on the same graph'''
     wfms= np.load(f"{datalocation}/scan_wfms{channel}.npy")

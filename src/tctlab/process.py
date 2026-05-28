@@ -78,14 +78,3 @@ def matrices(datalocation, date, channel, nn):
     ww= np.array(ww)
     
     np.save(f"{datalocation}/scan_wfms{channel}.npy", ww)
-
-def single_pt(datalocation, date, channel, nn):
-    ww, pp = [], []
-    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt", float)
-    xx = int(coords[0])
-    yy = int(coords[1])
-    
-    ww.append([functs.waveforms.avg_waveform(datalocation, date, channel, xx, yy, nn)[3], functs.waveforms.avg_waveform(datalocation, date, channel, xx, yy, nn)[4], functs.waveforms.avg_waveform(datalocation, date, channel, xx, yy, nn)[5]])
-    
-    #ww= np.array(ww)
-    np.save(f"{datalocation}/scan_wfms{channel}.npy", ww)
