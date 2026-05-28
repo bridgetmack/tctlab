@@ -26,7 +26,7 @@ def plot_individual(channel, event, datalocation, plotlocation, date, x, y):
     
     plt.plot(t, vv[event])
         
-    plt.savefig(f"{plotlocation}/point-plot{event}-{x}-{y}.pdf")
+    plt.savefig(f"{plotlocation}/point-plot{event}-ch{channel}-{x}-{y}.pdf")
     plt.clf()
 
 def plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
