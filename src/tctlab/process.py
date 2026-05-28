@@ -13,7 +13,7 @@ hep.style.use("LHCb2")
 import os
 
 def convert_aardvarc(datalocation, date, channel_tags):
-    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt"
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx= coords[:,0]
     yy= coords[:,1]
     
