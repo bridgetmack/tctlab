@@ -21,7 +21,7 @@ def integrate(t, v):
     for k in range(1, N):
         s += v[k]
     return h*s
-
+        
 class waveforms:
     def import_waveform(datalocation, date, channel, x, y):
         '''For input pointer returns the waveform and its matrix'''
