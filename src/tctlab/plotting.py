@@ -264,17 +264,17 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         
         print(len(wax))
         
-        bbx = np.linspace(min(wax) - 10, max(wax) + 10, 100)
-        bby = np.linspace(min(way) - 10, max(way) + 10, 100)
+        bbx = np.linspace(min(wax) - 10, max(wax) + 10, 10)
+        bby = np.linspace(min(way) - 10, max(way) + 10, 10)
         
-        plt.hist(wax, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} ADC\n$\sigma$ = {round(np.std(wax), 3)}')
+        plt.hist(wax, bins=bbx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} ADC\n$\sigma$ = {round(np.std(wax), 3)}')
         plt.legend()
         plt.title(f'Amplitude; True x = {int(ux[i])}')
         plt.xlabel('Reconstructed X (weighted average)')
         plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-        plt.hist(way, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} ADC\n$\sigma$ = {round(np.std(way), 3)}')
+        plt.hist(way, bins= bby, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} ADC\n$\sigma$ = {round(np.std(way), 3)}')
         plt.legend()
         plt.title(f'Amplitude; True y = {int(uy[i])}')
         plt.xlabel('Reconstructed Y (weighted average)')
