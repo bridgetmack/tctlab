@@ -274,7 +274,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-        plt.hist(way, bins= bby, color='purple', edgecolor='black', label=f'mean = {round(np.mean(may), 3)} ADC\n$\sigma$ = {round(np.std(way), 3)}')
+        plt.hist(way, bins= bby, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} ADC\n$\sigma$ = {round(np.std(way), 3)}')
         plt.legend()
         plt.title(f'Amplitude; True y = {int(uy[i])}')
         plt.xlabel('Reconstructed Y (weighted average)')
