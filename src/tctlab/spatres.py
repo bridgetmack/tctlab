@@ -79,8 +79,6 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
     
     diffx, diffy = [], []
     
-    
-    
     for i in range(len(xx)):
         
         wax, way = np.zeros(nn, float), np.zeros(nn, float)
@@ -95,8 +93,8 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
             
             # so far we have x, y, event, and amplitute tags
             for event in range(len(ampl)):
-                wax[event] += bnl.channel_center(channel, channel_tags, ch)[0] * ampl[event]
-                way[event] += bnl.channel_center(channel, channel_tags, ch)[1] * ampl[event]
+                wax[event] += functs.bnl.channel_center(channel, channel_tags, ch)[0] * ampl[event]
+                way[event] += functs.bnl.channel_center(channel, channel_tags, ch)[1] * ampl[event]
                 aa[event] += ampl[event]
             
         np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax/aa)
