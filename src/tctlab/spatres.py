@@ -72,11 +72,10 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
     
 ## need to start arbitraty number of channels:
-def weighted_average(datalocation, plotlocation, date, nn,  channel_tags, ch):
+def weighted_average(datalocation, date, nn,  channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
-    
     
     for i in range(len(xx)):
         
@@ -98,6 +97,8 @@ def weighted_average(datalocation, plotlocation, date, nn,  channel_tags, ch):
             
         np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax/aa)
         np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way/aa)
+        
+        
         
             
 
