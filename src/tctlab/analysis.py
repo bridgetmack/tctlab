@@ -72,6 +72,6 @@ def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, 
     plotting.plot_individual(channel, 0, datalocation, plotlocation, date, xmin, ymin)
     #plotting.plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     #plotting.plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
-    #plotting.map_amplitude_2d(channel, datalocation, plotlocation, date, channel_tags, ch)
+    plotting.map_amplitude_2d(channel, datalocation, plotlocation, date, channel_tags, ch)
     plotting.plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch)
     plotting.ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch)
