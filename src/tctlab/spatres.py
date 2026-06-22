@@ -70,6 +70,36 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
     print(ampl_inv)
 
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
+    
+## need to start arbitraty number of channels:
+def weighted_average(datalocation, plotlocation, date, nn,  channel_tags, ch):
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx, yy = coords[:,0], coords[:,1]
+    ux, uy = functs.bnl.convert_coords(datalocation, date)
+    
+    
+    for i in range(len(xx)):
+        
+        wax, way = np.zeros(nn, float), np.zeros(nn, float)
+        aa = np.zeros(nn, float)
+        # sw = np.loadtxt(f"{datalocation}/sw-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+        # events = sw[:,0]
+        
+        for ch in channel_tags:
+            ampl = np.load(f"{datalocation}/amplitudes_ch{ch}-x{int(xx[i])}-y{int(yy[i])}.npy")
+            
+            # ampl is just a list of amplitudes for each event using just finding the max data point
+            
+            # so far we have x, y, event, and amplitute tags
+            for event in range(len(wa)):
+                wax[event] += ux[i] * ampl[event]
+                way[event] += uy[i] * ampl[event]
+                aa[event] += ampl[event]
+            
+        np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax/aa)
+        np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way/aa)
+        
+            
 
 def  wa_2d(c1, c2, datalocation, plotlocation, date, ymin, channel_tags, ch):
     '''Hopefully this code will run with the noise reduced data and make it easier for us to do the weighted averages to find spatial res; will need to make sure that we can expand to make it for more channels in the future -- for now starting with two'''
