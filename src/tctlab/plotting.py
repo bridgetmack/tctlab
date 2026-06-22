@@ -262,14 +262,14 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         
-        plt.hist(wax, color='purple', edgecolor='black', label=f'mean = {round(np.mean(max), 3)} ADC\n$\sigma$ = {round(np.std(wax), 3)}')
+        plt.hist(wax, color='purple', edgecolor='black', label=f'mean = {np.mean(max)} ADC\n$\sigma$ = {np.std(wax)}')
         plt.legend()
         plt.title(f'Amplitude; True x = {int(ux[i])}')
         plt.xlabel('Reconstructed X (weighted average)')
         plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-        plt.hist(way, color='purple', edgecolor='black', label=f'mean = {round(np.mean(may), 3)} ADC\n$\sigma$ = {round(np.std(way), 3)}')
+        plt.hist(way, color='purple', edgecolor='black', label=f'mean = {(np.mean(may))} ADC\n$\sigma$ = {(np.std(way))}')
         plt.legend()
         plt.title(f'Amplitude; True y = {int(uy[i])}')
         plt.xlabel('Reconstructed Y (weighted average)')
