@@ -91,7 +91,7 @@ def weighted_average(datalocation, plotlocation, date, nn,  channel_tags, ch):
             # ampl is just a list of amplitudes for each event using just finding the max data point
             
             # so far we have x, y, event, and amplitute tags
-            for event in range(len(wa)):
+            for event in range(len(wax)):
                 wax[event] += ux[i] * ampl[event]
                 way[event] += uy[i] * ampl[event]
                 aa[event] += ampl[event]
