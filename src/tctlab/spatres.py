@@ -77,6 +77,8 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
+    diffx, diffy = [], []
+    
     for i in range(len(xx)):
         
         wax, way = np.zeros(nn, float), np.zeros(nn, float)
@@ -98,9 +100,13 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
         np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax/aa)
         np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way/aa)
         
+        for j in range(len(way)):
+            diffx.append(wax/aa[j] - ux[i])
+            diffy.append(way/aa[j] - uy[i])
         
-        
-            
+        np.savetxt(f"{datalocation}/diffx-x{int(xx[i])}-y{int(yy[i])}-board0.txt", diffx)
+        np.savetxt(f"{datalocation}/diffy-x{int(xx[i])}-y{int(yy[i])}-board0.txt", diffy)
+           
 
 def  wa_2d(c1, c2, datalocation, plotlocation, date, ymin, channel_tags, ch):
     '''Hopefully this code will run with the noise reduced data and make it easier for us to do the weighted averages to find spatial res; will need to make sure that we can expand to make it for more channels in the future -- for now starting with two'''
