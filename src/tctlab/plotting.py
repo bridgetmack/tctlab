@@ -262,6 +262,8 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         
+        print(len(wax))
+        
         plt.hist(wax, bins=1000, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} ADC\n$\sigma$ = {round(np.std(wax), 3)}')
         plt.legend()
         plt.title(f'Amplitude; True x = {int(ux[i])}')
