@@ -82,7 +82,7 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
         wax, way = np.zeros(nn, float), np.zeros(nn, float)
         aa = np.zeros(nn, float)
         # sw = np.loadtxt(f"{datalocation}/sw-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-        # events = sw[:,0]
+        # events = sw[:,0:nn]
         
         for ch in channel_tags:
             ampl = np.load(f"{datalocation}/amplitudes_ch{ch}-x{int(xx[i])}-y{int(yy[i])}.npy")
@@ -90,7 +90,7 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
             # ampl is just a list of amplitudes for each event using just finding the max data point
             
             # so far we have x, y, event, and amplitute tags
-            for event in range(len(wax)):
+            for event in range(len(ampl)):
                 wax[event] += ux[i] * ampl[event]
                 way[event] += uy[i] * ampl[event]
                 aa[event] += ampl[event]
