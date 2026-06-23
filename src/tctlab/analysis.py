@@ -77,9 +77,9 @@ def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, 
     plotting.ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch)
     print("waveform plots updated")
     
-    spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
-    spatres.diffs(datalocation, date, nn, channel_tags, ch)
+    # spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
+    # spatres.diffs(datalocation, date, nn, channel_tags, ch)
     
-    plotting.weighted_avg_hist(datalocation, plotlocation, date)
-    plotting.spat_diff_hist(datalocation, plotlocation, date)
-    print("spatial resolutions updated")
+    # plotting.weighted_avg_hist(datalocation, plotlocation, date)
+    # plotting.spat_diff_hist(datalocation, plotlocation, date)
+    # print("spatial resolutions updated")
