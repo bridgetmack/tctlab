@@ -72,13 +72,13 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
     
 ## need to start arbitraty number of channels:
-def weighted_average(datalocation, date, nn,  channel_tags, ch):
+def weighted_average(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
     
     chan_cenx, chan_ceny = [], []
-    
+     
     for channel in channel_tags:
         chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
         chan_ceny.append(functs.bnl.channel_center(channel, channel_tags, ch)[1])
@@ -96,7 +96,7 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
             
             a_vec[j,:] = ampl
             
-        np.save(f"{datalocation}/ampl-vector-x{int(xx[i])}-y{int(yy[i])}.npy", a_vec)
+        # np.save(f"{datalocation}/ampl-vector-x{int(xx[i])}-y{int(yy[i])}.npy", a_vec)
         
         for event in range(nn):
             aa = a_vec[:,event]
@@ -110,37 +110,26 @@ def weighted_average(datalocation, date, nn,  channel_tags, ch):
             
             np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
             np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
-                    
 
-def  wa_2d(c1, c2, datalocation, plotlocation, date, ymin, channel_tags, ch):
-    '''Hopefully this code will run with the noise reduced data and make it easier for us to do the weighted averages to find spatial res; will need to make sure that we can expand to make it for more channels in the future -- for now starting with two'''
+def diffs(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
-    ux, uy = functs.convert_coords(datalocation, date)
+    ux, uy = functs.bnl.convert_coords(datalocation, date)
+    
+    diffx, diffy = [], []
+    
+    for i in range(len(xx)):
+        wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+        way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+        
+        for j in range(len(wax)):
+            diffx.append(wax[j] - ux[i])
+            diffy.append(way[j] - uy[i])
+    
+    np.savetxt(f"{datalocation}/diffx.txt", diffx)
+    np.savetxt(f"{datalocation}/diffy.txt", diffy)
 
-    ampl1 = np.load(f"{datalocation}/scan_amplitudes_{c1}.npy")
-    ampl2 = np.load(f"{datalocation}/scan_amplitudes_{c2}.npy")
-
-    cx1, cy1 = functs.channel_center(c1, channel_tags, ch)
-    cx2, cy2 = functs.channel_center(c2, channel_tags, ch)
-
-    plt.plot(ux, ampl1, "m.")
-    plt.plot(ux, ampl2, "b.")
-    plt.axhspan((cx1-105), (cx1+105), color='grey', alpha=0.3)
-    plt.axhspan((cx2-105), (cx2+105), color='grey', alpha=0.3)
-    plt.savefig(f"{plotlocation}/amplitudes-x-{c1}-{c2}.pdf")
-    plt.clf()
-
-    plt.plot(uy, ampl1, "m.")
-    plt.plot(uy, ampl2, "b.")
-    plt.axvspan((cy1-105), (cy1+105), color='grey', alpha=0.3)
-    plt.axvspan((cy2-105), (cy2+105), color='grey', alpha=0.3)
-    plt.savefig(f"{plotlocation}/amplitudes-y-{c1}-{c2}.pdf")
-    plt.clf()
-
-    aa1, da1 = np.mean(ampl1, axis=0), np.std(ampl1, axis=0)
- 
-
+#######    
 
 def single_event1(c1, c2,datalocation, plotlocation, date, ymin, channel_tags, ch):
     coords= np.loadtxt("{0}/scposition{1}.txt".format(datalocation, date))
