@@ -82,17 +82,31 @@ class waveforms:
 
         return avg, stdev
     
-    def fit_ampl(datalocation, date, channel, nn):
+    def fit_ampl(datalocation, plotlocation, date, channel, p, nn):
         coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
         xx, yy = coords[:,0], coords[:,1]
         
         for i in range(len(xx)):
             wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+            t = waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[3]
+            
             wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
             
             for event in range(nn):
                 wfm = wfms[:,event]
-                print(len(wfm))
+                
+                rough_ampl = max(wfm)
+                rough_i = wfm.index(max(wfm))
+                
+                wfm_chunk = wfm[rough_i - 10:rough_i + 10]
+                t_chunk = t[rough_i - 10:rough_i + 10]
+                
+                plt.plot(t_chunk, wfm_chunk)
+                plt.show()
+                
+                
+                
+                
     
 class bnl:
     def geometry_matrix():
