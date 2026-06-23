@@ -293,14 +293,14 @@ def spat_diff_hist(datalocation, plotlocation, date):
     plt.legend()
     plt.title(f'Reconstructed - True')
     plt.xlabel('Reco - True (microns) (weighted average)')
-    plt.savefig(f'{plotlocation}/hist-diffx{int(xx[i])}-y{int(yy[i])}.pdf')
+    plt.savefig(f'{plotlocation}/hist-diffx.pdf')
     plt.clf()
     
     plt.hist(diffy, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffy), 3)} \n$\sigma$ = {round(np.std(diffy), 3)}')
     plt.legend()
     plt.title(f'Reconstructed - True')
     plt.xlabel('Reco - True (microns) (weighted average)')
-    plt.savefig(f'{plotlocation}/hist-diffy{int(xx[i])}-y{int(yy[i])}.pdf')
+    plt.savefig(f'{plotlocation}/hist-diffy.pdf')
     plt.clf()
 
 #########
