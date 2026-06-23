@@ -4,7 +4,7 @@ import itertools, os
 
 from scipy.optimize import curve_fit
 from scipy.special import erf
-#from scipy.stats import landau
+from scipy.stats import landau
 
 plt.rcParams['figure.dpi']= 150
 import mplhep as hep
