@@ -112,7 +112,7 @@ class waveforms:
                     yfit.append(fits.gaus_func(t_chunk[i], *yparams))
                 
                 plt.plot(t_chunk, wfm_chunk)
-                ptl.plot(t_chunk, yfit, 'm.')
+                plt.plot(t_chunk, yfit, 'm.')
                 plt.show()
                 
                 
