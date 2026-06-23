@@ -96,7 +96,7 @@ class waveforms:
                 wfm = wfms[:,event]
                 
                 rough_ampl = max(wfm)
-                rough_i = np.where(max(wfm))
+                rough_i = np.where(wfm == max(wfm))
                 
                 wfm_chunk = wfm[rough_i - 10:rough_i + 10]
                 t_chunk = t[rough_i - 10:rough_i + 10]
