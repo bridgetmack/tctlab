@@ -75,38 +75,42 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 def weighted_average(datalocation, date, nn,  channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
-    ux, uy = functs.bnl.convert_coords(datalocation, date)
+    ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
     
-    diffx, diffy = [], []
+    chan_cenx, chan_ceny = [], []
+    
+    for channel in channel_tags:
+        chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
+        chan_ceny.append(functs.bnl.channel_center(channel, channel_tags, ch)[1])
+    chan_cenx = np.array(chan_cenx)
+    chan_ceny = np.array(chan_ceny)
+    
+    a_vec = np.zeros([len(channel_tags), nn], float)
     
     for i in range(len(xx)):
+        a_vec = np.zeros([len(channel_tags), nn], float)
+        wax, way = [], []
         
-        wax, way = np.zeros(nn, float), np.zeros(nn, float)
-        aa = np.zeros(nn, float)
-        # sw = np.loadtxt(f"{datalocation}/sw-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-        # events = sw[:,0:nn]
-        
-        for channel in channel_tags:
-            ampl = np.load(f"{datalocation}/amplitudes_ch{channel}-x{int(xx[i])}-y{int(yy[i])}.npy")
+        for j in range(len(channel_tags)):
+            ampl = np.load(f"{datalocation}/amplitudes_ch{channel_tags[j]}-x{int(xx[i])}-y{int(yy[i])}.npy")
             
-            # ampl is just a list of amplitudes for each event using just finding the max data point
+            a_vec[j,:] = ampl
             
-            # so far we have x, y, event, and amplitute tags
-            for event in range(len(ampl)):
-                wax[event] += functs.bnl.channel_center(channel, channel_tags, ch)[0] * ampl[event]
-                way[event] += functs.bnl.channel_center(channel, channel_tags, ch)[1] * ampl[event]
-                aa[event] += ampl[event]
+        np.save(f"{datalocation}/ampl-vector-x{int(xx[i])}-y{int(yy[i])}.npy")
+        
+        for event in range(nn):
+            aa = a_vec[:,event]
             
-        np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax/aa)
-        np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way/aa)
-        
-        for j in range(len(way)):
-            diffx.append(wax/aa[j] - ux[i])
-            diffy.append(way/aa[j] - uy[i])
-        
-        np.savetxt(f"{datalocation}/diffx-x{int(xx[i])}-y{int(yy[i])}-board0.txt", diffx)
-        np.savetxt(f"{datalocation}/diffy-x{int(xx[i])}-y{int(yy[i])}-board0.txt", diffy)
-           
+            numx = sum( chan_cenx * aa )
+            numy = sum( chan_ceny * aa )
+            den = sum(aa)
+            
+            wax.append(numx/den)
+            way.append(numy/den)
+            
+            np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
+            np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
+                    
 
 def  wa_2d(c1, c2, datalocation, plotlocation, date, ymin, channel_tags, ch):
     '''Hopefully this code will run with the noise reduced data and make it easier for us to do the weighted averages to find spatial res; will need to make sure that we can expand to make it for more channels in the future -- for now starting with two'''
