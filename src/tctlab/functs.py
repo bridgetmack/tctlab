@@ -105,11 +105,11 @@ class waveforms:
                 wfm_chunk = wfm[rough_i - 10:rough_i + 20]
                 t_chunk = t[rough_i - 10:rough_i + 20]
                 
-                yparams, ycov = curve_fit(fits.gaus_func, t_chunk, wfm_chunk)
+                yparams, ycov = curve_fit(fits.find_land, t_chunk, wfm_chunk)
                 
                 yfit = []
                 for i in range(len(t_chunk)):
-                    yfit.append(fits.gaus_func(t_chunk[i], *yparams))
+                    yfit.append(fits.find_land(t_chunk[i], *yparams))
                 
                 plt.plot(t_chunk, wfm_chunk)
                 plt.plot(t_chunk, yfit, 'm.')
