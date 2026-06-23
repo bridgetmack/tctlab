@@ -92,7 +92,7 @@ class waveforms:
             
             for event in range(nn):
                 wfm = wfms[:,event]
-                print(len(wfms))
+                print(len(wfm))
     
 class bnl:
     def geometry_matrix():
