@@ -97,6 +97,7 @@ class waveforms:
                 
                 rough_ampl = max(wfm)
                 rough_i = np.where(wfm == max(wfm))
+                rough_i = int(rough_i[0])
                 
                 print(rough_i)
                 
