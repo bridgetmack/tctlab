@@ -70,9 +70,7 @@ class waveforms:
                 ampl= np.abs(np.min(wfms, axis=0))
                 avg.append(np.mean(ampl))
                 stdev.append(np.std(ampl) / np.sqrt(nn))
-
-                # need to add histograms for each point: will definitelty need to do something about the bins
-                
+               
             elif p == 1:
                 ampl= np.abs(np.max(wfms, axis=0))
                 avg.append(np.mean(ampl))
@@ -83,7 +81,19 @@ class waveforms:
         np.savetxt(f"{datalocation}/amplitude_dev_ch{channel}.txt", stdev)
 
         return avg, stdev
-
+    
+    def fit_ampl(datalocation, date, channel, nn):
+        coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+        xx, yy = coords[:,0], coords[:,1]
+        
+        for i in range(len(xx)):
+            wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+            wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
+            
+            for event in range(nn):
+                wfm = wfms[:,event]
+                print(len(wfms))
+    
 class bnl:
     def geometry_matrix():
         mmm = np.zeros([4,4], int)
