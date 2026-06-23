@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import itertools, os
 
+from scipy.optimize import curve_fit
 from scipy.special import erf
 #from scipy.stats import landau
 
@@ -101,10 +102,17 @@ class waveforms:
                 
                 print(rough_i)
                 
-                wfm_chunk = wfm[rough_i - 10:rough_i + 10]
-                t_chunk = t[rough_i - 10:rough_i + 10]
+                wfm_chunk = wfm[rough_i - 10:rough_i + 20]
+                t_chunk = t[rough_i - 10:rough_i + 20]
+                
+                yparams, ycov = curve_fit(fits.gaus_func, t_chunk, wfm_chunk)
+                
+                yfit = []
+                for i in range(len(t_chunk)):
+                    yfit.append(fits.gaus_func(t_chunk[i], *yparams))
                 
                 plt.plot(t_chunk, wfm_chunk)
+                ptl.plot(t_chunk, yfit, 'm.')
                 plt.show()
                 
                 
