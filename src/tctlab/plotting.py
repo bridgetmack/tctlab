@@ -19,15 +19,21 @@ def plot_all_individual(channel, datalocation, plotlocation, date, x, y):
     plt.savefig(f"{plotlocation}/point-plot-{x}-{y}.pdf")
     plt.clf()
 
-def plot_individual(channel, event, datalocation, plotlocation, date, x, y):
-    channel, x, y, t, vs = functs.waveforms.import_waveform(datalocation, date, channel, x, y)
+def plot_individual(channel, event, datalocation, plotlocation, date):
+    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx, yy = coords[:,0], coords[:,1]
     
-    vv = np.transpose(vs)
-    
-    plt.plot(t, vv[event])
+    for i in range(len(xx)):
+        x, y = xx[i], yy[i]
         
-    plt.savefig(f"{plotlocation}/point-plot{event}-ch{channel}-{x}-{y}.pdf")
-    plt.clf()
+        t, vs = functs.waveforms.import_waveform(datalocation, date, channel, x, y)[3:4]
+        
+        vv = np.transpose(vs)
+        
+        plt.plot(t, vv[event])
+            
+        plt.savefig(f"{plotlocation}/point-plot{event}-ch{channel}-{x}-{y}.pdf")
+        plt.clf()
 
 def plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch):
     '''Plots all waveforms for a specific channel on the same graph'''
