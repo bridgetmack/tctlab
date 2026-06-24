@@ -94,7 +94,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
         for j in range(len(channel_tags)):
             ampl = np.load(f"{datalocation}/amplitudes_ch{channel_tags[j]}-x{int(xx[i])}-y{int(yy[i])}.npy")
             
-            a_vec[j,:] = ampl
+            a_vec[j,:] = ampl[:nn]
             
         # np.save(f"{datalocation}/ampl-vector-x{int(xx[i])}-y{int(yy[i])}.npy", a_vec)
         
