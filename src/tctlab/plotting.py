@@ -24,7 +24,7 @@ def plot_individual(channel, event, datalocation, plotlocation, date):
     xx, yy = coords[:,0], coords[:,1]
     
     for i in range(len(xx)):
-        x, y = xx[i], yy[i]
+        x, y = int(xx[i]), int(yy[i])
         
         t, vs = functs.waveforms.import_waveform(datalocation, date, channel, x, y)[3:4]
         
