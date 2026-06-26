@@ -111,12 +111,14 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
             np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
 
+## might be broken because of the code, or just because we don't have data for all the channels. Might make more sense to do a hist of the sigma res for each point? That might be too wild tho, I need to think about it.
 def diffs(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
     diffx, diffy = [], []
+    sigx, sigy = [], []
     
     for i in range(len(xx)):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
@@ -126,8 +128,14 @@ def diffs(datalocation, date, nn, channel_tags, ch):
             diffx.append(wax[j] - ux[i])
             diffy.append(way[j] - uy[i])
     
+        sigx.append(np.std(wax))
+        sigy.append(np.std(way))
+    
     np.savetxt(f"{datalocation}/diffx.txt", diffx)
     np.savetxt(f"{datalocation}/diffy.txt", diffy)
+    
+    np.savetxt(f"{datalocation}/sig-x.txt", sigx)
+    np.savetxt(f"{datalocation}/sig-y.txt", sigy)
 
 #######    
 

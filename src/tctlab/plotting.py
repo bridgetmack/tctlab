@@ -297,6 +297,9 @@ def spat_diff_hist(datalocation, plotlocation, date):
     diffx = np.loadtxt(f"{datalocation}/diffx.txt")
     diffy = np.loadtxt(f"{datalocation}/diffy.txt")
     
+    sigx = np.loadtxt(f"{datalocation}/sig-x.txt")
+    sigy = np.loadtxt(f"{datalocation}/sig-y.txt")
+    
     plt.hist(diffx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffx), 3)} \n$\sigma$ = {round(np.std(diffx), 3)}')
     plt.legend()
     plt.title(f'Reconstructed - True')
@@ -309,6 +312,20 @@ def spat_diff_hist(datalocation, plotlocation, date):
     plt.title(f'Reconstructed - True')
     plt.xlabel('Reco - True (microns) (weighted average)')
     plt.savefig(f'{plotlocation}/hist-diffy.pdf')
+    plt.clf()
+    
+    plt.hist(sigx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffx), 3)} \n$\sigma$ = {round(np.std(diffx), 3)}')
+    plt.legend()
+    plt.title(f'Reconstructed - True')
+    plt.xlabel('Reco - True (microns) (weighted average)')
+    plt.savefig(f'{plotlocation}/hist-sigx.pdf')
+    plt.clf()
+    
+    plt.hist(sigy, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffy), 3)} \n$\sigma$ = {round(np.std(diffy), 3)}')
+    plt.legend()
+    plt.title(f'Reconstructed - True')
+    plt.xlabel('Reco - True (microns) (weighted average)')
+    plt.savefig(f'{plotlocation}/hist-sigy.pdf')
     plt.clf()
 
 #########
