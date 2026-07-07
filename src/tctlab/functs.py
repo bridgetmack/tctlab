@@ -31,6 +31,20 @@ class waveforms:
 
         return channel, x, y, wf_t, wf_vs
 
+    def remove_baseline(datalocation, date, channel, x, y):
+        wfms= waveforms.import_waveform(datalocation, date, channel, x, y)[4]
+        wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
+        
+        return wfms
+        
+    def apply_dynamic_pedestal(datalocation, date, channel, x, y):
+        wfms = waveforms.remove_baseline(datalocation, date, channel, x, y)
+        
+        start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")[1]
+        
+        npts = len(wfms[0])
+        print(npts)
+        
     def avg_waveform(datalocation, date, channel, x, y, nn):
         '''For input pointer, returns the average waveform and its features'''
         channel, x, y, wf_t, wf_vs = waveforms.import_waveform(datalocation, date, channel, x, y)
@@ -64,8 +78,10 @@ class waveforms:
         stdev= []
 
         for i in range(len(coords)):
-            wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
-            wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
+            wfms = waveforms.remove_baseline(datalocation, date, channel, int(xx[i]), int(yy[i]))
+            
+            # wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+            # wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
 
             if p == -1:
                 ampl= np.abs(np.min(wfms, axis=0))
@@ -88,10 +104,10 @@ class waveforms:
         xx, yy = coords[:,0], coords[:,1]
         
         for i in range(len(xx)):
-            wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+            # wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
             t = waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[3]
-            
-            wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
+            wfms = waveforms.remove_baseline(datalocation, date, channel, int(xx[i]), int(yy[i]))
+            # wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
             
             for event in range(nn):
                 wfm = wfms[:,event]
@@ -114,11 +130,9 @@ class waveforms:
                 plt.plot(t_chunk, wfm_chunk)
                 plt.plot(t_chunk, yfit, 'm.')
                 plt.show()
+                        
                 
-                
-                
-                
-    
+             
 class bnl:
     def geometry_matrix():
         mmm = np.zeros([4,4], int)
