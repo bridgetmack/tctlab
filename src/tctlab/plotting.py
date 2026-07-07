@@ -28,7 +28,7 @@ def plot_individual(channel, event, datalocation, plotlocation, date):
         
         t = functs.waveforms.import_waveform(datalocation, date, channel, x, y)[3]
         
-        vs = functs.waveforms.remove_baseline(datalocation, date, channel, x, y)
+        vs = functs.waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
         
         vv = np.transpose(vs)
         
