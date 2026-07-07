@@ -39,11 +39,23 @@ class waveforms:
         
     def apply_dynamic_pedestal(datalocation, date, channel, x, y):
         wfms = waveforms.remove_baseline(datalocation, date, channel, x, y)
+        data = np.zeros([len(wfms), len(wfms[0])])
+        
+        print(len(data))
+        print(len(data[0]))
         
         start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")[1]
         
         npts = len(wfms)
-        print(npts)
+        
+        ped = np.genfromtxt(f"{datalocation}/dynamicPedestals.csv", delimiter=",", names=True)
+        slopes = f"ch{channel}_slopeDevs"
+        yiters =f"ch{channel}_yIters"
+        ADC = 3.1422522482546027
+        
+        for i in range(len(wfms[0])):
+            
+            indices = np.array([start_window[i] + j for j in range(npts)])
         
     def avg_waveform(datalocation, date, channel, x, y, nn):
         '''For input pointer, returns the average waveform and its features'''
