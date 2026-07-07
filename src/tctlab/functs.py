@@ -41,7 +41,8 @@ class waveforms:
         wfms = waveforms.remove_baseline(datalocation, date, channel, x, y)
         data = np.zeros([len(wfms), len(wfms[0])])
         
-        start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")[1]
+        start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")
+        sw = start_window[:,1]
         
         npts = len(wfms)
         
@@ -52,10 +53,8 @@ class waveforms:
         
         for i in range(len(wfms[0])):
             
-            indices = np.linspace(start_window[i], start_window[i] + npts, npts)
-           
-            
-            slope_seg = ped[slopes][int(start_window[i]):int(start_window[i]+npts)]
+            indices = np.linspace(sw[i], sw[i] + npts, npts)
+            slope_seg = ped[slopes][int(sw[i]):int(sw[i]+npts)]
             
         
     def avg_waveform(datalocation, date, channel, x, y, nn):
