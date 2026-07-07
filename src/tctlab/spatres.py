@@ -71,7 +71,6 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
 
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
     
-## need to start arbitraty number of channels:
 def weighted_average(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
@@ -95,9 +94,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             ampl = np.load(f"{datalocation}/amplitudes_ch{channel_tags[j]}-x{int(xx[i])}-y{int(yy[i])}.npy")
             
             a_vec[j,:] = ampl[:nn]
-            
-        # np.save(f"{datalocation}/ampl-vector-x{int(xx[i])}-y{int(yy[i])}.npy", a_vec)
-        
+                    
         for event in range(nn):
             aa = a_vec[:,event]
             
@@ -111,31 +108,44 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
             np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
 
-## might be broken because of the code, or just because we don't have data for all the channels. Might make more sense to do a hist of the sigma res for each point? That might be too wild tho, I need to think about it.
 def diffs(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
-    diffx, diffy = [], []
-    sigx, sigy = [], []
+    trux, truy = [], []
+    recox, recoy = [], []
+    # diffx, diffy = [], []
+    # sigx, sigy = [], []
     
     for i in range(len(xx)):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         
         for j in range(len(wax)):
-            diffx.append(wax[j] - ux[i])
-            diffy.append(way[j] - uy[i])
+            trux.append(ux[i])
+            recox.append(wax[j])
+            
+            truy.append(uy[i])
+            recoy.append(way[j])
+            
+            # diffx.append(wax[j] - ux[i])
+            # diffy.append(way[j] - uy[i])
     
-        sigx.append(np.std(wax))
-        sigy.append(np.std(way))
+        # sigx.append(np.std(wax))
+        # sigy.append(np.std(way))
     
-    np.savetxt(f"{datalocation}/diffx.txt", diffx)
-    np.savetxt(f"{datalocation}/diffy.txt", diffy)
+    np.savetxt(f"{datalocation}/true-x.txt", trux)
+    np.savetxt(f"{datalocation}/true-y.txt", truy)
     
-    np.savetxt(f"{datalocation}/sig-x.txt", sigx)
-    np.savetxt(f"{datalocation}/sig-y.txt", sigy)
+    np.savetxt(f"{datalocation}/recon-x.txt", recox)
+    np.savetxt(f"{datalocation}/recon-y.txt", recoy)
+    
+    # np.savetxt(f"{datalocation}/diffx.txt", diffx)
+    # np.savetxt(f"{datalocation}/diffy.txt", diffy)
+    
+    # np.savetxt(f"{datalocation}/sig-x.txt", sigx)
+    # np.savetxt(f"{datalocation}/sig-y.txt", sigy)
 
 #######    
 

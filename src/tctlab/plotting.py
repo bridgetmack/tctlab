@@ -289,16 +289,34 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         plt.savefig(f'{plotlocation}/hist-way-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-def spat_diff_hist(datalocation, plotlocation, date):
+def spat_diff(datalocation, plotlocation, date):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
-    diffx = np.loadtxt(f"{datalocation}/diffx.txt")
-    diffy = np.loadtxt(f"{datalocation}/diffy.txt")
+    trux = np.array(np.loadtxt(f"{datalocation}/true-x.txt"))
+    truy = np.array(np.loadtxt(f"{datalocation}/true-y.txt"))
     
-    sigx = np.loadtxt(f"{datalocation}/sig-x.txt")
-    sigy = np.loadtxt(f"{datalocation}/sig-y.txt")
+    recox = np.array(np.loadtxt(f"{datalocation}/recon-x.txt"))
+    recoy = np.array(np.loadtxt(f"{datalocation}/recon-y.txt"))
+    
+    diffx = recox - trux
+    diffy = recoy - truy
+    
+    plt.plot(trux, recox, '.')
+    plt.xlabel("True x position")
+    plt.ylabel("Reconstructed x position")
+    plt.savefig(f"{plotlocation}/tru-vs-reco-x.pdf")
+    plt.clf()
+    
+    plt.plot(truy, recoy, '.')
+    plt.xlabel("True y position")
+    plt.ylabel("Reconstructed y position")
+    plt.savefig(f"{plotlocation}/tru-vs-reco-y.pdf")
+    plt.clf()
+    
+    # diffx = np.loadtxt(f"{datalocation}/diffx.txt")
+    # diffy = np.loadtxt(f"{datalocation}/diffy.txt")
     
     plt.hist(diffx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffx), 3)} \n$\sigma$ = {round(np.std(diffx), 3)}')
     plt.legend()
@@ -313,21 +331,7 @@ def spat_diff_hist(datalocation, plotlocation, date):
     plt.xlabel('Reco - True (microns) (weighted average)')
     plt.savefig(f'{plotlocation}/hist-diffy.pdf')
     plt.clf()
-    
-    plt.hist(sigx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffx), 3)} \n$\sigma$ = {round(np.std(diffx), 3)}')
-    plt.legend()
-    plt.title(f'Reconstructed - True')
-    plt.xlabel('Reco - True (microns) (weighted average)')
-    plt.savefig(f'{plotlocation}/hist-sigx.pdf')
-    plt.clf()
-    
-    plt.hist(sigy, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffy), 3)} \n$\sigma$ = {round(np.std(diffy), 3)}')
-    plt.legend()
-    plt.title(f'Reconstructed - True')
-    plt.xlabel('Reco - True (microns) (weighted average)')
-    plt.savefig(f'{plotlocation}/hist-sigy.pdf')
-    plt.clf()
-
+  
 #########
      
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
