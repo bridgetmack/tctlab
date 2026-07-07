@@ -53,8 +53,9 @@ class waveforms:
         for i in range(len(wfms[0])):
             
             indices = np.linspace(start_window[i], start_window[i] + npts, npts)
+           
             
-            slope_seg = ped[slopes][indices]
+            slope_seg = ped[slopes][int(start_window[i]):int(start_window[i]+npts)]
             
         
     def avg_waveform(datalocation, date, channel, x, y, nn):
