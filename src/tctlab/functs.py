@@ -54,7 +54,7 @@ class waveforms:
         for i in range(len(wfms[0])):
             # indices = np.linspace(sw[i], sw[i] + npts, npts)
             slope_seg = ped[slopes][int(sw[i]):int(sw[i]+npts)]
-            yiter_seg = ped[yiters][int(sw[i]):int(sw[i]+npts)]
+            # yiter_seg = ped[yiters][int(sw[i]):int(sw[i]+npts)]
             
             data[i,:] = wfms[i,:] - ( slope_seg * wfms[1,:] / ADC)
         
