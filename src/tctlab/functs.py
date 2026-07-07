@@ -54,7 +54,7 @@ class waveforms:
         for i in range(len(wfms[0])):
             indices = np.array([sw[i]*64 + j for j in range(npts)])
             indices.astype(int)
-            if i == 1:
+            if i == 0:
                 print(indices)
             slope_seg = ped[slopes][indices]
             
