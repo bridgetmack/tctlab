@@ -41,9 +41,6 @@ class waveforms:
         wfms = waveforms.remove_baseline(datalocation, date, channel, x, y)
         data = np.zeros([len(wfms), len(wfms[0])])
         
-        print(len(data))
-        print(len(data[0]))
-        
         start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")[1]
         
         npts = len(wfms)
@@ -55,7 +52,10 @@ class waveforms:
         
         for i in range(len(wfms[0])):
             
-            indices = np.array([start_window[i] + j for j in range(npts)])
+            indices = np.linspace(start_window[i], start_window[i] + npts, npts)
+            
+            slope_seg = ped[slopes][indices]
+            
         
     def avg_waveform(datalocation, date, channel, x, y, nn):
         '''For input pointer, returns the average waveform and its features'''
