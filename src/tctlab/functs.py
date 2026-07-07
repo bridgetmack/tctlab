@@ -52,10 +52,13 @@ class waveforms:
         ADC = 3.1422522482546027
         
         for i in range(len(wfms[0])):
-            
-            indices = np.linspace(sw[i], sw[i] + npts, npts)
+            # indices = np.linspace(sw[i], sw[i] + npts, npts)
             slope_seg = ped[slopes][int(sw[i]):int(sw[i]+npts)]
+            yiter_seg = ped[yiters][int(sw[i]):int(sw[i]+npts)]
             
+            data[i,:] = wfms[i,:] - ( slope_seg * wfms[1,:] / ADC)
+        
+        return data
         
     def avg_waveform(datalocation, date, channel, x, y, nn):
         '''For input pointer, returns the average waveform and its features'''
