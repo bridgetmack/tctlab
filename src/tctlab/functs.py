@@ -52,8 +52,8 @@ class waveforms:
         ADC = 3.1422522482546027
         
         for i in range(len(wfms[0])):
-            slope_seg = ped[slopes][int(sw[i]):int(sw[i]+npts)]
-            # yiter_seg = ped[yiters][int(sw[i]):int(sw[i]+npts)]
+            indices = np.array([sw[i]*64 + j for j in range(npts)])
+            slope_seg = ped[slopes][indices]
             
             data[:,i] = wfms[:,i] - ( slope_seg * wfms[:,i] / ADC)
         
@@ -92,7 +92,7 @@ class waveforms:
         stdev= []
 
         for i in range(len(coords)):
-            wfms = waveforms.remove_baseline(datalocation, date, channel, int(xx[i]), int(yy[i]))
+            wfms = waveforms.apply_dynamic_pedestal(datalocation, date, channel, int(xx[i]), int(yy[i]))
             
             # wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
             # wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
@@ -118,10 +118,16 @@ class waveforms:
         xx, yy = coords[:,0], coords[:,1]
         
         for i in range(len(xx)):
-            # wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
+            x, y = int(xx[i]), int(yy[i])
+        
+            t = functs.waveforms.import_waveform(datalocation, date, channel, x, y)[3]
+        
+            vs = functs.waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
+            
+            
+            
             t = waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[3]
             wfms = waveforms.remove_baseline(datalocation, date, channel, int(xx[i]), int(yy[i]))
-            # wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
             
             for event in range(nn):
                 wfm = wfms[:,event]

@@ -65,7 +65,7 @@ def full_run(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch,
     ## add spatial, time resolution stuff.
 
 def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
-    process.matrices(datalocation, date, channel, nn)
+    process.matrices(datalocation, date, channel, nn) ## no pedestals done
     functs.waveforms.amplitude(datalocation, date, channel, 1, nn)
     print("amplitudes updated")
     

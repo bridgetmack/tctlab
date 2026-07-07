@@ -153,18 +153,18 @@ def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
     plt.clf()
 
     ## do from center of pad:
-    xcen, ycen = functs.bnl.channel_center(channel, channel_tags, ch)
-    R = []
-    for i in range(len(xx)):
-        R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
+    # xcen, ycen = functs.bnl.channel_center(channel, channel_tags, ch)
+    # R = []
+    # for i in range(len(xx)):
+        # R.append(np.sqrt( (cx[i] - xcen)**2 + (cy[i] - ycen)**2 ))
 
-    plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.bnl.channel_number(channel, channel_tags, ch) ))
-    plt.legend()
-    plt.title('Amplitude vs R')
-    plt.xlabel('R from Center of Pad (microns)')
-    plt.ylabel('Amplitude (mV)')
-    plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
-    plt.clf()
+    # plt.errorbar(R, ampl, yerr=dev, linestyle='none', marker='.', color='purple', ecolor='plum', label="Channel {0}".format(functs.bnl.channel_number(channel, channel_tags, ch) ))
+    # plt.legend()
+    # plt.title('Amplitude vs R')
+    # plt.xlabel('R from Center of Pad (microns)')
+    # plt.ylabel('Amplitude (mV)')
+    # plt.savefig(f"{plotlocation}/ampl-r-{channel}.pdf")
+    # plt.clf()
 
 def plot_all_avg_ampl(datalocation, plotlocation, date, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
