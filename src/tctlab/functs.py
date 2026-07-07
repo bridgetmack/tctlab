@@ -42,7 +42,7 @@ class waveforms:
         
         start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")[1]
         
-        npts = len(wfms[0])
+        npts = len(wfms)
         print(npts)
         
     def avg_waveform(datalocation, date, channel, x, y, nn):
