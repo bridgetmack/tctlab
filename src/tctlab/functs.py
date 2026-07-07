@@ -52,11 +52,7 @@ class waveforms:
         ADC = 3.1422522482546027
         
         for i in range(len(wfms[0])):
-            indices = np.array([sw[i]*64 + j for j in range(npts)])
-            indices.astype(int)
-            if i == 0:
-                print(indices)
-            slope_seg = ped[slopes][indices]
+            slope_seg = ped[slopes][sw[i]*64 : sw[i]*64 + npts]
             
             data[:,i] = wfms[:,i] - ( slope_seg * wfms[:,i] / ADC)
         
