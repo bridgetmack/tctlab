@@ -82,7 +82,7 @@ class waveforms:
             s += v[k]
         return h*s*units*ctoe/R
 
-    def amplitude(datalocation, date, channel, p, nn):
+    def amplitude(datalocation, date, channel, p, nn, ped):
         coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
         xx= coords[:,0]
         yy= coords[:,1]
@@ -91,8 +91,11 @@ class waveforms:
         stdev= []
 
         for i in range(len(coords)):
-            wfms = waveforms.apply_dynamic_pedestal(datalocation, date, channel, int(xx[i]), int(yy[i]))
-            
+            if ped == True:
+                wfms = waveforms.apply_dynamic_pedestal(datalocation, date, channel, int(xx[i]), int(yy[i]))
+            else:
+                wfms = waveforms.remove_baseline(datalocation, date, channel, int(xx[i]), int(yy[i]))
+
             # wfms= waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[4]
             # wfms= np.array(wfms) - np.mean(wfms[:100], axis=0)
 
@@ -112,7 +115,7 @@ class waveforms:
 
         return avg, stdev
     
-    def fit_ampl(datalocation, plotlocation, date, channel, p, nn):
+    def fit_ampl(datalocation, plotlocation, date, channel, p, nn, ped):
         coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
         xx, yy = coords[:,0], coords[:,1]
         
@@ -120,9 +123,10 @@ class waveforms:
             x, y = int(xx[i]), int(yy[i])
         
             t = functs.waveforms.import_waveform(datalocation, date, channel, x, y)[3]
-        
-            vs = functs.waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
-            
+            if ped == True:
+                vs = functs.waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
+            else: 
+                vs = functs.waveforms.remove_baseline(datalocation, date, channel, x, y)
             
             
             t = waveforms.import_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]))[3]

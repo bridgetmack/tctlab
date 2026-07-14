@@ -12,7 +12,7 @@ def full_run(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch,
 
     for i in range(8):
         process.matrices(datalocation, date, i, nn)
-        functs.waveforms.amplitude(datalocation, date, i, 1, nn)
+        functs.waveforms.amplitude(datalocation, date, i, p, nn)
         print("amplitudes updated")
 
         plotting.plot_all_wfms(i, datalocation, plotlocation, date, channel_tags, ch)
@@ -64,12 +64,12 @@ def full_run(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch,
     ## need to look at laser spot size
     ## add spatial, time resolution stuff.
 
-def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax):
-    process.matrices(datalocation, date, channel, nn) ## no pedestals done
+def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax, ped):
+    process.matrices(datalocation, date, channel, nn)
     functs.waveforms.amplitude(datalocation, date, channel, 1, nn)
     print("amplitudes updated")
     
-    plotting.plot_individual(channel, 10, datalocation, plotlocation, date)
+    plotting.plot_individual(channel, 10, datalocation, plotlocation, date, ped)
     #plotting.plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     #plotting.plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     plotting.map_amplitude_2d(channel, datalocation, plotlocation, date, channel_tags, ch)
@@ -77,9 +77,3 @@ def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, 
     plotting.ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch)
     print("waveform plots updated")
     
-    # spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
-    # spatres.diffs(datalocation, date, nn, channel_tags, ch)
-    
-    # plotting.weighted_avg_hist(datalocation, plotlocation, date)
-    # plotting.spat_diff_hist(datalocation, plotlocation, date)
-    # print("spatial resolutions updated")

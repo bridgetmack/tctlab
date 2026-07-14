@@ -19,7 +19,7 @@ def plot_all_individual(channel, datalocation, plotlocation, date, x, y):
     plt.savefig(f"{plotlocation}/point-plot-{x}-{y}.pdf")
     plt.clf()
 
-def plot_individual(channel, event, datalocation, plotlocation, date):
+def plot_individual(channel, event, datalocation, plotlocation, date, ped):
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     
@@ -28,7 +28,10 @@ def plot_individual(channel, event, datalocation, plotlocation, date):
         
         t = functs.waveforms.import_waveform(datalocation, date, channel, x, y)[3]
         
-        vs = functs.waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
+        if ped == True:
+            vs = functs.waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
+        else:
+            vs = functs.waveforms.remove_baseline(datalocation, date, channel, x, y)
         
         vv = np.transpose(vs)
         
