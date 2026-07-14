@@ -66,7 +66,7 @@ def full_run(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch,
 
 def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax, ped):
     process.matrices(datalocation, date, channel, nn)
-    functs.waveforms.amplitude(datalocation, date, channel, 1, nn)
+    functs.waveforms.amplitude(datalocation, date, channel, 1, nn, ped)
     print("amplitudes updated")
     
     plotting.plot_individual(channel, 10, datalocation, plotlocation, date, ped)
