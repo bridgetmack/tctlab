@@ -105,8 +105,8 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             wax.append(numx/den)
             way.append(numy/den)
             
-            np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
-            np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
+        np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
+        np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
 
 def diffs(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
@@ -146,6 +146,9 @@ def diffs(datalocation, date, nn, channel_tags, ch):
     
     # np.savetxt(f"{datalocation}/sig-x.txt", sigx)
     # np.savetxt(f"{datalocation}/sig-y.txt", sigy)
+
+
+
 
 #######    
 

@@ -15,7 +15,8 @@ def plot_all_individual(channel, datalocation, plotlocation, date, x, y):
     vv = np.transpose(vs)
     for i in range(len(vv)):
         plt.plot(t, vv[i])
-        
+    
+    
     plt.savefig(f"{plotlocation}/point-plot-{x}-{y}.pdf")
     plt.clf()
 
@@ -334,7 +335,35 @@ def spat_diff(datalocation, plotlocation, date):
     plt.xlabel('Reco - True (microns) (weighted average)')
     plt.savefig(f'{plotlocation}/hist-diffy.pdf')
     plt.clf()
-  
+ 
+def spat_diff_map(datalocation, plotlocation, date):
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx, yy = coords[:,0], coords[:,1]
+    
+    x1, x2 = np.unique(xx, axis=0), np.unique(yy, axis=0)
+    ar = np.zeros([len(x2), len(x1)], dtype=int)
+    cc = []
+    
+    for i in range(len(xx)):
+        cc.append([xx[i], yy[i]])
+
+    for i in range(len(yy)):
+        for j in range(len(xx)):
+            for k in range(len(cc)):
+                if xx[j] == cc[k][0] and yy[i] == cc[k][1]:
+                    x = np.where(x1 == xx[j])
+                    y = np.where(x2 == yy[i])
+
+                    ar[y,x] = k
+    
+    event = 10
+    
+    for i in range(len(xx)):
+        wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+        way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+        
+        
+ 
 #########
      
 def plot_all_ampl(datalocation, date, xcorr, ycorr, xmin, ymin, channel_tags, ch):
