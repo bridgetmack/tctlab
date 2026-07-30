@@ -112,16 +112,21 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
     coords = np.loadtxt(f"{datalocation}/scposition{date}/txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
+    
+    ii, jj = [], []
 
     for channel in channel_tags:
         chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
         chan_ceny.append(functs.bnl.channel_center(channel, channel_tags, ch)[1])
         
-        indices = np.where( functs.geometry_matrix() == channel_tags[channel]
-        ii, jj = int(indices[0]), int(indices[1])
+        indices = np.where( functs.geometry_matrix() == channel_tags[channel] )
+        ii.append(int(indices[0]))
+        jj.append(int(indices[1]))
         
     chan_cenx = np.array(chan_cenx)
     chan_ceny = np.array(chan_ceny)
+
+    print(ii, jj)
 
     for i in range(len(xx)):
         a_vec = np.zeros([len(channel_tags), nn], float)
