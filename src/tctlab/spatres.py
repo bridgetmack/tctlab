@@ -121,8 +121,8 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
         chan_ceny.append(functs.bnl.channel_center(channel, channel_tags, ch)[1])
         
         indices = np.where( functs.bnl.geometry_matrix() == channel_tags[channel] )
-        ii.append(int(indices[0]))
-        jj.append(int(indices[1]))
+        ii.append((indices[0]))
+        jj.append((indices[1]))
         
     chan_cenx = np.array(chan_cenx)
     chan_ceny = np.array(chan_ceny)
