@@ -115,6 +115,7 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
     
     ii, jj = [], []
     chan_cenx, chan_ceny = [], [] 
+    all_ch = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 
     for channel in channel_tags:
         chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
@@ -134,8 +135,15 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
         for event in range(nn):
             aa = a_vec[:,event]
             
-            print(aa)
-            print(ch)
+            full_a = np.zeros(15)
+            
+            for j in ch:
+                full_a[j-1] = aa[j]
+            
+            print(full_a)
+
+            
+            
 
     chan_cenx, chan_ceny = [], []
     
