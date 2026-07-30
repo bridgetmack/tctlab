@@ -138,7 +138,7 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
             full_a = np.zeros(15)
             
             for j in ch:
-                full_a[j-1] = aa[j]
+                full_a[j-1] = aa[ch.index(j)]
             
             print(full_a)
 
