@@ -126,7 +126,7 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
     for i in range(len(xx)):
         a_vec = np.zeros([len(channel_tags), nn], float)
        
-        for hannelc in range(len(channel_tags)):
+        for channel in range(len(channel_tags)):
             ampl = np.load(f"{datalocation}/amplitudes_ch{channel_tags[channel]}-x{int(xx[i])}-y{int(yy[i])}.npy")
             
             a_vec[channel,:] = ampl[:nn]
