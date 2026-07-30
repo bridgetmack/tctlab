@@ -109,7 +109,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
 
 def cluster1(datalocation, date, channel_tags, ch, nn):
-    coords = np.loadtxt(f"{datalocation}/scposition{date}/txt")
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
     
