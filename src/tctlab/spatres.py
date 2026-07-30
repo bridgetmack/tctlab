@@ -18,7 +18,7 @@ def dev_frac(a1, a2, d1, d2):
 
     return np.sqrt(df1**2 + df2**2)
 
-def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
+def ampl_matrix(datalocation, date, channel_tags, ch):
     '''Returns matrix and inverted matrix for scan set; can be used for spatial resolutions in 2d'''
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
@@ -70,7 +70,7 @@ def ampl_matrix(datalocation, date, ymin, channel_tags, ch):
     print(ampl_inv)
 
     ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
-    
+
 def weighted_average(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
@@ -105,8 +105,46 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             wax.append(numx/den)
             way.append(numy/den)
             
-        np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
-        np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
+            np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
+            np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
+
+def cluster1(datalocation, date, channel_tags, ch, nn):
+    coords = np.loadtxt(f"{datalocation}/scposition{date}/txt")
+    xx, yy = coords[:,0], coords[:,1]
+    ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
+
+    for channel in channel_tags:
+        chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
+        chan_ceny.append(functs.bnl.channel_center(channel, channel_tags, ch)[1])
+        
+        indices = np.where( functs.geometry_matrix() == channel_tags[channel]
+        ii, jj = int(indices[0]), int(indices[1])
+        
+    chan_cenx = np.array(chan_cenx)
+    chan_ceny = np.array(chan_ceny)
+
+    for i in range(len(xx)):
+        a_vec = np.zeros([len(channel_tags), nn], float)
+       
+        for hannelc in range(len(channel_tags)):
+            ampl = np.load(f"{datalocation}/amplitudes_ch{channel_tags[channel]}-x{int(xx[i])}-y{int(yy[i])}.npy")
+            
+            a_vec[channel,:] = ampl[:nn]
+        
+        for event in range(nn):
+            aa = a_vec[:,event]
+            
+            m_ampl = np.zeros([4,4], float)
+            
+            for j in range(len(aa)):
+                m_ampl[ii,jj] = aa[j]
+                
+                print(m_ampl)
+
+    chan_cenx, chan_ceny = [], []
+    
+    
+
 
 def diffs(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
@@ -146,9 +184,6 @@ def diffs(datalocation, date, nn, channel_tags, ch):
     
     # np.savetxt(f"{datalocation}/sig-x.txt", sigx)
     # np.savetxt(f"{datalocation}/sig-y.txt", sigy)
-
-
-
 
 #######    
 
