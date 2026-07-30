@@ -119,15 +119,9 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
     for channel in channel_tags:
         chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
         chan_ceny.append(functs.bnl.channel_center(channel, channel_tags, ch)[1])
-        
-        indices = np.where( functs.bnl.geometry_matrix() == channel_tags[channel] )
-        ii.append((indices[0]))
-        jj.append((indices[1]))
-        
+
     chan_cenx = np.array(chan_cenx)
     chan_ceny = np.array(chan_ceny)
-
-    print(ii, jj)
 
     for i in range(len(xx)):
         a_vec = np.zeros([len(channel_tags), nn], float)
@@ -140,12 +134,8 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
         for event in range(nn):
             aa = a_vec[:,event]
             
-            m_ampl = np.zeros([4,4], float)
-            
-            for j in range(len(aa)):
-                m_ampl[ii,jj] = aa[j]
-                
-                print(m_ampl)
+            print(aa)
+            print(ch)
 
     chan_cenx, chan_ceny = [], []
     
