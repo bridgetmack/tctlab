@@ -114,6 +114,7 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
     ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
     
     ii, jj = [], []
+    chan_cenx, chan_ceny = [], [] 
 
     for channel in channel_tags:
         chan_cenx.append(functs.bnl.channel_center(channel, channel_tags, ch)[0])
