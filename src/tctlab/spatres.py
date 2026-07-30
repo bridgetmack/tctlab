@@ -135,7 +135,7 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
         for event in range(nn):
             aa = a_vec[:,event]
             
-            full_a = np.zeros(15)
+            full_a = np.zeros(16)
             
             for j in ch:
                 full_a[j-1] = aa[ch.index(j)-1]
