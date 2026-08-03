@@ -69,8 +69,6 @@ def ampl_matrix(datalocation, date, channel_tags, ch):
     print(ampl_tot)
     print(ampl_inv)
 
-    ## we should get a list of all the amplitude matrices for each position. Inverting the matrix should give us the spatial resolution?
-
 def weighted_average(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
@@ -86,6 +84,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
     
     a_vec = np.zeros([len(channel_tags), nn], float)
     sig_x, sig_y, sig_r = [], [], []
+    mux, muy = [], []
     
     for i in range(len(xx)):
         a_vec = np.zeros([len(channel_tags), nn], float)
@@ -109,17 +108,13 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
         np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
         np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
             
+        mux.append(np.mean(wax))
+        muy.append(np.mean(way))
         sig_x.append( np.std(wax) )
         sig_y.append(np.std(way))
-        
-        #print(sig_x[0], sig_y)
-        
+                
         sig_r.append( np.sqrt( sig_x[i]**2 + sig_y[i]**2 ))
-
-        # np.savetxt(f"{datalocation}/sigx-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_x)
-        # np.savetxt(f"{datalocation}/sigy-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_y)
-        # np.savetxt(f"{datalocation}/sigr-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_r)
-        
+    print(len(mux), len(sig_x))
     return sig_x, sig_y, sig_r
 
 def cluster1(datalocation, date, channel_tags, ch, nn):
@@ -164,22 +159,13 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
             a31 = full_a[10] + full_a[9] + full_a[8] + full_a[7]
             a32 = full_a[9] + full_a[3] + full_a[7] + full_a[6]
             a33 = full_a[3] + full_a[4] + full_a[5] + full_a[6]
-            
-            
-
-    
-    
-
 
 def diffs(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
-    trux, truy = [], []
-    recox, recoy = [], []
-    # diffx, diffy = [], []
-    # sigx, sigy = [], []
+    trux, truy, recox, recoy = [], [], [], []
     
     for i in range(len(xx)):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
@@ -191,24 +177,14 @@ def diffs(datalocation, date, nn, channel_tags, ch):
             
             truy.append(uy[i])
             recoy.append(way[j])
-            
-            # diffx.append(wax[j] - ux[i])
-            # diffy.append(way[j] - uy[i])
+
+    # np.savetxt(f"{datalocation}/true-x.txt", trux)
+    # np.savetxt(f"{datalocation}/true-y.txt", truy)
     
-        # sigx.append(np.std(wax))
-        # sigy.append(np.std(way))
+    # np.savetxt(f"{datalocation}/recon-x.txt", recox)
+    # np.savetxt(f"{datalocation}/recon-y.txt", recoy)
     
-    np.savetxt(f"{datalocation}/true-x.txt", trux)
-    np.savetxt(f"{datalocation}/true-y.txt", truy)
-    
-    np.savetxt(f"{datalocation}/recon-x.txt", recox)
-    np.savetxt(f"{datalocation}/recon-y.txt", recoy)
-    
-    # np.savetxt(f"{datalocation}/diffx.txt", diffx)
-    # np.savetxt(f"{datalocation}/diffy.txt", diffy)
-    
-    # np.savetxt(f"{datalocation}/sig-x.txt", sigx)
-    # np.savetxt(f"{datalocation}/sig-y.txt", sigy)
+    return trux, truy, recox, recoy
 
 #######    
 
