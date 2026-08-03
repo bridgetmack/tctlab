@@ -105,8 +105,17 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             wax.append(numx/den)
             way.append(numy/den)
             
-            np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
-            np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
+        np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
+        np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
+            
+        sig_x = np.std(wax)
+        sig_y = np.std(way)
+        
+        sig_r = np.sqrt( sig_x**2 + sig_y**2 )
+
+        np.savetxt(f"{datalocation}/sigx-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_x)
+        np.savetxt(f"{datalocation}/sigy-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_y)
+        np.savetxt(f"{datalocation}/sigr-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_r)
 
 def cluster1(datalocation, date, channel_tags, ch, nn):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
@@ -140,13 +149,19 @@ def cluster1(datalocation, date, channel_tags, ch, nn):
             for j in ch:
                 full_a[j-1] = aa[ch.index(j)-1]
             
-            print(full_a)
+            # print(full_a)
             a11 = full_a[14] + full_a[13] + full_a[12] + full_a[11]
-            #a12 = 
+            a12 = full_a[13] + full_a[0] + full_a[11] + full_a[2]
+            a13 = full_a[0] + full_a[15] + full_a[2] + full_a[1]
+            a21 = full_a[12] + full_a[11] + full_a[10] + full_a[9]
+            a22 = full_a[11] + full_a[2] + full_a[9] + full_a[3]
+            a23 = full_a[2] + full_a[1] + full_a[3] + full_a[4]
+            a31 = full_a[10] + full_a[9] + full_a[8] + full_a[7]
+            a32 = full_a[9] + full_a[3] + full_a[7] + full_a[6]
+            a33 = full_a[3] + full_a[4] + full_a[5] + full_a[6]
             
             
 
-    chan_cenx, chan_ceny = [], []
     
     
 

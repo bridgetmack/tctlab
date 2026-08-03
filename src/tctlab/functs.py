@@ -185,13 +185,6 @@ class bnl:
             i = channel_tags.index(channel)
             
             return ch[i]
-        # else:
-            # if channel == 2:
-                # return ch[0]
-            # elif channel == 3:
-                # return ch[1]
-            # elif channel == 4:
-                # return ch[2]
 
     def channel_center(channel, channel_tags, ch):
         cc = bnl.channel_number(channel, channel_tags, ch)
