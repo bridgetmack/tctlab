@@ -114,7 +114,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
         
         print(sig_x[0], sig_y)
         
-        sig_r.append( np.sqrt( sig_x**2 + sig_y**2 ))
+        sig_r.append( np.sqrt( sig_x[0]**2 + sig_y[0]**2 ))
 
         # np.savetxt(f"{datalocation}/sigx-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_x)
         # np.savetxt(f"{datalocation}/sigy-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_y)
