@@ -313,9 +313,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
     for i in range(len(xx)):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-        
-        print(len(wax))
-        
+                
         bbx = np.linspace(min(wax) - 10, max(wax) + 10, 10)
         bby = np.linspace(min(way) - 10, max(way) + 10, 10)
         
@@ -358,9 +356,6 @@ def spat_diff(datalocation, plotlocation, date):
     plt.ylabel("Reconstructed y position")
     plt.savefig(f"{plotlocation}/tru-vs-reco-y.pdf")
     plt.clf()
-    
-    # diffx = np.loadtxt(f"{datalocation}/diffx.txt")
-    # diffy = np.loadtxt(f"{datalocation}/diffy.txt")
     
     plt.hist(diffx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(diffx), 3)} \n$\sigma$ = {round(np.std(diffx), 3)}')
     plt.legend()
