@@ -112,13 +112,15 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
         sig_x.append( np.std(wax) )
         sig_y.append(np.std(way))
         
+        print(sig_x, sig_y)
+        
         sig_r.append( np.sqrt( sig_x**2 + sig_y**2 ))
 
         # np.savetxt(f"{datalocation}/sigx-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_x)
         # np.savetxt(f"{datalocation}/sigy-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_y)
         # np.savetxt(f"{datalocation}/sigr-x{int(xx[i])}-y{int(yy[i])}-board0.txt", sig_r)
         
-    return wax, way, sig_x, sig_y, sig_r
+    return sig_x, sig_y, sig_r
 
 def cluster1(datalocation, date, channel_tags, ch, nn):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")

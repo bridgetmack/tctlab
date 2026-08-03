@@ -145,7 +145,7 @@ class mapping:
         
     def map_spatres(datalocation, plotlocation, date, nn,  channel_tags, ch):
         ar, x1, x2 = mapping.map_matrix(datalocation, date)
-        wax, way, sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
+        sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
         xmap = np.zeros([len(x2), len(x1)])
         ymap = np.zeros([len(x2), len(x1)])
         rmap = np.zeros([len(x2), len(x1)])
