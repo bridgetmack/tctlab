@@ -109,8 +109,8 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
         np.savetxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt", wax)
         np.savetxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt", way)
             
-        sig_x.append( np.std(wax) )
-        sig_y.append(np.std(way))
+        sig_x.append( np.std(wax)[0] )
+        sig_y.append(np.std(way)[0])
         
         print(sig_x, sig_y)
         
