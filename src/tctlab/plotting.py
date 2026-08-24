@@ -336,7 +336,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         
         
         h, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
-        xplt = mlab.normpdf(xbins, xmu, xsigma)
+        xplt = norm.pdf(xbins, xmu, xsigma)
         plt.plot(xbins, xplt, 'r--', linewidth=2, label=f"mu={xmu}, sigma={xsigma}")
         plt.legend()
         plt.title(f'Reconstructed X; True x = {int(ux[i])}')
@@ -345,7 +345,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         plt.clf()
         
         hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
-        yplt = mlab.normpdf(ybins, ymu, ysigma)
+        yplt = norm.pdf(ybins, ymu, ysigma)
         plt.plot(bins, yplt, 'b--', linewidth=2, label=f"mu={ymu}, sigma={ysigma}")
         plt.legend()
         plt.title(f'Reconstructed Y; True y = {int(uy[i])}')
