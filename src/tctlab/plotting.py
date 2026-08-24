@@ -346,7 +346,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         
         hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
         yplt = norm.pdf(ybins, ymu, ysigma)
-        plt.plot(bins, yplt, 'b--', linewidth=2, label=f"mu={ymu}, sigma={ysigma}")
+        plt.plot(ybins, yplt, 'b--', linewidth=2, label=f"mu={ymu}, sigma={ysigma}")
         plt.legend()
         plt.title(f'Reconstructed Y; True y = {int(uy[i])}')
         plt.xlabel('Reconstructed Y (weighted average)')
