@@ -67,9 +67,7 @@ def recover_pos(datalocation, date):
 def matrices(datalocation, date, channel, nn):
     ww, pp = [], []
     coords= np.loadtxt(f"{datalocation}/scposition{date}.txt", float)
-    print(len(coords))
-    xx= coords[:,0]
-    yy= coords[:,1]
+    xx, yy = coords[:,0], coords[:,1]
     for i in range(len(coords)):
         pp.append([int(xx[i]), int(yy[i])])
         ww.append([functs.waveforms.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[3], functs.waveforms.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[4], functs.waveforms.avg_waveform(datalocation, date, channel, int(xx[i]), int(yy[i]), nn)[5]])

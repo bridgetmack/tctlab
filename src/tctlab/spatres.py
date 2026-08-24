@@ -110,12 +110,11 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             
         mux.append(np.mean(wax))
         muy.append(np.mean(way))
-        sig_x.append( np.std(wax) )
+        sig_x.append(np.std(wax))
         sig_y.append(np.std(way))
                 
         sig_r.append( np.sqrt( sig_x[i]**2 + sig_y[i]**2 ))
-    print(len(mux), len(sig_x))
-    return sig_x, sig_y, sig_r
+    return mux, muy, sig_x, sig_y, sig_r
 
 def cluster1(datalocation, date, channel_tags, ch, nn):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
@@ -177,12 +176,6 @@ def diffs(datalocation, date, nn, channel_tags, ch):
             
             truy.append(uy[i])
             recoy.append(way[j])
-
-    # np.savetxt(f"{datalocation}/true-x.txt", trux)
-    # np.savetxt(f"{datalocation}/true-y.txt", truy)
-    
-    # np.savetxt(f"{datalocation}/recon-x.txt", recox)
-    # np.savetxt(f"{datalocation}/recon-y.txt", recoy)
     
     return trux, truy, recox, recoy
 

@@ -58,6 +58,10 @@ class waveforms:
         
         return data
         
+    def time_axis(datalocation, date, channel, x, y):
+        wfms = waveforms.apply_dynamic_pedestal(datalocation, date, channel, x, y)
+        
+        
     def avg_waveform(datalocation, date, channel, x, y, nn):
         '''For input pointer, returns the average waveform and its features'''
         channel, x, y, wf_t, wf_vs = waveforms.import_waveform(datalocation, date, channel, x, y)

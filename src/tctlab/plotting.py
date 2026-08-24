@@ -144,7 +144,7 @@ class mapping:
         
     def map_spatres(datalocation, plotlocation, date, nn,  channel_tags, ch):
         ar, x1, x2 = mapping.map_matrix(datalocation, date)
-        sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
+        mux, muy, sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
         xmap = np.zeros([len(x2), len(x1)])
         ymap = np.zeros([len(x2), len(x1)])
         rmap = np.zeros([len(x2), len(x1)])
@@ -297,7 +297,7 @@ def ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch):
     for i in range(len(coords)):
         ampl = np.load(f"{datalocation}/amplitudes_ch{channel}-x{int(xx[i])}-y{int(yy[i])}.npy")
     
-        bb = np.linspace(min(ampl), max(ampl), 10)
+        bb = np.linspace(min(ampl), max(ampl), 100)
         plt.hist(ampl, color='purple', edgecolor='black', bins=bb, label='mean = {} mV\n$\sigma$ = {} mV'.format(round(np.mean(ampl), 3), round(np.std(ampl),3)))
         plt.legend()
         plt.title(f"Amplitude; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}; Position ({int(coords[:,0][i])}, {int(coords[:,1][i])})")
@@ -314,17 +314,17 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
                 
-        bbx = np.linspace(min(wax) - 10, max(wax) + 10, 10)
-        bby = np.linspace(min(way) - 10, max(way) + 10, 10)
+        bbx = np.linspace(min(wax) - 10, max(wax) + 10, 100)
+        bby = np.linspace(min(way) - 10, max(way) + 10, 100)
         
-        plt.hist(wax, bins=bbx, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
+        plt.hist(wax, bins=100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
         plt.legend()
         plt.title(f'Reconstructed X; True x = {int(ux[i])}')
         plt.xlabel('Reconstructed X (weighted average)')
         plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-        plt.hist(way, bins= bby, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
+        plt.hist(way, bins= 100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
         plt.legend()
         plt.title(f'Reconstructed Y; True y = {int(uy[i])}')
         plt.xlabel('Reconstructed Y (weighted average)')
@@ -336,11 +336,7 @@ def spat_diff(datalocation, plotlocation, date):
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
-    trux = np.array(np.loadtxt(f"{datalocation}/true-x.txt"))
-    truy = np.array(np.loadtxt(f"{datalocation}/true-y.txt"))
-    
-    recox = np.array(np.loadtxt(f"{datalocation}/recon-x.txt"))
-    recoy = np.array(np.loadtxt(f"{datalocation}/recon-y.txt"))
+    trux, truy, recox, recoy = spatres.diffs(datalocation, date, nn, channel_tags, ch)
     
     diffx = recox - trux
     diffy = recoy - truy
