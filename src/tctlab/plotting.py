@@ -339,8 +339,8 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         (xmu, xsigma) = norm.fit(wax)
         (ymu, ysigma) = norm.fit(way)
         
-        xb = np.linspace(min(wax), max(wax), 100)
-        yb = np.linspace(min(way), max(way), 100)
+        xb = np.linspace(min(wax), max(wax), 101)
+        yb = np.linspace(min(way), max(way), 101)
         
         hx, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', alpha= 0.5, label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
         xplt = norm.pdf(xbins, xmu, xsigma)
