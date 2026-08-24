@@ -8,6 +8,9 @@ plt.rcParams['figure.dpi'] = 150
 import mplhep as hep
 hep.style.use("LHCb2")
 
+from scipy.stats import norm
+import matplotlib.mlab as mlab
+
 class plot_wfm:
     def plot_all_individual(channel, datalocation, plotlocation, date, x, y):
         channel, x, y, t, vs = functs.waveforms.import_waveform(datalocation, date, channel, x, y)
@@ -175,6 +178,16 @@ class mapping:
         plt.savefig(f"{plotlocation}/map_sig_r.pdf")
         plt.clf()
 
+    def spat_diff_map(datalocation, plotlocation, date, nn, channel_tags, ch):
+        ar, x1, x2 = mapping.map_matrix(datalocation, date)
+        mux, muy, sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
+        
+        event = 10
+        
+        for i in range(len(xx)):
+            wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+            way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+
 class plot_apml:            
     def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel}.txt")
@@ -314,17 +327,26 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
                 
-        bbx = np.linspace(min(wax) - 10, max(wax) + 10, 100)
-        bby = np.linspace(min(way) - 10, max(way) + 10, 100)
+        # bbx = np.linspace(min(wax) - 10, max(wax) + 10, 100)
+        # bby = np.linspace(min(way) - 10, max(way) + 10, 100)
         
-        plt.hist(wax, bins=100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
+        (xmu, xsigma) = norm.fit(wax)
+        (ymu, ysigma) = norm.fit(way)
+        
+        
+        
+        h, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
+        xplt = mlab.normpdf(xbins, xmu, xsigma)
+        plt.plot(xbins, xplt, 'r--', linewidth=2, label=f"mu={xmu}, sigma={xsigma}")
         plt.legend()
         plt.title(f'Reconstructed X; True x = {int(ux[i])}')
         plt.xlabel('Reconstructed X (weighted average)')
         plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-        plt.hist(way, bins= 100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
+        hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
+        yplt = mlab.normpdf(ybins, ymu, ysigma)
+        plt.plot(bins, yplt, 'b--', linewidth=2, label=f"mu={ymu}, sigma={ysigma}")
         plt.legend()
         plt.title(f'Reconstructed Y; True y = {int(uy[i])}')
         plt.xlabel('Reconstructed Y (weighted average)')
@@ -367,31 +389,7 @@ def spat_diff(datalocation, plotlocation, date):
     plt.savefig(f'{plotlocation}/hist-diffy.pdf')
     plt.clf()
  
-def spat_diff_map(datalocation, plotlocation, date):
-    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
-    xx, yy = coords[:,0], coords[:,1]
-    
-    x1, x2 = np.unique(xx, axis=0), np.unique(yy, axis=0)
-    ar = np.zeros([len(x2), len(x1)], dtype=int)
-    cc = []
-    
-    for i in range(len(xx)):
-        cc.append([xx[i], yy[i]])
 
-    for i in range(len(yy)):
-        for j in range(len(xx)):
-            for k in range(len(cc)):
-                if xx[j] == cc[k][0] and yy[i] == cc[k][1]:
-                    x = np.where(x1 == xx[j])
-                    y = np.where(x2 == yy[i])
-
-                    ar[y,x] = k
-    
-    event = 10
-    
-    for i in range(len(xx)):
-        wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-        way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         
         
  
