@@ -337,8 +337,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         (ymu, ysigma) = norm.fit(way)
         
         
-        
-        h, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
+        h, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', alpha= 0.5, label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
         xplt = norm.pdf(xbins, xmu, xsigma)
         plt.plot(xbins, xplt, 'b--')
         plt.legend()
@@ -347,7 +346,7 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
         plt.clf()
         
-        hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
+        hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', alpha= 0.5, label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
         yplt = norm.pdf(ybins, ymu, ysigma)
         plt.plot(ybins, yplt, 'b--')
         plt.legend()
