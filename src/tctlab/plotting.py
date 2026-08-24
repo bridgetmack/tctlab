@@ -186,10 +186,13 @@ class mapping:
         ar, x1, x2 = mapping.map_matrix(datalocation, date)
         mux, muy, sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
         
-        
-        event = 10
-        print(len(mux))
-        print(len(xx))
+        xdiff, ydiff = [], []
+        for i in range(len(xx)):
+            xdiff.append( ux[i] - mux[i] )
+            ydiff.append( uy[i] - muy[i] )
+            
+            
+       
 
 class plot_apml:            
     def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
@@ -336,10 +339,12 @@ def weighted_avg_hist(datalocation, plotlocation, date):
         (xmu, xsigma) = norm.fit(wax)
         (ymu, ysigma) = norm.fit(way)
         
+        xb = np.linspace(min(wax), max(wax), 100)
+        yb = np.linspace(min(way), max(way), 100
         
-        h, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', alpha= 0.5, label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
+        hx, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', alpha= 0.5, label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
         xplt = norm.pdf(xbins, xmu, xsigma)
-        lx = plt.plot(xbins, xplt, 'm')
+        plt.plot(xb, xplt, 'm')
         plt.legend()
         plt.title(f'Reconstructed X; True x = {int(ux[i])}')
         plt.xlabel('Reconstructed X (weighted average)')
