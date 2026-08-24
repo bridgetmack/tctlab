@@ -179,14 +179,17 @@ class mapping:
         plt.clf()
 
     def spat_diff_map(datalocation, plotlocation, date, nn, channel_tags, ch):
+        coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+        xx, yy = coords[:,0], coords[:,1]
+        ux, uy = functs.bnl.convert_coords(datalocation, date)
+        
         ar, x1, x2 = mapping.map_matrix(datalocation, date)
         mux, muy, sig_x, sig_y, sig_r = spatres.weighted_average(datalocation, date, nn, channel_tags, ch)
         
-        event = 10
         
-        for i in range(len(xx)):
-            wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-            way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+        event = 10
+        print(len(mux))
+        print(len(xx))
 
 class plot_apml:            
     def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
