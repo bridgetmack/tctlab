@@ -190,10 +190,42 @@ class mapping:
         for i in range(len(xx)):
             xdiff.append( ux[i] - mux[i] )
             ydiff.append( uy[i] - muy[i] )
-            
-            
-       
-
+        
+        xmap, ymap = np.zeros([len(x2), len(x1)]), np.zeros([len(x2), len(x1)])
+        
+        for i in range(len(x2)):
+            for j in range(len(x1)):
+                n = ar[i,j]
+                
+                xmap[i,j] = xdiff[n]
+                ymap[i,j] = ydiff[n]
+                
+        plt.imshow(xmap, origin='lower')
+        plt.title("X Diff")
+        plt.colorbar(label="um")
+        plt.savefig(f"{plotlocation}/map-diff-x.pdf")
+        plt.clf()
+        
+        plt.imshow(ymap, origin='lower')
+        plt.title("Y Diff")
+        plt.colorbar(label='um')
+        plt.savefig(f"{plotlocation}/map-diff-y.pdf")
+        plt.clf()
+        
+        plt.errorbar(ux, mux, yerr=sig_x, linestyle='none', marker='.', color='purple', ecolor='plum')
+        plt.title("Reco vs True X")
+        plt.xlabel("True")
+        plt.ylabel("Reco")
+        plt.savefig(f"{plotlocation}/x-reco-true.pdf")
+        plt.clf()
+        
+        plt.errorbar(uy, muy, yerr=sig_y, linestyle='none', marker='.', color='teal', ecolor='paleturquoise')
+        plt.title("Reco vs True Y")
+        plt.xlabel("True")
+        plt.ylabel("Reco")
+        plt.savefig(f"{plotlocation}/y-reco-true.pdf")
+        plt.clf()
+                      
 class plot_apml:            
     def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel}.txt")
@@ -309,56 +341,54 @@ class plot_apml:
         plt.savefig(f"{plotlocation}/ampl-all-r.pdf")
         plt.clf()
 
-def ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch):
-    coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
-    xx, yy = coords[:,0], coords[:,1]
-    
-    for i in range(len(coords)):
-        ampl = np.load(f"{datalocation}/amplitudes_ch{channel}-x{int(xx[i])}-y{int(yy[i])}.npy")
-    
-        bb = np.linspace(min(ampl), max(ampl), 100)
-        plt.hist(ampl, color='purple', edgecolor='black', bins=bb, label='mean = {} mV\n$\sigma$ = {} mV'.format(round(np.mean(ampl), 3), round(np.std(ampl),3)))
-        plt.legend()
-        plt.title(f"Amplitude; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}; Position ({int(coords[:,0][i])}, {int(coords[:,1][i])})")
-        plt.xlabel("Amplitude (mV)")
-        plt.savefig(f"{plotlocation}/hist-ampl-ch{channel}-x{int(xx[i])}-y{int(yy[i])}.pdf")
-        plt.clf()
+class histograms:
+    def ampl_hist(channel, datalocation, plotlocation, date, channel_tags, ch):
+        coords= np.loadtxt(f"{datalocation}/scposition{date}.txt")
+        xx, yy = coords[:,0], coords[:,1]
+        
+        for i in range(len(coords)):
+            ampl = np.load(f"{datalocation}/amplitudes_ch{channel}-x{int(xx[i])}-y{int(yy[i])}.npy")
+        
+            bb = np.linspace(min(ampl), max(ampl), 100)
+            plt.hist(ampl, color='purple', edgecolor='black', bins=bb, label='mean = {} mV\n$\sigma$ = {} mV'.format(round(np.mean(ampl), 3), round(np.std(ampl),3)))
+            plt.legend()
+            plt.title(f"Amplitude; Channel {functs.bnl.channel_number(channel, channel_tags, ch)}; Position ({int(coords[:,0][i])}, {int(coords[:,1][i])})")
+            plt.xlabel("Amplitude (mV)")
+            plt.savefig(f"{plotlocation}/hist-ampl-ch{channel}-x{int(xx[i])}-y{int(yy[i])}.pdf")
+            plt.clf()
 
-def weighted_avg_hist(datalocation, plotlocation, date):
-    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
-    xx, yy = coords[:,0], coords[:,1]
-    ux, uy = functs.bnl.convert_coords(datalocation, date)
-    
-    for i in range(len(xx)):
-        wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-        way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
-                
-        # bbx = np.linspace(min(wax) - 10, max(wax) + 10, 100)
-        # bby = np.linspace(min(way) - 10, max(way) + 10, 100)
+    def weighted_avg_hist(datalocation, plotlocation, date):
+        coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+        xx, yy = coords[:,0], coords[:,1]
+        ux, uy = functs.bnl.convert_coords(datalocation, date)
         
-        (xmu, xsigma) = norm.fit(wax)
-        (ymu, ysigma) = norm.fit(way)
-        
-        xb = np.linspace(min(wax), max(wax), 101)
-        yb = np.linspace(min(way), max(way), 101)
-        
-        hx, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', alpha= 0.5, density=True, label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
-        xplt = norm.pdf(xbins, xmu, xsigma)
-        plt.plot(xbins, xplt, 'm')
-        plt.legend()
-        plt.title(f'Reconstructed X; True x = {int(ux[i])}')
-        plt.xlabel('Reconstructed X (weighted average)')
-        plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
-        plt.clf()
-        
-        hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', alpha= 0.5, density=True, label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
-        yplt = norm.pdf(ybins, ymu, ysigma)
-        plt.plot(ybins, yplt, 'm')
-        plt.legend()
-        plt.title(f'Reconstructed Y; True y = {int(uy[i])}')
-        plt.xlabel('Reconstructed Y (weighted average)')
-        plt.savefig(f'{plotlocation}/hist-way-x{int(xx[i])}-y{int(yy[i])}.pdf')
-        plt.clf()
+        for i in range(len(xx)):
+            wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+            way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
+
+            (xmu, xsigma) = norm.fit(wax)
+            (ymu, ysigma) = norm.fit(way)
+            
+            xb = np.linspace(min(wax), max(wax), 101)
+            yb = np.linspace(min(way), max(way), 101)
+            
+            hx, xbins, xpatches = plt.hist(wax, bins=100, color='purple', edgecolor='black', alpha= 0.5, density=True, label=f'mean = {round(np.mean(wax), 3)} \n$\sigma$ = {round(np.std(wax), 3)}')
+            xplt = norm.pdf(xbins, xmu, xsigma)
+            plt.plot(xbins, xplt, 'm')
+            plt.legend()
+            plt.title(f'Reconstructed X; True x = {int(ux[i])}')
+            plt.xlabel('Reconstructed X (weighted average)')
+            plt.savefig(f'{plotlocation}/hist-wax-x{int(xx[i])}-y{int(yy[i])}.pdf')
+            plt.clf()
+            
+            hy, ybins, ypatches = plt.hist(way, bins= 100, color='purple', edgecolor='black', alpha= 0.5, density=True, label=f'mean = {round(np.mean(way), 3)} \n$\sigma$ = {round(np.std(way), 3)}')
+            yplt = norm.pdf(ybins, ymu, ysigma)
+            plt.plot(ybins, yplt, 'm')
+            plt.legend()
+            plt.title(f'Reconstructed Y; True y = {int(uy[i])}')
+            plt.xlabel('Reconstructed Y (weighted average)')
+            plt.savefig(f'{plotlocation}/hist-way-x{int(xx[i])}-y{int(yy[i])}.pdf')
+            plt.clf()
         
 def spat_diff(datalocation, plotlocation, date):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
