@@ -164,20 +164,20 @@ def diffs(datalocation, date, nn, channel_tags, ch):
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date)
     
-    trux, truy, recox, recoy = [], [], [], []
+    diffx, diffy = [], []
     
     for i in range(len(xx)):
+        diffx, diffy = [], []
+        
         wax = np.loadtxt(f"{datalocation}/wax-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         way = np.loadtxt(f"{datalocation}/way-x{int(xx[i])}-y{int(yy[i])}-board0.txt")
         
         for j in range(len(wax)):
-            trux.append(ux[i])
-            recox.append(wax[j])
-            
-            truy.append(uy[i])
-            recoy.append(way[j])
+            diffx.append( wax[j] - ux[i] )
+            diffy.append( way[j] - uy[i] )
+
     
-    return trux, truy, recox, recoy
+            
 
 #######    
 
