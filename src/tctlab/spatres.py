@@ -74,7 +74,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
 
-    nsamples = 640
+    nsamples = 1000
     
     chan_cenx, chan_ceny = [], []
      
