@@ -36,23 +36,27 @@ def convert_aardvarc(datalocation, date, channel_tags):
             np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx[p])}-y{int(yy[p])}.txt", t/1000)
 
 def recover_pos(datalocation, date):
-    os.system(f"ls {datalocation}/csv/*.csv > {datalocation}/files.txt")
-    f = np.loadtxt(f"{datalocation}/files.txt", dtype=str)
+    # os.system(f"ls {datalocation}/csv/*.csv > {datalocation}/files.txt")
+    f = np.loadtxt(f"{datalocation}/csv/files.txt", dtype=str)
 
     pos = []
     for i in range(len(f)):
         filename= f[i].split("-")
+        
+        if "waveforms" in filename:
+            xi = filename[1]
+            yi = filename[2]
+        else: 
+            xi = filename[0]
+            yi = filename[1]
         try:
             #print(filename)
-            xi = filename[5]
-            yi = filename[6]
-
             xi = xi.replace(xi[0], "", 1)
             yi = yi.replace(yi[0], "", 1) 
-            yi = yi.replace(yi[-1], "", 1)
-            yi = yi.replace(yi[-1], "", 1)
-            yi = yi.replace(yi[-1], "", 1)
-            yi = yi.replace(yi[-1], "", 1)
+            # yi = yi.replace(yi[-1], "", 1)
+            # yi = yi.replace(yi[-1], "", 1)
+            # yi = yi.replace(yi[-1], "", 1)
+            # yi = yi.replace(yi[-1], "", 1)
         
             xi = int(xi)
             yi = int(yi)
