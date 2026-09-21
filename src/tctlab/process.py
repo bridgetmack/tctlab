@@ -86,6 +86,7 @@ def convert(datalocation, date, nn, channel_tags):
     xx, yy = coords[:,0], coords[:,1]
     
     sw = []
+    nsampes = 1000
     
     for x in range(len(xx)):
         try:
@@ -106,10 +107,10 @@ def convert(datalocation, date, nn, channel_tags):
         for channel in range(len(channel_tags)):
             ch_list = f[:,channel+4]
             
-            c0 = np.zeros((int(max(events)+1), nn))
-            cc = [ch_list[i:i + nn] for i in range(0, len(ch_list), nn)]
+            c0 = np.zeros((int(max(events)+1), nsamples))
+            cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
             
-            t = np.linspace(0, nn*10, nn)
+            t = np.linspace(0, nsamples*10, nsamples)
             for j in range(len(cc)):
                 c0[j,:] = cc[j]
                 
