@@ -86,7 +86,6 @@ def convert(datalocation, date, nn, channel_tags):
     xx, yy = coords[:,0], coords[:,1]
     
     sw = []
-    nsamples = 960
     
     for x in range(len(xx)):
         try:
@@ -96,7 +95,10 @@ def convert(datalocation, date, nn, channel_tags):
         
         events = f[:,0]
         start_window = f[:,3]
+        samples = f[:,1]
         sw = []
+        
+        nsamples = max(samples)
         
         for i in range(len(events)):
             sw.append([events[i], start_window[i]])
