@@ -108,7 +108,7 @@ def convert(datalocation, date, nn, channel_tags):
             ch_list = f[:,channel+4]
             
             c0 = np.zeros((int(max(events)+1), nsamples))
-            cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
+            cc = [ch_list[i:i + nsamples] for i in range(0, len(channel_tags), nsamples)]
             
             print(len(c0), len(cc))
             
