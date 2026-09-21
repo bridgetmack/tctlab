@@ -88,7 +88,10 @@ def convert(datalocation, date, nn, channel_tags):
     sw = []
     
     for x in range(len(xx)):
-        f = np.loadtxt(f"{datalocation}/csv/waveforms-x{int(xx[x])}-y{int(yy[x])}-board0.csv")
+        try:
+            f = np.loadtxt(f"{datalocation}/csv/x{int(xx[x])}-y{int(yy[x])}-board0.csv", delimiter=",", skiprows=1)
+        except:
+            f = np.loadtxt(f"{datalocation}/csv/waveforms-x{int(xx[x])}-y{int(yy[x])}-board0.csv", delimiter=",", skiprows=1)
         
         events = f[:,0]
         start_window = f[:,3]
