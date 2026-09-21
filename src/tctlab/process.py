@@ -116,7 +116,7 @@ def convert(datalocation, date, nn, channel_tags):
             
             t = np.linspace(0, nsamples*10, nsamples)
             for j in range(len(cc)):
-                c0[j,:] = cc[j]
+                c0[j-1,:] = cc[j]
                 
             np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx[x])}-y{int(yy[x])}.txt", np.transpose(cc))        
             np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx[x])}-y{int(yy[x])}.txt", t/1000)
