@@ -65,11 +65,12 @@ def full_run(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch,
     ## add spatial, time resolution stuff.
 
 def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, xmin, xmax, ymin, ymax, ped):
-    process.matrices(datalocation, date, channel, nn)
+    #process.matrices(datalocation, date, channel, nn)
     functs.waveforms.amplitude(datalocation, date, channel, 1, nn, ped)
     print("amplitudes updated")
     
-    plotting.plot_wfm.plot_individual(channel, 10, datalocation, plotlocation, date, ped)
+
+    plotting.plot_wfm.plot_individual(channel, 10, datalocation, plotlocation, date, channel_tags, ch, ped)
     #plotting.plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     #plotting.plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     plotting.mapping.map_amplitude_2d(channel, datalocation, plotlocation, date, channel_tags, ch)
