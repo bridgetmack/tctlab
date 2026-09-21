@@ -226,7 +226,7 @@ class mapping:
         plt.savefig(f"{plotlocation}/y-reco-true.pdf")
         plt.clf()
                       
-class plot_apml:            
+class plot_ampl:            
     def plot_avg_ampl(channel, datalocation, plotlocation, date, channel_tags, ch):
         ampl = np.loadtxt(f"{datalocation}/amplitude_ch{channel}.txt")
         dev = np.loadtxt(f"{datalocation}/amplitude_dev_ch{channel}.txt")

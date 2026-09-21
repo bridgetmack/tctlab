@@ -73,6 +73,8 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     ux, uy = functs.bnl.convert_coords(datalocation, date) # true values
+
+    nsamples = 640
     
     chan_cenx, chan_ceny = [], []
      
@@ -96,7 +98,7 @@ def weighted_average(datalocation, date, nn, channel_tags, ch):
             a_vec[j,:] = ampl[:nn]
                     
         for event in range(nn):
-            aa = a_vec[:,event]
+            aa = a_vec[:,event-1]
             
             numx = sum( chan_cenx * aa )
             numy = sum( chan_ceny * aa )
