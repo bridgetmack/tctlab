@@ -112,13 +112,12 @@ def convert(datalocation, date, nn, channel_tags):
             c0 = np.zeros((int(max(events)+1), nsamples))
             cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
             
-            print(len(c0), len(cc))
-            gg = len(c0) - len(cc)
-            
+            print(len(c0), len(cc), nsamples)
+
             t = np.linspace(0, nsamples*10, nsamples)
             for j in range(len(cc)):
                 try:
-                    c0[j+gg,:] = cc[j]
+                    c0[j,:] = cc[j]
                 except:
                     print(j)
                 
