@@ -113,11 +113,12 @@ def convert(datalocation, date, nn, channel_tags):
             cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
             
             print(len(c0), len(cc))
+            gg = len(c0) - len(cc)
             
             t = np.linspace(0, nsamples*10, nsamples)
             for j in range(len(cc)):
                 try:
-                    c0[j-1,:] = cc[j]
+                    c0[j+gg,:] = cc[j]
                 except:
                     print(j)
                 
