@@ -86,7 +86,7 @@ def convert(datalocation, date, nn, channel_tags):
     xx, yy = coords[:,0], coords[:,1]
     
     sw = []
-    nsampes = 1000
+    nsamples = 1000
     
     for x in range(len(xx)):
         try:
