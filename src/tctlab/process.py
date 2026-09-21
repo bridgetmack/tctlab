@@ -36,7 +36,7 @@ def convert_aardvarc(datalocation, date, channel_tags):
             np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx[p])}-y{int(yy[p])}.txt", t/1000)
 
 def recover_pos(datalocation, date):
-    os.system(f"ls {datalocation}/chan1t*.txt > {datalocation}/files.txt")
+    os.system(f"ls {datalocation}/csv/*.csv > {datalocation}/files.txt")
     f = np.loadtxt(f"{datalocation}/files.txt", dtype=str)
 
     pos = []
@@ -76,3 +76,36 @@ def matrices(datalocation, date, channel, nn):
     ww= np.array(ww)
     
     np.save(f"{datalocation}/scan_wfms{channel}.npy", ww)
+
+def convert(datalocation, date, nn, channel_tags):
+    coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    xx, yy = coords[:,0], coords[:,1]
+    
+    sw = []
+    
+    for x in range(len(xx)):
+        f = np.loadtxt(f"{datalocation}/csv/waveforms-x{int(xx[x])}-y{int(yy[x])}-board0.csv")
+        
+        events = f[:,0]
+        start_window = f[:,3]
+        sw = []
+        
+        for i in range(len(events)):
+            sw.append([events[i], start_window[i]])
+        sw = np.array(sw)
+        sw = np.unique(sw, axis=0)
+        np.savetxt(f"{datalocation}/sw-x{int(xx[x])}-y{int(yy[x])}-board0.txt", sw)
+        
+        for channel in range(len(channel_tags)):
+            ch_list = f[:,channel+4]
+            
+            c0 = np.zeros((int(max(events)+1), nn))
+            cc = [ch_list[i:i + nn] for i in range(0, len(ch_list), nn)]
+            
+            t = np.linspace(0, nn*10, nn)
+            for j in range(len(cc)):
+                c0[j,:] = cc[j]
+                
+            np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx[x])}-y{int(yy[x])}.txt", np.transpose(cc))        
+            np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx[x])}-y{int(yy[x])}.txt", t/1000)
+        
