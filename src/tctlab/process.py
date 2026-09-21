@@ -98,7 +98,7 @@ def convert(datalocation, date, nn, channel_tags):
         samples = f[:,1]
         sw = []
         
-        nsamples = int(max(samples))
+        nsamples = int(max(samples)+1)
         
         for i in range(len(events)):
             sw.append([events[i], start_window[i]])
