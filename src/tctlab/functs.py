@@ -41,9 +41,13 @@ class waveforms:
         wfms = waveforms.remove_baseline(datalocation, date, channel, x, y)
         data = np.zeros([len(wfms), len(wfms[0])])
         
-        start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")
-        sw = start_window[:,1]
-        
+        if channel <= 7:
+            start_window = np.loadtxt(f"{datalocation}/starts/sw-x{x}-y{y}-board0.txt")
+        elif channel >= 8:
+            start_window = np.loadtxt(f"{datalocation}/starts//sw-x{x}-y{y}-board1.txt")
+            channel = channel - 8
+            
+        sw = start_window[:,1]    
         npts = len(wfms)
         
         ped = np.genfromtxt(f"{datalocation}/dynamicPedestals.csv", delimiter=",", names=True)
