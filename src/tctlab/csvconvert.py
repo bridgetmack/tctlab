@@ -14,7 +14,7 @@ import sys, os
 # os.system(f"rm {datalocation}/csv/files.txt")
 # os.system(f"ls {datalocation}csv/*.csv > {datalocation}/csv/files.txt")
 
-def make_txt(datalocation, date, channel_tags):
+def make_txt(datalocation, date, channel_tags, ped):
 
     files = np.loadtxt(f"{datalocation}/csv/files.txt", dtype=str)
     pos = []
