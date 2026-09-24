@@ -27,7 +27,7 @@ def make_txt(datalocation, date, channel_tags):
             xx, yy = filename[0], filename[1]
         xx = int(xx.replace(xx[0], "", 1))
         yy = int(yy.replace(yy[0], "", 1))
-        pos.append(xx, yy)
+        pos.append([xx, yy])
         
         csv_file = np.loadtxt(files[f], delimiter=",", skiprows=1)
         
