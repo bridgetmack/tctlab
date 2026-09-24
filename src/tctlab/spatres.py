@@ -178,9 +178,6 @@ def diffs(datalocation, date, nn, channel_tags, ch):
             diffx.append( wax[j] - ux[i] )
             diffy.append( way[j] - uy[i] )
 
-    
-            
-
 #######    
 
 def single_event1(c1, c2,datalocation, plotlocation, date, ymin, channel_tags, ch):
