@@ -85,42 +85,45 @@ def convert(datalocation, date, nn, channel_tags):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     xx, yy = coords[:,0], coords[:,1]
     
+    converted = np.loadtxt(f"{datalocation}/converted.txt", dtype=str)
+   
     sw = []
     
     for x in range(len(xx)):
-        try:
-            f = np.loadtxt(f"{datalocation}/csv/x{int(xx[x])}-y{int(yy[x])}-board0.csv", delimiter=",", skiprows=1)
-        except:
-            f = np.loadtxt(f"{datalocation}/csv/waveforms-x{int(xx[x])}-y{int(yy[x])}-board0.csv", delimiter=",", skiprows=1)
-        
-        events = f[:,0]
-        start_window = f[:,3]
-        samples = f[:,1]
-        sw = []
-        
-        nsamples = int(max(samples)+1)
-        
-        for i in range(len(events)):
-            sw.append([events[i], start_window[i]])
-        sw = np.array(sw)
-        sw = np.unique(sw, axis=0)
-        np.savetxt(f"{datalocation}/sw-x{int(xx[x])}-y{int(yy[x])}-board0.txt", sw)
-        
-        for channel in range(len(channel_tags)):
-            ch_list = f[:,channel+4]
+        if f"chan2v{date}-x{int(xx[x])}-y{int(yy[x])}" not in converted:
+            try:
+                f = np.loadtxt(f"{datalocation}/csv/x{int(xx[x])}-y{int(yy[x])}-board0.csv", delimiter=",", skiprows=1)
+            except:
+                f = np.loadtxt(f"{datalocation}/csv/waveforms-x{int(xx[x])}-y{int(yy[x])}-board0.csv", delimiter=",", skiprows=1)
             
-            c0 = np.zeros((int(max(events)+1), nsamples))
-            cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
+            events = f[:,0]
+            start_window = f[:,3]
+            samples = f[:,1]
+            sw = []
             
-            print(len(c0), len(cc), nsamples)
-
-            t = np.linspace(0, nsamples*10, nsamples)
-            for j in range(len(cc)):
-                try:
-                    c0[j,:] = cc[j]
-                except:
-                    print(j)
+            nsamples = int(max(samples)+1)
+            
+            for i in range(len(events)):
+                sw.append([events[i], start_window[i]])
+            sw = np.array(sw)
+            sw = np.unique(sw, axis=0)
+            np.savetxt(f"{datalocation}/sw-x{int(xx[x])}-y{int(yy[x])}-board0.txt", sw)
+            
+            for channel in range(len(channel_tags)):
+                ch_list = f[:,channel+4]
                 
-            np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx[x])}-y{int(yy[x])}.txt", np.transpose(cc))        
-            np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx[x])}-y{int(yy[x])}.txt", t/1000)
-        
+                c0 = np.zeros((int(max(events)+1), nsamples))
+                cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
+                
+                print(len(c0), len(cc), nsamples)
+
+                t = np.linspace(0, nsamples*10, nsamples)
+                for j in range(len(cc)):
+                    try:
+                        c0[j,:] = cc[j]
+                    except:
+                        print(j)
+                    
+                np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx[x])}-y{int(yy[x])}.txt", np.transpose(cc))        
+                np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx[x])}-y{int(yy[x])}.txt", t/1000)
+            
