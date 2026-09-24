@@ -74,7 +74,7 @@ def make_txt(datalocation, date, channel_tags):
                 ADC = 3.1422522482546027
                 
                 for i in range(len(wfms[0])):
-                    slope_seg = ped_file[slopes][int(starts[i]*64:int(starts[i]*64+npts)]
+                    slope_seg = ped_file[slopes][int(starts[i]*64):int(starts[i]*64+npts)]
                     
                     data[:,i] = wfms[:,i] - (slope_seg*wfms[:,i]/ADC)
                 
