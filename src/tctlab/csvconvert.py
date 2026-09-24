@@ -29,7 +29,7 @@ def make_txt(datalocation, date, channel_tags):
         yy = int(yy.replace(yy[0], "", 1))
         pos.append([xx, yy])
         
-        csv_file = np.loadtxt(files[f], delimiter=",", skiprows=1)
+        csv_file = np.loadtxt(f"{datalocation}/csv/{files[f]}", delimiter=",", skiprows=1)
         
         events = csv_file[:,0]
         samples = csv_file[:,1]
