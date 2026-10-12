@@ -155,8 +155,8 @@ def make_txt_z(datalocation, date, channel_tags, ped):
                 
                 if "board1" in filename:
                     channel += 8
-                np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx)}-y{int(yy)}.txt", wfms)
-                np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx)}-y{int(yy)}.txt", t)
+                np.savetxt(f"{datalocation}/{f}-v.txt", wfms)
+                np.savetxt(f"{datalocation}/{f}-t.txt", t)
         except:
             print(f"Skipped {files[f]}") 
         np.savetxt(f"{datalocation}/csv/scposition{date}.txt", pos)
