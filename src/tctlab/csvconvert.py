@@ -86,6 +86,6 @@ def make_txt(datalocation, date, channel_tags, ped):
                 np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx)}-y{int(yy)}.txt", wfms)
                 np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx)}-y{int(yy)}.txt", t)
         except:
-            print(f"Skipped {files[f]}")
+            print(f"Skipped {files[f]}") 
         np.savetxt(f"{datalocation}/scposition{date}.txt", pos)
                 

@@ -83,6 +83,7 @@ def matrices(datalocation, date, channel, nn):
 
 def convert(datalocation, date, nn, channel_tags):
     coords = np.loadtxt(f"{datalocation}/scposition{date}.txt")
+    
     xx, yy = coords[:,0], coords[:,1]
     
     converted = np.loadtxt(f"{datalocation}/converted.txt", dtype=str)
