@@ -90,7 +90,7 @@ def make_txt(datalocation, date, channel_tags, ped):
         np.savetxt(f"{datalocation}/scposition{date}.txt", pos)
                 
 def make_txt_z(datalocation, date, channel_tags, ped):
-    files = np.loadtxt(f"{datalocation}/csv/files.txt", dtype=str)
+    
     pos = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     
     for z in range(len(pos)):
