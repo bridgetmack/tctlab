@@ -93,7 +93,7 @@ def make_txt_z(datalocation, date, channel_tags, ped):
     
     pos = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     
-    for z in range(len(pos)):
+    for z in pos:
         csv_file = np.loadtxt(f"{datalocation}/csv/z{z}-board0.csv", delimiter=",", skiprows=1)
         
         events = csv_file[:,0]
