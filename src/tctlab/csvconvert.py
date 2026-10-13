@@ -91,18 +91,11 @@ def make_txt(datalocation, date, channel_tags, ped):
                 
 def make_txt_z(datalocation, date, channel_tags, ped):
     files = np.loadtxt(f"{datalocation}/csv/files.txt", dtype=str)
-    pos = []
+    pos = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     
-    for f in range(len(files)):
+    for z in range(len(pos)):
         try:
-            filename = files[f].split("-")
-            
-            zz = filename[0]
-            zz = int(zz.replace(zz[0], "", 1))
-            
-            pos.append(zz)
-            
-            csv_file = np.loadtxt(f"{datalocation}/csv/{files[f]}", delimiter=",", skiprows=1)
+            csv_file = np.loadtxt(f"{datalocation}/csv/z{z}-board0.csv", delimiter=",", skiprows=1)
             
             events = csv_file[:,0]
             samples = csv_file[:,1]
@@ -116,9 +109,6 @@ def make_txt_z(datalocation, date, channel_tags, ped):
             sw = np.unique(np.array(sw), axis=0)
             
             for channel in range(len(channel_tags)):
-                if "board1" in filename:
-                    channel -= 8
-                
                 ch_list = csv_file[:,channel+4]
                 
                 c0 = np.zeros((int(max(events)+1), nsamples))
@@ -153,10 +143,7 @@ def make_txt_z(datalocation, date, channel_tags, ped):
                     
                     wfms = data
                 
-                if "board1" in filename:
-                    channel += 8
                 np.savetxt(f"{datalocation}/{f}-v.txt", wfms)
                 np.savetxt(f"{datalocation}/{f}-t.txt", t)
         except:
-            print(f"Skipped {files[f]}") 
-        np.savetxt(f"{datalocation}/csv/scposition{date}.txt", pos)
+            print(f"Skipped {z}") 
