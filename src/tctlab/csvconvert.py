@@ -107,7 +107,7 @@ def make_txt_z(datalocation, date, channel_tags, ped):
                 sw.append([events[e], start_window[e]])
             # sw = np.array(sw)
             sw = np.unique(np.array(sw), axis=0)
-            
+            print(z)
             for channel in range(len(channel_tags)):
                 ch_list = csv_file[:,channel+4]
                 
