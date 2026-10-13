@@ -143,7 +143,7 @@ def make_txt_z(datalocation, date, channel_tags, ped):
                     
                     wfms = data
                 
-                np.savetxt(f"{datalocation}/{f}-v.txt", wfms)
-                np.savetxt(f"{datalocation}/{f}-t.txt", t)
+                np.savetxt(f"{datalocation}/z{z}-v.txt", wfms)
+                np.savetxt(f"{datalocation}/z{z}-t.txt", t)
         except:
             print(f"Skipped {z}") 
