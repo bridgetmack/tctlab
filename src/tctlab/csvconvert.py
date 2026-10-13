@@ -143,6 +143,6 @@ def make_txt_z(datalocation, date, channel_tags, ped):
                 
                 wfms = data
             
-            np.savetxt(f"{datalocation}/z{z}-v.txt", wfms)
-            np.savetxt(f"{datalocation}/z{z}-t.txt", t)
+            np.savetxt(f"{datalocation}/z{z}-v{channel}.txt", wfms)
+            np.savetxt(f"{datalocation}/z{z}-t{channel}.txt", t)
  
