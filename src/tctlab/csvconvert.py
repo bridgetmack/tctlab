@@ -16,22 +16,15 @@ import sys, os
 
 def make_txt(datalocation, date, channel_tags, ped):
 
-    files = np.loadtxt(f"{datalocation}/csv/files.txt", dtype=str)
-    pos = []
+    pos = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     
-    for f in range(len(files)):
-        try:
-            filename = files[f].split("-")
-            if "waveforms" in filename:
-                xx, yy = filename[1], filename[2]
-            else:
-                xx, yy = filename[0], filename[1]
-            xx = int(xx.replace(xx[0], "", 1))
-            yy = int(yy.replace(yy[0], "", 1))
-            pos.append([xx, yy])
+    for x in pos:
+        for y in pos:
+            x, y = int(x), int(y)
             
-            csv_file = np.loadtxt(f"{datalocation}/csv/{files[f]}", delimiter=",", skiprows=1)
-            
+            csv_file = np.loadtxt(f"{datalocation}/csv/x{x}-y{y}-board0.csv", delimiter=",", skiprows=1)
+           
+           
             events = csv_file[:,0]
             samples = csv_file[:,1]
             nsamples = int(max(samples)+1)
@@ -44,8 +37,6 @@ def make_txt(datalocation, date, channel_tags, ped):
             sw = np.unique(np.array(sw), axis=0)
             
             for channel in range(len(channel_tags)):
-                if "board1" in filename:
-                    channel -= 8
                 
                 ch_list = csv_file[:,channel+4]
                 
@@ -81,13 +72,11 @@ def make_txt(datalocation, date, channel_tags, ped):
                     
                     wfms = data
                 
-                if "board1" in filename:
-                    channel += 8
                 np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx)}-y{int(yy)}.txt", wfms)
                 np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx)}-y{int(yy)}.txt", t)
         except:
             print(f"Skipped {files[f]}") 
-        np.savetxt(f"{datalocation}/scposition{date}.txt", pos)
+        # np.savetxt(f"{datalocation}/scposition{date}.txt", pos)
                 
 def make_txt_z(datalocation, date, channel_tags, ped):
     
