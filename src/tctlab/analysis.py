@@ -70,7 +70,7 @@ def testing(channel, datalocation, plotlocation, date, p, nn, channel_tags, ch, 
     print("amplitudes updated")
     
 
-    plotting.plot_wfm.plot_individual(channel, 10, datalocation, plotlocation, date, channel_tags, ch, ped)
+    plotting.plot_wfm.plot_individual(channel, 50, datalocation, plotlocation, date, channel_tags, ch, ped)
     #plotting.plot_all_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     #plotting.plot_sep_wfms(channel, datalocation, plotlocation, date, channel_tags, ch)
     plotting.mapping.map_amplitude_2d(channel, datalocation, plotlocation, date, channel_tags, ch)

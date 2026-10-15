@@ -18,64 +18,62 @@ def make_txt(datalocation, date, channel_tags, ped):
 
     pos = np.loadtxt(f"{datalocation}/scposition{date}.txt")
     
-    for x in pos:
-        for y in pos:
-            x, y = int(x), int(y)
+    for i in range(len(pos)):
+
+        x, y = int(pos[i][0]), int(pos[i][1])
+        
+        csv_file = np.loadtxt(f"{datalocation}/csv/x{x}-y{y}-board0.csv", delimiter=",", skiprows=1)
+       
+       
+        events = csv_file[:,0]
+        samples = csv_file[:,1]
+        nsamples = int(max(samples)+1)
+        
+        start_window = csv_file[:,3]
+        sw = []
+        for e in range(len(events)):
+            sw.append([events[e], start_window[e]])
+        # sw = np.array(sw)
+        sw = np.unique(np.array(sw), axis=0)
+        
+        for channel in range(len(channel_tags)):
             
-            csv_file = np.loadtxt(f"{datalocation}/csv/x{x}-y{y}-board0.csv", delimiter=",", skiprows=1)
-           
-           
-            events = csv_file[:,0]
-            samples = csv_file[:,1]
-            nsamples = int(max(samples)+1)
+            ch_list = csv_file[:,channel+4]
             
-            start_window = csv_file[:,3]
-            sw = []
-            for e in range(len(events)):
-                sw.append([events[e], start_window[e]])
-            # sw = np.array(sw)
-            sw = np.unique(np.array(sw), axis=0)
+            c0 = np.zeros((int(max(events)+1), nsamples))
+            cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
+            for j in range(len(cc)):
+                try: 
+                    c0[j,:] = cc[j]
+                except:
+                    print(j)
             
-            for channel in range(len(channel_tags)):
-                
-                ch_list = csv_file[:,channel+4]
-                
-                c0 = np.zeros((int(max(events)+1), nsamples))
-                cc = [ch_list[i:i + nsamples] for i in range(0, len(ch_list), nsamples)]
-                for j in range(len(cc)):
-                    try: 
-                        c0[j,:] = cc[j]
-                    except:
-                        print(j)
-                
-                wfms = np.transpose(cc)
-                t = np.linspace(0, nsamples*10, nsamples)
-                t = t/1000 #picoseconds?
-                
-                # remove baseline
-                wfms = np.array(wfms) - np.mean(wfms[:100], axis=0)
+            wfms = np.transpose(cc)
+            t = np.linspace(0, nsamples*10, nsamples)
+            t = t/1000 #picoseconds?
             
-                if ped == True:
-                    data = np.zeros([len(wfms), len(wfms[0])])
-                    starts = sw[:,1]
-                    npts = len(wfms)
+            # remove baseline
+            wfms = np.array(wfms) - np.mean(wfms[:100], axis=0)
+        
+            if ped == True:
+                data = np.zeros([len(wfms), len(wfms[0])])
+                starts = sw[:,1]
+                npts = len(wfms)
+                
+                ped_file = np.genfromtxt(f"{datalocation}/dynamicPedestals.csv", delimiter=",", names=True)
+                slopes = f"ch{channel}_slopeDevs"
+                yiters = f"ch{channel}_yIters"
+                ADC = 3.1422522482546027
+                
+                for i in range(len(wfms[0])):
+                    slope_seg = ped_file[slopes][int(starts[i]*64):int(starts[i]*64+npts)]
                     
-                    ped_file = np.genfromtxt(f"{datalocation}/dynamicPedestals.csv", delimiter=",", names=True)
-                    slopes = f"ch{channel}_slopeDevs"
-                    yiters = f"ch{channel}_yIters"
-                    ADC = 3.1422522482546027
-                    
-                    for i in range(len(wfms[0])):
-                        slope_seg = ped_file[slopes][int(starts[i]*64):int(starts[i]*64+npts)]
-                        
-                        data[:,i] = wfms[:,i] - (slope_seg*wfms[:,i]/ADC)
-                    
-                    wfms = data
+                    data[:,i] = wfms[:,i] - (slope_seg*wfms[:,i]/ADC)
                 
-                np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx)}-y{int(yy)}.txt", wfms)
-                np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx)}-y{int(yy)}.txt", t)
-        except:
-            print(f"Skipped {files[f]}") 
+                wfms = data
+            
+            np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx)}-y{int(yy)}.txt", wfms)
+            np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx)}-y{int(yy)}.txt", t)
         # np.savetxt(f"{datalocation}/scposition{date}.txt", pos)
                 
 def make_txt_z(datalocation, date, channel_tags, ped):
