@@ -257,5 +257,5 @@ class fits:
     def find_land(x, ampl, a, mpv, wid):
         return a * landau.pdf(x, loc=mpv, scale=wid) + ampl
 
-    def gaus_func(x, a, b, c):
-        return a * np.exp(-1*(x-b)*2 / c**2)
+    def gaus_func(x, a, b, c): 
+        return a * np.exp(-1*(x-b)**2 / (2*c**2))
