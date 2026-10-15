@@ -24,7 +24,6 @@ def make_txt(datalocation, date, channel_tags, ped):
         
         csv_file = np.loadtxt(f"{datalocation}/csv/x{x}-y{y}-board0.csv", delimiter=",", skiprows=1)
        
-       
         events = csv_file[:,0]
         samples = csv_file[:,1]
         nsamples = int(max(samples)+1)
@@ -72,8 +71,8 @@ def make_txt(datalocation, date, channel_tags, ped):
                 
                 wfms = data
             
-            np.savetxt(f"{datalocation}/chan{channel}v{date}-x{int(xx)}-y{int(yy)}.txt", wfms)
-            np.savetxt(f"{datalocation}/chan{channel}t{date}-x{int(xx)}-y{int(yy)}.txt", t)
+            np.savetxt(f"{datalocation}/chan{channel}v{date}-x{x}-y{y}.txt", wfms)
+            np.savetxt(f"{datalocation}/chan{channel}t{date}-x{x}-y{y}.txt", t)
         # np.savetxt(f"{datalocation}/scposition{date}.txt", pos)
                 
 def make_txt_z(datalocation, date, channel_tags, ped):
